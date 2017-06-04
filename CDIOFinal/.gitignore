@@ -23,6 +23,7 @@ hs_err_pid*
 
 /bin/
 /build/
+/target/
 
 # IntelliJ files
 /.idea
