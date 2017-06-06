@@ -19,6 +19,16 @@ public class Main implements Runnable{
 		
 	}
 	
+	public void disconnect()
+	{
+		
+	}
+	
+	public void connect()
+	{
+		
+	}
+	
 	
 
 }
