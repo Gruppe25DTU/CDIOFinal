@@ -1,4 +1,4 @@
-package dtomanager;
+package dao;
 
 import java.util.List;
 

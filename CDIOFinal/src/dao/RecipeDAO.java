@@ -1,4 +1,4 @@
-package dtomanager;
+package dao;
 
 import dto.RecipeDTO;
 
