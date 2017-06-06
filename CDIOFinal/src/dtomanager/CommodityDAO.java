@@ -4,7 +4,7 @@ import java.util.List;
 
 import dto.CommodityDTO;
 
-public class CommodityManager {
+public class CommodityDAO {
   
   public int create(CommodityDTO dto) {
     return 1;

@@ -2,7 +2,7 @@ package dtomanager;
 
 import dto.CommodityBatchDTO;
 
-public class CommodityBatchManager {
+public class CommodityBatchDAO {
   
   public boolean changeAmount(int id, int amount) {
     return false;

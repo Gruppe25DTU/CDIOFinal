@@ -2,7 +2,7 @@ package dtomanager;
 
 import dto.RecipeDTO;
 
-public class RecipeManager {
+public class RecipeDAO {
   
   public int create(RecipeDTO dto) {
     return 1;

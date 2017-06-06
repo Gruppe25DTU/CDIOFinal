@@ -6,7 +6,7 @@ import dto.CommodityDTO;
 import dto.ProductBatchCompDTO;
 import dto.ProductBatchDTO;
 
-public class ProductBatchManager {
+public class ProductBatchDAO {
   
   public int create(ProductBatchDTO dto) {
     return 1;

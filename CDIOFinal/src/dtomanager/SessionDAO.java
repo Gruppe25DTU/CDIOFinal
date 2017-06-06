@@ -4,7 +4,7 @@ import java.util.List;
 
 import dto.UserDTO;
 
-public class SessionManager {
+public class SessionDAO {
   
   public boolean login(String name, String pwd) {
     return true;
