@@ -27,4 +27,9 @@ public class UserDTO implements Serializable {
         this.roles = new HashSet<>(roles);
         this.status = status;
     }
+
+	public String getFirstName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

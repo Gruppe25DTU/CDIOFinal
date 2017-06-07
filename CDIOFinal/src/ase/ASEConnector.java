@@ -26,10 +26,10 @@ public class ASEConnector implements Runnable{
 	{
 		try {
 			Socket newSock = new Socket(ip , portNr);
-		} catch (UnknownHostException e) {
-			//e.printStackTrace();
+			System.out.println("Successfully connected to "+newSock.getInetAddress()+ " at port: "+newSock.getPort());
+			this.cM.addConnection(newSock);
 		} catch (IOException e) {
-			//e.printStackTrace();
+			System.out.println("Failed to connect to "+ip);
 		}
 	}
 
