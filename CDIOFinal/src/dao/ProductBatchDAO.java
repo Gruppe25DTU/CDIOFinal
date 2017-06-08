@@ -25,7 +25,7 @@ public class ProductBatchDAO {
 	 * @throws DALException
 	 * @throws SQLException
 	 */
-	public int create(ProductBatchDTO dto) throws InstantiationException, IllegalAccessException, ClassNotFoundException, DALException, SQLException {
+	public int create(ProductBatchDTO dto) throws SQLException {
 		String cmd = "CALL addProductBatch('%d',%d');";
 
 		cmd = String.format(cmd, dto.getID(),dto.getRecipeID());
@@ -45,38 +45,28 @@ public class ProductBatchDAO {
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 */
-	public boolean update(ProductBatchDTO dto) throws InstantiationException, IllegalAccessException, ClassNotFoundException, DALException, SQLException {
+	public boolean update(ProductBatchDTO dto) throws SQLException {
 		String cmd = "CALL updateProductBatchTime('%s','%s','%d');";
 		cmd = String.format(cmd, dto.getStartDate(),dto.getEndDate(),dto.getID());
 		Connector.doUpdate(cmd);
 		return true;
 	}
-	/**
-	 * Changes the status of the productBatch. <br>
-	 * 0: Production has yet to be started <br>
-	 * 1: Production has started <br>
-	 * 2: Production has finished<br>
-	 * @param id
-	 * @param status
-	 * @return
-	 * either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws ClassNotFoundException
-	 * @throws DALException
-	 * @throws SQLException
-	 */
-	public int changeStatus(int id, int status) throws InstantiationException, IllegalAccessException, ClassNotFoundException, DALException, SQLException {
+	public int changeStatus(int id, int status) throws SQLException {
 		String cmd = "CALL updateProductBatchStatus('%d','%d');";
 		cmd = String.format(cmd, status,id);
 		return Connector.doUpdate(cmd);
-	}s
+	}
 
 	public void print(int id) {
 		
 	}
-
-	public ProductBatchDTO get(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, DALException, SQLException {
+	/**
+	 * Date.. How?
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public ProductBatchDTO get(int id) throws SQLException {
 		String cmd = "CALL getProductBatch('%d');";
 		cmd = String.format(cmd, id);
 		
@@ -84,22 +74,42 @@ public class ProductBatchDAO {
 		int ID = rs.getInt("productBatch_ID");
 		int status = rs.getInt("status");
 		int recipe_ID = rs.getInt("recipe_ID");
-		Date startdate = Date.parse(rs.getStirng("startdate")); 
-		Date date = new Date();
+		Date startdate = new Date(Date.parse(rs.getString("startdate")));
 		date.parse(s)
 		ProductBatchDTO pbDTO = new ProductBatchDTO();
 		return null;
 	}
-
+	// Date.. how?
+	
 	public List<ProductBatchDTO> getList() {
 		return null;
 	}
-
+	
 	public boolean addComponent(ProductBatchDTO productBatch, ProductBatchCompDTO component) {
-		return false;
+		String cmd = "CALL addProductBatchComponent('%d','%d','%d','%d','%d');";
+		cmd = String.format(cmd, component.getID(),component.getCommodityID(),component.getTara(),component.getNet(),component.getuserID());
+		
+		try {
+			Connector.doUpdate(cmd);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 
-	public CommodityDTO getNonWeightedComp(int pbid) {
+	public recipeComponentDTO getNonWeightedComp(int pbid) {
+		String cmd = "CALL getProductBatchComponentNotWeighed('');";
+		cmd  = String.format(cmd, pbid);
+		
+		try {
+			ResultSet rs = Connector.doQuery(cmd);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 

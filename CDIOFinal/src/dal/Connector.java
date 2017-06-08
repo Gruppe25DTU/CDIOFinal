@@ -25,11 +25,14 @@ public class Connector {
 	 * @throws SQLException
 	 */
 	public static Connection connectToDatabase()
-			throws InstantiationException, IllegalAccessException,
-			ClassNotFoundException, SQLException
 	{
 		// call the driver class' no argument constructor
-		Class.forName("com.mysql.jdbc.Driver").newInstance();
+		try {
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// get Connection-object via DriverManager
 		if(!testMode) {
@@ -37,13 +40,26 @@ public class Connector {
 			String username = Constant.username;
 			String password = Constant.password;
 
-			return (Connection) DriverManager.getConnection(url, username, password);
+			try {
+				return (Connection) DriverManager.getConnection(url, username, password);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+
+			}
 		}
 		else {
 			String url = "jdbc:mysql://"+Constant.testserver+":"+Constant.testport+"/"+Constant.testdatabase;
 			String username = Constant.testusername;
 			String password = Constant.testpassword;
-			return (Connection) DriverManager.getConnection(url,username,password);
+			try {
+				return (Connection) DriverManager.getConnection(url,username,password);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+
+			}
 		}
 	}
 
@@ -69,35 +85,38 @@ public class Connector {
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public static ResultSet doQuery(String cmd) throws DALException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException
-	{
+	public static ResultSet doQuery(String cmd) throws SQLException	{
 		Connection conn = connectToDatabase();
 		Statement stm = conn.createStatement();
 		try { return stm.executeQuery(cmd); }
-		catch (SQLException e) { throw new DALException(e); }
+		catch (SQLException e) 
+		{return null;}
 		finally {
 			stm.close();
 			conn.close();
 		}
-		
+
 	}
 	/**
 	 * Executes the given SQL statement, which may be an INSERT, UPDATE, or DELETE statement or an SQL statement that returns nothing, such as an SQL DDL statement. 
 	 * @param cmd
 	 * @return
-	 * either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing
+	 * either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing <br>
+	 * if 0, function was caught.
 	 * @throws DALException
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public static int doUpdate(String cmd) throws DALException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException
+	public static int doUpdate(String cmd) throws SQLException
 	{
 		Connection conn = connectToDatabase();
 		Statement stm = conn.createStatement();
 		try { return stm.executeUpdate(cmd); }
-		catch (SQLException e) { throw new DALException(e); }
+		catch (SQLException e) 
+		{return 0;
+		}
 		finally {
 			stm.close();
 			conn.close();
