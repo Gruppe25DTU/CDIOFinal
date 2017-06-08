@@ -7,7 +7,7 @@ import java.net.Socket;
 public class Connection {
 
 	private Socket socket;
-	private Session sesh;
+	private SessionController sesh;
 	private WeightInput input;
 	private DataOutputStream output;
 	
@@ -15,7 +15,7 @@ public class Connection {
 			this.socket = socket;
 			this.input = new WeightInput(socket.getInputStream() , this);
 			this.output = new DataOutputStream(socket.getOutputStream());
-			sesh = new Session(this);
+			sesh = new SessionController(this);
 			new Thread(this.input).start();
 	}
 	
@@ -38,7 +38,7 @@ public class Connection {
 	
 	public void createNewSession()
 	{
-		this.sesh = new Session(this);
+		this.sesh = new SessionController(this);
 	}
 	
 	public Socket getSocket()
