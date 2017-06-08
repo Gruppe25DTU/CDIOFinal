@@ -3,8 +3,8 @@ import dto.SupplierDTO;
 
 public class SupplierDAO{
 
-	public int create(SupplierDTO dto){
-		return 1;
+	public boolean create(SupplierDTO dto){
+		return true;
 	}
 
 	public boolean update(int ID){
@@ -15,7 +15,7 @@ public class SupplierDAO{
 		return true;
 	}
 	
-	public SupplierDTO get(int ID){
+	public SupplierDTO getSupplier(int ID){
 		return null;
 	}
 	

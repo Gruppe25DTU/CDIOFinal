@@ -10,15 +10,15 @@ public class SessionDAO {
     return true;
   }
   
-  public void logout(int id) {
+  public void logout(int ID) {
     
   }
   
-  public UserDTO getUser(int id) {
+  public UserDTO getUser(int ID) {
     return null;
   }
   
-  public List<String> getRoles(int id) {
+  public List<String> getRoles(int ID) {
     return null;
   }
 
