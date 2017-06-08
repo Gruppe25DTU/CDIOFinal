@@ -19,7 +19,7 @@ import dto.UserDTO;
 public class RESTUserDAO {
 
 	@GET
-	@Path("{id}")
+	@Path("id/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getUser(UserDTO data, @PathParam("id") int id) {
 		try {
@@ -29,6 +29,11 @@ public class RESTUserDAO {
 		}
 		return Response.status(200).build();
 	}
+  
+  @GET
+  public String get() {
+    return "TEST";
+  }
 
 
 	@PUT
@@ -80,7 +85,7 @@ public class RESTUserDAO {
 	}
 	
 	@GET
-	@Path("{name}")
+	@Path("name/{name}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getUser(UserDTO data, @PathParam("name") String name) {
 		try {
