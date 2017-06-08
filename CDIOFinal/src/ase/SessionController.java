@@ -8,13 +8,13 @@ import dto.ProductBatchCompDTO;
 import dto.ProductBatchDTO;
 import dto.UserDTO;
 
-public class Session {
+public class SessionController {
 
 	private UserDTO user;
 	private ProductBatchDTO prod;
 	private ProductBatchCompDTO currentPrBatchComp;
 	private Connection conn;
-	private int weighingStep;
+	private int wStep;
 	private double tara;
 	private double netto;
 	private MessageType expectedType;
@@ -23,12 +23,12 @@ public class Session {
 	private int errorsInARow;  // We track how many errors we get in a row and when we get to 10 we sleep for a second-
 							   // so we won't spam the weight. 
 
-	public Session(Connection conn) {
+	public SessionController(Connection conn) {
 		user = null;
 		prod = null;
 		currentPrBatchComp  = null;
 		this.conn = conn;
-		weighingStep = 0;
+		wStep = 0;
 		tara = 0;
 		netto = 0;
 		cBatch = null;
@@ -52,72 +52,74 @@ public class Session {
 	{
 		if(msg.getReplyType().equals(expectedType))
 		{
-
-			switch(weighingStep)
+			switch(wStep)
 			{
 			case 0 :
 				//First Labworker types his id
 				lastMessageSent = "RM20 8 \"Indtast laborant nr\" \"\" \"&3\"";
-				conn.outputMsg(lastMessageSent);
 				expectedType = MessageType.RM20_B;
-				weighingStep++;
+				wStep++;
+				conn.outputMsg(lastMessageSent);
+				break;
 			case 1 :
 				//Message Is recieved
-				weighingStep++;
+				wStep++;
 				expectedType = MessageType.RM20_A;
 				break;
 			case 2 :
 				//Labworker has sent his id, here we check if it's valid or not
-//				if(msg.getMsg().length() > 0)
-//				{
-//					int labId = Integer.parseInt(msg.getMsg());
-//					UserDAO uDao = new UserDAO();
-//					user = uDao.get(labId);
-//					if(user != null)
-//					{
-//						//We send a message to confirm that the name is correct (There is no other choice but to confirm)
-//						//
-//						String name = user.getFirstName() + " " + user.getLastName();
-//						if(name.length() > 26 )
-//							name = user.getFirstName() + " "+user.getLastName().charAt(0);
-//						expectedType = MessageType.P111_A;
-//						weighingStep++;
-//						lastMessageSent = "P111 \""+name+"? [->\"";
-//						conn.outputMsg(lastMessageSent);
-//					}
-//					else
-//					{
-//						//ID was invalid and we resend the message and go back to step 1
-//						lastMessageSent = "RM20 8 \"Indtast laborant nr\" \"\" \"&3\"";
-//						conn.outputMsg(lastMessageSent);
-//						expectedType = MessageType.RM20_B;
-//						weighingStep = 1;
-//					}
-//				}
-//				else
-//				{
-//					//ID was invalid and we resend the message and go back to step 1
-//					lastMessageSent = "RM20 8 \"Indtast laborant nr\" \"\" \"&3\"";
-//					conn.outputMsg(lastMessageSent);
-//					expectedType = MessageType.RM20_B;
-//					weighingStep = 1;
-//				}
+				if(msg.getMsg().length() > 0)
+				{
+					
+					int labId = Integer.parseInt(msg.getMsg());
+					System.out.println("here now" + labId);
+					UserDAO uDao = new UserDAO();
+					user = uDao.get(labId);
+					if(user != null)
+					{
+						//We send a message to confirm that the name is correct (There is no other choice but to confirm)
+						//
+						String name = user.getFirstName() + " " + user.getLastName();
+						if(name.length() > 26 )
+							name = user.getFirstName() + " "+user.getLastName().charAt(0);
+						expectedType = MessageType.P111_A;
+						wStep++;
+						lastMessageSent = "P111 \""+name+"? [->\"";
+						conn.outputMsg(lastMessageSent);
+					}
+					else
+					{
+						//ID was invalid and we resend the message and go back to step 1
+						lastMessageSent = "RM20 8 \"Indtast laborant nr\" \"\" \"&3\"";
+						conn.outputMsg(lastMessageSent);
+						expectedType = MessageType.RM20_B;
+						wStep = 1;
+					}
+				}
+				else
+				{
+					//ID was invalid and we resend the message and go back to step 1
+					lastMessageSent = "RM20 8 \"Indtast laborant nr\" \"\" \"&3\"";
+					conn.outputMsg(lastMessageSent);
+					expectedType = MessageType.RM20_B;
+					wStep = 1;
+				}
 				break;
 			case 3 :
 				//Labworker pressed the [-> key
 				expectedType = MessageType.K_C_4;
-				weighingStep++;
+				wStep++;
 				break;
 			case 4 :
 				//Labworker now has to type in the number for the productbatch
 				lastMessageSent = "RM20 8 \"Indtast Batch nr\" \"\" \"&3\"";
 				expectedType = MessageType.RM20_B;
-				weighingStep++;
+				wStep++;
 				conn.outputMsg(lastMessageSent);
 				break;
 			case 5 :
 				expectedType = MessageType.RM20_A;
-				weighingStep++;
+				wStep++;
 				break;
 			case 6 : 
 				//Labworker sent productbatch id number, now we check whether it's valid
@@ -161,34 +163,52 @@ public class Session {
 				break;
 			case 7 :
 				expectedType = MessageType.K_C_4;
-				weighingStep++;
+				wStep++;
 				break;
 			case 8 :
 				//Labworker pressed [-> and we tare the weight
 				lastMessageSent = "T";
 				expectedType = MessageType.TARA;
-				weighingStep++;
+				wStep++;
 				conn.outputMsg(lastMessageSent);
 				break;
 			case 9 :
-				lastMessageSent = "P111 \"Placer tara på vægten [->\"";
-				expectedType = MessageType.P111_A;
-				weighingStep++;
-				conn.outputMsg(lastMessageSent);
+				if(Double.parseDouble(msg.getMsg()) > 0.01)
+				{
+					lastMessageSent = "P111 \"For meget vægt [->\"";
+					conn.outputMsg(lastMessageSent);
+					expectedType = MessageType.P111_A;
+					wStep = 7;
+				}
+				else
+				{
+					lastMessageSent = "P111 \"Placer tara på vægten [->\"";
+					expectedType = MessageType.P111_A;
+					wStep++;
+					conn.outputMsg(lastMessageSent);
+				}
 				break;
 			case 10 :
 				expectedType = MessageType.K_C_4;
-				weighingStep++;
+				wStep++;
 				break;
 			case 11 :
 				lastMessageSent = "S";
-				weighingStep++;
+				wStep++;
 				expectedType = MessageType.WEIGHT;
 				conn.outputMsg(lastMessageSent);
 				break;
 			case 12 :
 				tara = Double.parseDouble(msg.getMsg());
+				lastMessageSent = "T";
+				wStep++;
+				expectedType = MessageType.TARA;
+				conn.outputMsg(lastMessageSent);
+				break;
+			case 13 :
 				
+				break;
+			case 14 :
 				break;
 			default: 
 				break;
@@ -232,7 +252,7 @@ public class Session {
 	}
 
 	public int getWeighingStep() {
-		return weighingStep;
+		return wStep;
 	}
 
 	public double getTara() {
@@ -268,7 +288,7 @@ public class Session {
 	}
 
 	public void setWeighingStep(int weighingStep) {
-		this.weighingStep = weighingStep;
+		this.wStep = weighingStep;
 	}
 
 	public void setTara(double tara) {

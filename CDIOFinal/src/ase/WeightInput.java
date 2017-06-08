@@ -59,14 +59,14 @@ public class WeightInput implements Runnable{
 
 				if(input.split(" ")[1].equals("B"))
 				{
-					sInMsg = new SocketInMessage(MessageType.RM20_A , input);
+					sInMsg = new SocketInMessage(MessageType.RM20_B , input);
 					conn.processInput(sInMsg);
 				}
 				else if(input.split(" ")[1].equals("A"))
 				{
 					if(input.split("\"").length>1)
 						input = input.split("\"")[1];
-					sInMsg = new SocketInMessage(MessageType.RM20_B , "");
+					sInMsg = new SocketInMessage(MessageType.RM20_A , "");
 					conn.processInput(sInMsg);
 				}
 				break;
