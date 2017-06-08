@@ -1,10 +1,12 @@
 package dao;
 
+import dal.Connector;
 import dto.CommodityBatchDTO;
 
 public class CommodityBatchDAO {
   
   public boolean changeAmount(int id, int amount) {
+	Connector.doUpdate("")
     return false;
   }
   

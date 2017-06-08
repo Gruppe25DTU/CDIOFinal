@@ -12,6 +12,30 @@ public CommodityDTO(int ID, String name, int supplierID){
 
 	}
 
+public int getID() {
+	return ID;
+}
+
+public void setID(int iD) {
+	ID = iD;
+}
+
+public String getName() {
+	return name;
+}
+
+public void setName(String name) {
+	this.name = name;
+}
+
+public int getSupplierID() {
+	return supplierID;
+}
+
+public void setSupplierID(int supplierID) {
+	this.supplierID = supplierID;
+}
+
 
 
 }
