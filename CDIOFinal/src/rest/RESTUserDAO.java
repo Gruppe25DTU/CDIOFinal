@@ -15,24 +15,24 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import dto.UserDTO;
-@Path("users")
+@Path("user")
 public class RESTUserDAO {
 
 	@GET
-	@Path("{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getUser(UserDTO data, @PathParam("id") int id) {
+	@Path("view/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUser(@PathParam("id") int id) {
+		UserDTO test = new UserDTO(2, "test", "name", "lname", "ini", "cpr", "pass", "mail", null, 1);
 		try {
 
 		} catch (Exception e) {
-			return Response.status(Status.BAD_REQUEST).build();
+			return null;
 		}
-		return Response.status(200).build();
+		return Response.status(200).entity(test).build();
 	}
 
-
 	@PUT
-	@Path("{id}")
+	@Path("update/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response changeStatus(String active, @PathParam("id") int id) {
 		try {
@@ -64,7 +64,8 @@ public class RESTUserDAO {
 		} catch (Exception e) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
-		return Response.status(200).build();
+		return Response.status(201
+				).build();
 
 	}
 	
@@ -80,9 +81,9 @@ public class RESTUserDAO {
 	}
 	
 	@GET
-	@Path("{name}")
+	@Path("view/{name}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getUser(UserDTO data, @PathParam("name") String name) {
+	public Response UserExists(@PathParam("name") String name) {
 		try {
 
 		} catch (Exception e) {

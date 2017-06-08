@@ -9,8 +9,13 @@ public CommodityDTO(int ID, String name, int supplierID){
 		this.ID = ID;
 		this.name = name;
 		this.supplierID = supplierID;
-
 	}
+
+public CommodityDTO(CommodityDTO commodity){
+	this.ID = commodity.getID();
+	this.name = commodity.getName();
+	this.supplierID = commodity.getSupplierID();
+}
 
 public int getID() {
 	return ID;

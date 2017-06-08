@@ -1,0 +1,57 @@
+@CHARSET "ISO-8859-1";
+
+body {
+font-family: Candara;
+	
+}
+.position {
+margin: 0;
+width: 30%;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background-color: #e7ebe8;
+padding: 3%;
+overflow: auto;
+border: solid 1px;
+}
+
+button {
+background-color: #ff8000;
+color: white;
+padding: 5px 20px;
+margin: 8px 0;
+cursor: pointer;
+width: 100%;
+font-family: Candara;
+font-size: 25px;
+}
+
+button:hover {
+opacity: 0.8;
+}
+
+input[type=email] {
+	width: 100%;
+padding: 12px 20px;
+margin: 8px 0;
+display: inline-block;
+border: 1px solid #ccc;
+box-sizing: border-box;
+}
+	
+.login {
+position: absolute;
+top: 8px;
+right: 16px;
+font-size: 20px;
+font-family: Candara;
+}
+a:link {
+    text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+	opacity: 0.5;
+}

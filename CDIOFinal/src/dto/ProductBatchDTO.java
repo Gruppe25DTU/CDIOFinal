@@ -19,7 +19,13 @@ public class ProductBatchDTO {
 		this.endDate = endDate;
 	}
 
-
+public ProductBatchDTO(ProductBatchDTO productBatch){
+	this.ID = productBatch.getID();
+	this.status = productBatch.getStatus();
+	this.recipeID = productBatch.getRecipeID();
+	this.startDate = productBatch.getStartDate();
+	this.endDate = productBatch.getEndDate();
+}
 
 	public int getID() {
 		return ID;
@@ -78,5 +84,7 @@ public class ProductBatchDTO {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+	
+	
 	
 }

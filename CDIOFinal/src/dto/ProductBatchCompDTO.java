@@ -2,19 +2,27 @@ package dto;
 
 public class ProductBatchCompDTO {
 	private int ID = -1;
-	private int commodityBatchID = -1;
-	private double tare = -1;
+	private int commodityID = -1;
+	private double tara = -1;
 	private double net = -1;
-	private int oprID =-1;
+	private int userID =-1;
 
-	public ProductBatchCompDTO(int ID, int commodity, double tare, double net, int oprID){
+	public ProductBatchCompDTO(int ID, int commodityID, double tara, double net, int userID){
 		this.ID = ID;
-		this.commodityBatchID = commodity;
-		this.tare = tare;
+		this.commodityID = commodityID;
+		this.tara = tara;
 		this.net = net;
-		this.oprID = oprID;
-
+		this.userID = userID;
 	}
+
+	public ProductBatchCompDTO(ProductBatchCompDTO productBatchComp){
+		this.ID = productBatchComp.getID();
+		this.commodityID = productBatchComp.getCommodityID();
+		this.tara = productBatchComp.getTara();
+		this.net = productBatchComp.getNet();
+		this.userID = productBatchComp.getuserID();
+	}
+
 
 	public int getID() {
 		return ID;
@@ -24,20 +32,20 @@ public class ProductBatchCompDTO {
 		ID = iD;
 	}
 
-	public int getCommodityBatchID() {
-		return commodityBatchID;
+	public int getCommodityID() {
+		return commodityID;
 	}
 
-	public void setCommodityBatchID(int commodityID) {
-		this.commodityBatchID = commodityID;
+	public void setCommodityID(int commodityID) {
+		this.commodityID = commodityID;
 	}
 
-	public double getTare() {
-		return tare;
+	public double getTara() {
+		return tara;
 	}
 
-	public void setTare(double tare) {
-		this.tare = tare;
+	public void setTara(double tara) {
+		this.tara = tara;
 	}
 
 	public double getNet() {
@@ -48,12 +56,14 @@ public class ProductBatchCompDTO {
 		this.net = net;
 	}
 
-	public int getOprID() {
-		return oprID;
+	public int getuserID() {
+		return userID;
 	}
 
-	public void setOprID(int oprID) {
-		this.oprID = oprID;
+	public void setuserID(int userID) {
+		this.userID = userID;
 	}
+
+
 
 }
