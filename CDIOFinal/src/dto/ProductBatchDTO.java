@@ -18,5 +18,73 @@ public class ProductBatchDTO {
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
+
+public ProductBatchDTO(ProductBatchDTO productBatch){
+	this.ID = productBatch.getID();
+	this.status = productBatch.getStatus();
+	this.recipeID = productBatch.getRecipeID();
+	this.startDate = productBatch.getStartDate();
+	this.endDate = productBatch.getEndDate();
+}
+
+	public int getID() {
+		return ID;
+	}
+
+
+
+	public void setID(int iD) {
+		ID = iD;
+	}
+
+
+
+	public int getStatus() {
+		return status;
+	}
+
+
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+
+
+	public int getRecipeID() {
+		return recipeID;
+	}
+
+
+
+	public void setRecipeID(int recipeID) {
+		this.recipeID = recipeID;
+	}
+
+
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	
+	
 	
 }
