@@ -24,9 +24,9 @@ public class Main implements Runnable{
 
 	@Override
 	public void run() {
-		String test = "S S     5.000 kg";
-		List<String> hey = Arrays.asList(test.split(" "));
-		System.out.println(hey);
+		String test = "";
+		int k = Integer.parseInt(test);
+		System.out.println(k);
 		
 		while(running)
 		{

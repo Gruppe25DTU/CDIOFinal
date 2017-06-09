@@ -1,0 +1,11 @@
+package ase;
+
+public enum PhaseType {
+	LOGIN,
+	CLEAR_WEIGHT,
+	CHOOSE_PRODUCT,
+	PUT_TARE,
+	WEIGH_COMMODITY,
+	BRUTTO_CONTROL,
+	END_OF_WEIGHING
+}
