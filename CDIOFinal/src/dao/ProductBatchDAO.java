@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import dal.Connector;
-import dal.DALException;
 import daoInterface.ProductBatchInterfaceDAO;
 import dto.ProductBatchCompDTO;
 import dto.ProductBatchDTO;
@@ -74,7 +73,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 * @return
 	 * @throws SQLException
 	 */
-	public ProductBatchDTO get(int id) throws SQLException {
+	public ProductBatchDTO get(int id) {
 		String cmd = "CALL getProductBatch('%d');";
 		cmd = String.format(cmd, id);
 		

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dal.Connector;
-import dal.DALException;
 import daoInterface.CommodityInterfaceDAO;
 import dto.CommodityDTO;
 

@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import dal.Connector;
-import dal.DALException;
 import daoInterface.CommodityBatchInterfaceDAO;
 import dto.CommodityBatchDTO;
 
