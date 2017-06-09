@@ -1,25 +1,37 @@
 package dao;
 
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import dto.UserDTO;
+import dal.Connector;
+import daoInterface.SessionInterfaceDAO;
 
-public class SessionDAO {
-  
-  public boolean login(String name, String pwd) {
-    return true;
-  }
-  
-  public void logout(int ID) {
-    
-  }
-  
-  public UserDTO getUser(int ID) {
-    return null;
-  }
-  
-  public List<String> getRoles(int ID) {
-    return null;
-  }
+public class SessionDAO implements SessionInterfaceDAO{
+
+	public boolean login(String name, String pwd) {
+		String cmd = "CALL confirmLogin('','');";
+		cmd = String.format(cmd, name,pwd);
+		try {
+			ResultSet rs = Connector.doQuery(cmd);
+			if(rs.getInt("result") == 1) {
+				return true;
+			}
+			else
+				return false;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	/**
+	 * Why?
+	 * @param ID
+	 */
+	public void logout(int ID) {
+
+	}
+
+	
 
 }

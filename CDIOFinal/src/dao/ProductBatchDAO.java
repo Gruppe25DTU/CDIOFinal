@@ -7,9 +7,9 @@ import java.util.List;
 
 import dal.Connector;
 import dal.DALException;
-import dto.CommodityDTO;
 import dto.ProductBatchCompDTO;
 import dto.ProductBatchDTO;
+import dto.RecipeCompDTO;
 
 public class ProductBatchDAO {
 
@@ -98,19 +98,34 @@ public class ProductBatchDAO {
 			return false;
 		}
 	}
-
-	public recipeComponentDTO getNonWeightedComp(int pbid) {
+	/**
+	 * Returns a recipeComponent that has yet to weighed. 
+	 * @param pbid
+	 * @return
+	 */
+	public RecipeCompDTO getNonWeightedComp(int pbid) {
 		String cmd = "CALL getProductBatchComponentNotWeighed('');";
 		cmd  = String.format(cmd, pbid);
 		
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			int productbatch_ID = rs.getInt("productbatch_ID");
+			int commodity_ID = rs.getInt("commodity_ID");
+			int	recipe_ID = rs.getInt("recipe_ID");
 			
+			String cmd2 = "CALL getSpecificRecipeComponent('','');";
+			cmd2 = String.format(cmd2, recipe_ID,commodity_ID);
+			ResultSet recipeCompRS = Connector.doQuery(cmd2);
+			
+			RecipeCompDTO recipeComp = new RecipeCompDTO(recipeCompRS.getInt("recipe_ID"),recipeCompRS.getInt("commodity_ID"),recipeCompRS.getInt("nom_net_weight"),recipeCompRS.getInt("tolerance"));
+
+			return recipeComp;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
+
 		}
-		return null;
 	}
 
 }
