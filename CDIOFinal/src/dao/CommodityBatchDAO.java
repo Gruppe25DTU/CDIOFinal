@@ -4,12 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import dal.Connector;
-import dal.DALException;
 import daoInterface.CommodityBatchInterfaceDAO;
 import dto.CommodityBatchDTO;
 
 public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 
+	/**
+	 *Changes the quantity
+	 */
 	public boolean changeAmount(int id, int amount) {
 		String cmd = "CALL changeQuantity('%d','%d');";
 		cmd = String.format(cmd, id,amount);
@@ -38,13 +40,6 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 			e1.printStackTrace();
 		}
 		return returnValue;
-	}
-	
-	/**
-	 * Why use it, impossible to update ID's
-	 */
-	public boolean update(CommodityBatchDTO dto) {
-		return true;
 	}
 	
 	public CommodityBatchDTO get(int id) {

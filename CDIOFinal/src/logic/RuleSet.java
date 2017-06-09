@@ -21,7 +21,7 @@ public class RuleSet implements RuleSetInterface {
 	Map<String, Rule> ruleList = new HashMap<>();
 
 
-	public RuleSet(){
+	public RuleSet() throws RuleException{
 
 		//Rules for all ID's
 		Rule<Integer> idRule = new Rule<>

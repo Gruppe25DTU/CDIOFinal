@@ -6,12 +6,12 @@ import java.util.Date;
 import java.util.List;
 
 import dal.Connector;
-import dal.DALException;
+import daoInterface.ProductBatchInterfaceDAO;
 import dto.ProductBatchCompDTO;
 import dto.ProductBatchDTO;
 import dto.RecipeCompDTO;
 
-public class ProductBatchDAO {
+public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 
 
 	/**
@@ -25,11 +25,18 @@ public class ProductBatchDAO {
 	 * @throws DALException
 	 * @throws SQLException
 	 */
-	public int create(ProductBatchDTO dto) throws SQLException {
+	public int create(ProductBatchDTO dto) {
 		String cmd = "CALL addProductBatch('%d',%d');";
 
 		cmd = String.format(cmd, dto.getID(),dto.getRecipeID());
-		int result = Connector.doUpdate(cmd);
+		int result;
+		try {
+			result = Connector.doUpdate(cmd);
+		} catch (SQLException e) {
+			result = 0;
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return result;
 	}
@@ -66,7 +73,7 @@ public class ProductBatchDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public ProductBatchDTO get(int id) throws SQLException {
+	public ProductBatchDTO get(int id) {
 		String cmd = "CALL getProductBatch('%d');";
 		cmd = String.format(cmd, id);
 		
@@ -76,6 +83,7 @@ public class ProductBatchDAO {
 		int recipe_ID = rs.getInt("recipe_ID");
 		Date startdate = new Date(Date.parse(rs.getString("startdate")));
 		date.parse(s)
+		date.
 		ProductBatchDTO pbDTO = new ProductBatchDTO();
 		return null;
 	}
