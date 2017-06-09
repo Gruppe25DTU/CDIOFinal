@@ -2,14 +2,12 @@ package daoInterface;
 
 import java.util.List;
 
-import dto.CommodityDTO;
 import dto.ProductBatchCompDTO;
 import dto.ProductBatchDTO;
 import dto.RecipeCompDTO;
 
 public interface ProductBatchInterfaceDAO {
 	int create(ProductBatchDTO dto);
-	boolean update(ProductBatchDTO dto);
 	boolean changeStatus(int id, int status);
 	void print(int id);
 	ProductBatchDTO get(int id);
@@ -17,6 +15,8 @@ public interface ProductBatchInterfaceDAO {
 	boolean addComponent(ProductBatchCompDTO component);
 	RecipeCompDTO getNonWeighedComp(int pbid);
 	int findFreeProductBatchID();
+	boolean setStartdate(ProductBatchDTO dto);
+	boolean setStopdate(ProductBatchDTO dto);
 
 
 }
