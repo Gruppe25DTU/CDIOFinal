@@ -5,6 +5,7 @@ import java.util.List;
 import dto.CommodityDTO;
 import dto.ProductBatchCompDTO;
 import dto.ProductBatchDTO;
+import dto.RecipeCompDTO;
 
 public interface ProductBatchInterfaceDAO {
 	int create(ProductBatchDTO dto);
@@ -14,7 +15,7 @@ public interface ProductBatchInterfaceDAO {
 	ProductBatchDTO get(int id);
 	List<ProductBatchDTO> getList();
 	boolean addComponent(ProductBatchDTO productBatch, ProductBatchCompDTO component);
-	CommodityDTO getNonWeightedComp(int pbid);
+	RecipeCompDTO getNonWeighedComp(int pbid);
 
 
 

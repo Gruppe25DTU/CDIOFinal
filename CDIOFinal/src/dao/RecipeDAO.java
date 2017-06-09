@@ -2,6 +2,8 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import dal.Connector;
 import daoInterface.RecipeInterfaceDAO;
@@ -15,6 +17,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	 * @param dto
 	 * @return
 	 */
+	@Override
 	public int create(RecipeDTO dto) {
 		String cmd = "CALL addRecipe('','')";
 		cmd = String.format(cmd, dto.getID(),dto.getName());
@@ -25,6 +28,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 			return 0;
 			}
 	}
+	
 	/**
 	 * Updates a recipe name <br>
 	 * Returns true if it succeeds <br>
@@ -32,6 +36,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	 * @param dto
 	 * @return
 	 */
+	@Override
 	public boolean update(RecipeDTO dto) {
 		String cmd = "CALL updateRecipe('','');";
 		cmd = String.format(cmd, dto.getID(),dto.getName());
@@ -39,7 +44,6 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 			Connector.doUpdate(cmd);
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -59,10 +63,30 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 			ResultSet rs = Connector.doQuery(cmd);
 			return new RecipeDTO(rs.getInt("recipe_ID"),rs.getString("recipe_Name"));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	/**
+	 * Returns a list over every existing recipes
+	 */
+	@Override
+	public List<RecipeDTO> getRecipeList() {
+		String cmd = "CALL getRecipeList();";
+		List<RecipeDTO> list = new ArrayList<RecipeDTO>();
+		
+		try {
+			ResultSet rs = Connector.doQuery(cmd);
+			while (rs.next()) {
+				list.add(new RecipeDTO(rs.getInt("recipe_ID"),rs.getString("recipe_Name")));
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 	
 	

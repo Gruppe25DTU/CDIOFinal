@@ -13,6 +13,7 @@ public interface UserInterfaceDAO {
 	boolean create(UserDTO dto);
 	boolean update(UserDTO dto, String old_cpr);
 	boolean userExists(String name);
+	List<UserDTO> getUserWithRole(String roleName);
 	
 	
 }

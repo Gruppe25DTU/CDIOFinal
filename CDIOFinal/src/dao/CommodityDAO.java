@@ -18,25 +18,24 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 	 * @return
 	 *
 	*/
+	@Override
 	public int create(CommodityDTO dto) {
 		String cmd = "CALL addCommodity('%d','%s','%d');";
 		cmd = String.format(cmd, dto.getID(),dto.getName(),dto.getSupplierID());
 		try {
 			return Connector.doUpdate(cmd);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;
 
 		}
 	}
 
-	public boolean delete(CommodityDTO dto) {
-		String cmd = "CALL deleteCommdity('%s');";
-		cmd = String.format(cmd, dto.getID());
-		return true;
-	}
-
+	/**
+	 * Returns a list of all existing commodities
+	 * @return List< CommodityDTO >
+	 */
+	@Override
 	public List<CommodityDTO> getList() {
 		String cmd = "CALL getCommodityList();";
 		List<CommodityDTO> list = new ArrayList<CommodityDTO>();
@@ -55,6 +54,12 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 		return null;
 	}
 
+	/**
+	 * Returns a commodityDTO
+	 * @param commodity_ID
+	 * @return commodityDTO
+	 */
+	@Override
 	public CommodityDTO get(int id) {
 		String cmd = "CALL getCommodity('');";
 		cmd = String.format(cmd, id);
@@ -63,7 +68,6 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 			ResultSet rs = Connector.doQuery(cmd);
 			return new CommodityDTO(rs.getInt("commodity_ID"), rs.getString("commodity_Name"), rs.getInt("supplier_ID"));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
