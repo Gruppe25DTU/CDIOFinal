@@ -1,17 +1,15 @@
 package dto;
 
-import java.sql.Date;
-
 public class ProductBatchDTO {
 	private int ID = -1;
 	private int status = -1;
 	private int recipeID =-1;
-	private Date startDate;
-	private Date endDate;
+	private String startDate;
+	private String endDate;
 	
 	
 	
-	public ProductBatchDTO(int ID, int status, int recipeID, Date startDate, Date endDate) {
+	public ProductBatchDTO(int ID, int status, int recipeID, String startDate, String endDate) {
 		this.ID = ID;
 		this.status = status;
 		this.recipeID = recipeID; 
@@ -63,25 +61,25 @@ public ProductBatchDTO(ProductBatchDTO productBatch){
 
 
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
 
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
 
 
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 
 
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 	
