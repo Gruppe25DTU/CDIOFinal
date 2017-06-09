@@ -1,43 +1,43 @@
 package dto;
 
 public class ProductBatchCompDTO {
-	private int ID = -1;
-	private int commodityID = -1;
+	private int productBatchID = -1;
+	private int commodityBatchID = -1;
 	private double tara = -1;
 	private double net = -1;
 	private int userID =-1;
 
-	public ProductBatchCompDTO(int ID, int commodityID, double tara, double net, int userID){
-		this.ID = ID;
-		this.commodityID = commodityID;
+	public ProductBatchCompDTO(int productBatchID, int commodityBatchID, double tara, double net, int userID){
+		this.productBatchID = productBatchID;
+		this.commodityBatchID = commodityBatchID;
 		this.tara = tara;
 		this.net = net;
 		this.userID = userID;
 	}
 
 	public ProductBatchCompDTO(ProductBatchCompDTO productBatchComp){
-		this.ID = productBatchComp.getID();
-		this.commodityID = productBatchComp.getCommodityID();
+		this.productBatchID = productBatchComp.getproductBatchID();
+		this.commodityBatchID = productBatchComp.getcommodityBatchID();
 		this.tara = productBatchComp.getTara();
 		this.net = productBatchComp.getNet();
 		this.userID = productBatchComp.getuserID();
 	}
 
 
-	public int getID() {
-		return ID;
+	public int getproductBatchID() {
+		return productBatchID;
 	}
 
-	public void setID(int iD) {
-		ID = iD;
+	public void setproductBatchID(int productBatchID) {
+		this.productBatchID = productBatchID;
 	}
 
-	public int getCommodityID() {
-		return commodityID;
+	public int getcommodityBatchID() {
+		return commodityBatchID;
 	}
 
-	public void setCommodityID(int commodityID) {
-		this.commodityID = commodityID;
+	public void setcommodityBatchID(int commodityBatchID) {
+		this.commodityBatchID = commodityBatchID;
 	}
 
 	public double getTara() {
@@ -62,6 +62,12 @@ public class ProductBatchCompDTO {
 
 	public void setuserID(int userID) {
 		this.userID = userID;
+	}
+
+	@Override
+	public String toString() {
+		return "ProductBatchCompDTO [productBatchID=" + productBatchID + ", commodityBatchID=" + commodityBatchID + ", tara="
+				+ tara + ", net=" + net + ", userID=" + userID + "]";
 	}
 
 

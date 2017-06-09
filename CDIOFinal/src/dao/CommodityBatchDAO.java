@@ -15,7 +15,7 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 	 *Changes the quantity
 	 */
 	@Override
-	public boolean changeAmount(int id, int amount) {
+	public boolean changeAmount(int id, double amount) {
 		String cmd = "CALL changeQuantity('%d','%d');";
 		cmd = String.format(cmd, id,amount);
 		boolean returnvalue;
@@ -35,7 +35,7 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 	@Override
 	public int create(CommodityBatchDTO dto) {
 		String cmd = "CALL addCommodityBatch('%d','%d','%d');";
-		cmd = String.format(cmd, dto.getID(),dto.getCommodityID(),dto.getQuantity());
+		cmd = String.format(cmd, dto.getCommoditybatchID(),dto.getCommodityID(),dto.getQuantity());
 		
 		int returnValue;
 		try {
@@ -88,6 +88,27 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 		} catch (SQLException e) {			
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+
+	
+	/**
+	 * Finds a free CommodityBatchID that is not used. <br>
+	 * It's possible to use the ID returned as a new ID.
+	 * @return returns 0 if function fails <br>
+	 * A number in the interval 1-99999999 if functions succeeds
+	 */
+	@Override
+	public int findFreeCommodityBatchID() {
+		String cmd = "CALL findFreeCommodityBatchID();";
+		
+		try {
+			ResultSet rs = Connector.doQuery(cmd);
+			return rs.getInt("max");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
 		}
 	}
 
