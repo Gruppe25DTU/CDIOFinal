@@ -4,9 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import dal.Connector;
+import daoInterface.RecipeInterfaceDAO;
 import dto.RecipeDTO;
 
-public class RecipeDAO {
+public class RecipeDAO implements RecipeInterfaceDAO{
 
 	/**
 	 * Creates a recipe. <br>
@@ -49,7 +50,8 @@ public class RecipeDAO {
 	 * @param id
 	 * @return
 	 */
-	public RecipeDTO get(int id) {
+	@Override
+	public RecipeDTO getRecipe(int id) {
 		String cmd = "getRecipe('');";
 		cmd = String.format(cmd, id);
 		
@@ -62,6 +64,7 @@ public class RecipeDAO {
 			return null;
 		}
 	}
+	
 	
 
 }
