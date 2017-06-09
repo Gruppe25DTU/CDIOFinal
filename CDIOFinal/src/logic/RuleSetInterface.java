@@ -19,7 +19,7 @@ public interface RuleSetInterface {
 	Rule<String> getIni();
 	Rule<String> getCpr();
 	Rule<String> getPwd(); 
-//	Rule<Set<String>> getRole();
+	//	Rule<Set<String>> getRole();
 
 	class Rule<T> {
 		String message;
@@ -37,6 +37,14 @@ public interface RuleSetInterface {
 
 		public boolean test(T t) {
 			return pred.test(t);
+		}
+	}
+
+	class RuleException extends Exception {
+		private static final long serialVersionUID = 1090620171957L;
+
+		public RuleException(Throwable e) {
+			super(e);
 		}
 	}
 }	
