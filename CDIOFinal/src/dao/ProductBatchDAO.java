@@ -25,7 +25,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	public int create(ProductBatchDTO dto) {
 		String cmd = "CALL addProductBatch('%d',%d');";
 
-		cmd = String.format(cmd, dto.getID(),dto.getRecipeID());
+		cmd = String.format(cmd, dto.getproductBatchID(),dto.getRecipeID());
 		int result;
 		try {
 			result = Connector.doUpdate(cmd);
@@ -48,7 +48,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	@Override
 	public boolean update(ProductBatchDTO dto) {
 		String cmd = "CALL updateProductBatchTime('%s','%s','%d');";
-		cmd = String.format(cmd, dto.getStartDate(),dto.getEndDate(),dto.getID());
+		cmd = String.format(cmd, dto.getStartDate(),dto.getEndDate(),dto.getproductBatchID());
 		try {
 			Connector.doUpdate(cmd);
 			return true;
@@ -155,7 +155,6 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	public boolean addComponent(ProductBatchCompDTO component) {
 		String cmd = "CALL addProductBatchComponent('%d','%d','%d','%d','%d');";
 		cmd = String.format(cmd, component.getproductBatchID(),component.getcommodityBatchID(),component.getTara(),component.getNet(),component.getuserID());
-
 		try {
 			Connector.doUpdate(cmd);
 			return true;

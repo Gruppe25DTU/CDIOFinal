@@ -20,7 +20,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	@Override
 	public int create(RecipeDTO dto) {
 		String cmd = "CALL addRecipe('','')";
-		cmd = String.format(cmd, dto.getID(),dto.getName());
+		cmd = String.format(cmd, dto.getRecipeID(),dto.getName());
 		try {
 			return Connector.doUpdate(cmd);
 		} catch (SQLException e) {
@@ -39,7 +39,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	@Override
 	public boolean update(RecipeDTO dto) {
 		String cmd = "CALL updateRecipe('','');";
-		cmd = String.format(cmd, dto.getID(),dto.getName());
+		cmd = String.format(cmd, dto.getRecipeID(),dto.getName());
 		try {
 			Connector.doUpdate(cmd);
 			return true;

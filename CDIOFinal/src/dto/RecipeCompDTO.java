@@ -1,31 +1,31 @@
 package dto;
 
 public class RecipeCompDTO {
-private int ID = -1;
+private int recipeComponentID = -1;
 private int commodityID = -1;
 private double nomNetWeight = -1;
 private double tolerance = -1;
 
-public RecipeCompDTO(int ID, int commodityID, double nomNetWeight, double tolerance){
-	this.ID = ID;
+public RecipeCompDTO(int recipeComponentID, int commodityID, double nomNetWeight, double tolerance){
+	this.recipeComponentID = recipeComponentID;
 	this.commodityID = commodityID;
 	this.nomNetWeight = nomNetWeight;
 	this.tolerance = tolerance;
 }
 
 public RecipeCompDTO(RecipeCompDTO recipeComp){
-	this.ID = recipeComp.getID();
+	this.recipeComponentID = recipeComp.getRecipeComponentID();
 	this.commodityID = recipeComp.getCommodityID();
 	this.nomNetWeight = recipeComp.getNomNetWeight();
 	this.tolerance = recipeComp.getTolerance();
 }
 
-public int getID() {
-	return ID;
+public int getRecipeComponentID() {
+	return this.recipeComponentID;
 }
 
-public void setID(int iD) {
-	ID = iD;
+public void setRecipeComponentID(int recipeComponentID) {
+	this.recipeComponentID = recipeComponentID;
 }
 
 public int getCommodityID() {

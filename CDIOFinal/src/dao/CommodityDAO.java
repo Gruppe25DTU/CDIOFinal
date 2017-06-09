@@ -21,7 +21,7 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 	@Override
 	public int create(CommodityDTO dto) {
 		String cmd = "CALL addCommodity('%d','%s','%d');";
-		cmd = String.format(cmd, dto.getID(),dto.getName(),dto.getSupplierID());
+		cmd = String.format(cmd, dto.getcommodityID(),dto.getName(),dto.getSupplierID());
 		try {
 			return Connector.doUpdate(cmd);
 		} catch (SQLException e) {

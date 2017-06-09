@@ -2,25 +2,25 @@ package dto;
 
 public class SupplierDTO {
 
-	private int ID = -1;
+	private int supplierID = -1;
 	private String name = "";
 	
-	public SupplierDTO(int ID, String name){
-		this.ID = ID;
+	public SupplierDTO(int supplierID, String name){
+		this.supplierID = supplierID;
 		this.name = name;
 	}
 
 	public SupplierDTO(SupplierDTO supplier){
-		this.ID = supplier.getID();
+		this.supplierID = supplier.getSupplierID();
 		this.name = supplier.getName();
 	}
 	
-	public int getID() {
-		return ID;
+	public int getSupplierID() {
+		return supplierID;
 	}
 
-	public void setID(int iD) {
-		ID = iD;
+	public void setSupplierID(int supplierID) {
+		this.supplierID = supplierID;
 	}
 
 	public String getName() {
