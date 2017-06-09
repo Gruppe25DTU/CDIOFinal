@@ -3,10 +3,10 @@ package dto;
 public class RecipeCompDTO {
 private int ID = -1;
 private int commodityID = -1;
-private int nomNetWeight = -1;
+private double nomNetWeight = -1;
 private double tolerance = -1;
 
-public RecipeCompDTO(int ID, int commodityID, int nomNetWeight, double tolerance){
+public RecipeCompDTO(int ID, int commodityID, double nomNetWeight, double tolerance){
 	this.ID = ID;
 	this.commodityID = commodityID;
 	this.nomNetWeight = nomNetWeight;
@@ -36,7 +36,7 @@ public void setCommodityID(int commodityID) {
 	this.commodityID = commodityID;
 }
 
-public int getNomNetWeight() {
+public double getNomNetWeight() {
 	return nomNetWeight;
 }
 
