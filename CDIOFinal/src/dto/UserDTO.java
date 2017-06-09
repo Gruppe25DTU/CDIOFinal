@@ -126,6 +126,6 @@ public class UserDTO implements Serializable {
 		this.status = status;
 	}
 
-
+	
 
 }

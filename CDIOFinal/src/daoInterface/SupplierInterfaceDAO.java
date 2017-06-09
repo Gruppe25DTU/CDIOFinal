@@ -8,4 +8,5 @@ public interface SupplierInterfaceDAO {
 	boolean create(SupplierDTO dto);
 	SupplierDTO getSupplier(int ID);
 	List<SupplierDTO> getList();
+	int findFreeSupplierID();
 }

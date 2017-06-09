@@ -20,7 +20,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	@Override
 	public int create(RecipeDTO dto) {
 		String cmd = "CALL addRecipe('','')";
-		cmd = String.format(cmd, dto.getID(),dto.getName());
+		cmd = String.format(cmd, dto.getRecipeID(),dto.getName());
 		try {
 			return Connector.doUpdate(cmd);
 		} catch (SQLException e) {
@@ -39,7 +39,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	@Override
 	public boolean update(RecipeDTO dto) {
 		String cmd = "CALL updateRecipe('','');";
-		cmd = String.format(cmd, dto.getID(),dto.getName());
+		cmd = String.format(cmd, dto.getRecipeID(),dto.getName());
 		try {
 			Connector.doUpdate(cmd);
 			return true;
@@ -87,6 +87,27 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 			return null;
 		}
 		
+	}
+
+	
+	/**
+	 * Finds a free recipeID that is not used. <br>
+	 * It's possible to use the ID returned as a new ID.
+	 * @return returns 0 if function fails <br>
+	 * A number in the interval 1-99999999 if functions succeeds
+	 */
+	@Override
+	public int findFreeRecipeID() {
+		String cmd = "CALL findFreeRecipeID();";
+		try {
+			ResultSet rs = Connector.doQuery(cmd);
+			return rs.getInt("max");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+
+		}
+
 	}
 	
 	

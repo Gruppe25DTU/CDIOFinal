@@ -14,9 +14,9 @@ public interface ProductBatchInterfaceDAO {
 	void print(int id);
 	ProductBatchDTO get(int id);
 	List<ProductBatchDTO> getList();
-	boolean addComponent(ProductBatchDTO productBatch, ProductBatchCompDTO component);
+	boolean addComponent(ProductBatchCompDTO component);
 	RecipeCompDTO getNonWeighedComp(int pbid);
-
+	int findFreeProductBatchID();
 
 
 }

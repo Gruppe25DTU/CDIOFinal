@@ -1,25 +1,25 @@
 package dto;
 
 public class RecipeDTO {
-	private  int ID =-1;
+	private  int recipeID =-1;
 	private String name = "";
 	
-	public RecipeDTO(int ID, String name){
-		this.ID = ID;
+	public RecipeDTO(int recipeID, String name){
+		this.recipeID = recipeID;
 		this.name = name;
 	}
 	
 	public RecipeDTO(RecipeDTO recipe){
-		this.ID = recipe.getID();
+		this.recipeID = recipe.getRecipeID();
 		this.name = recipe.getName();
 	}
 
-	public int getID() {
-		return ID;
+	public int getRecipeID() {
+		return this.recipeID;
 	}
 
-	public void setID(int iD) {
-		ID = iD;
+	public void setRecipeID(int recipeID) {
+		this.recipeID = recipeID;
 	}
 
 	public String getName() {

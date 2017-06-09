@@ -25,7 +25,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	public int create(ProductBatchDTO dto) {
 		String cmd = "CALL addProductBatch('%d',%d');";
 
-		cmd = String.format(cmd, dto.getID(),dto.getRecipeID());
+		cmd = String.format(cmd, dto.getproductBatchID(),dto.getRecipeID());
 		int result;
 		try {
 			result = Connector.doUpdate(cmd);
@@ -36,7 +36,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 
 		return result;
 	}
-	
+
 	/**
 	 * Changes the starttime and stop time. <br>
 	 * If the stop time has yet to be determined please leave an empty string in its place <br>
@@ -48,7 +48,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	@Override
 	public boolean update(ProductBatchDTO dto) {
 		String cmd = "CALL updateProductBatchTime('%s','%s','%d');";
-		cmd = String.format(cmd, dto.getStartDate(),dto.getEndDate(),dto.getID());
+		cmd = String.format(cmd, dto.getStartDate(),dto.getEndDate(),dto.getproductBatchID());
 		try {
 			Connector.doUpdate(cmd);
 			return true;
@@ -57,7 +57,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			return false;
 		}
 	}
-	
+
 	/**
 	 * changes a productbatch status <br>
 	 * 0: production not started <br>
@@ -88,7 +88,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 		// TODO create function
 
 	}
-	
+
 	/**
 	 * returns a productBatchDTO
 	 * @param id
@@ -99,7 +99,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	public ProductBatchDTO get(int id) {
 		String cmd = "CALL getProductBatch('%d');";
 		cmd = String.format(cmd, id);
-		
+
 		ResultSet rs;
 		try {
 			rs = Connector.doQuery(cmd);
@@ -115,9 +115,9 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Returns a list over all existing productbatches
 	 * @return List< ProductBatchDTO >
@@ -126,7 +126,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	public List<ProductBatchDTO> getList() {
 		String cmd = "CALL getProductBatchList();";
 		List<ProductBatchDTO> list = new ArrayList<ProductBatchDTO>();
-		
+
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			while(rs.next()) {
@@ -144,7 +144,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Adds a productBatchComponent to a specific productbatch
 	 * @return 
@@ -152,10 +152,9 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 * false if function fails
 	 */
 	@Override
-	public boolean addComponent(ProductBatchDTO productBatch, ProductBatchCompDTO component) {
+	public boolean addComponent(ProductBatchCompDTO component) {
 		String cmd = "CALL addProductBatchComponent('%d','%d','%d','%d','%d');";
-		cmd = String.format(cmd, component.getID(),component.getCommodityID(),component.getTara(),component.getNet(),component.getuserID());
-		
+		cmd = String.format(cmd, component.getproductBatchID(),component.getcommodityBatchID(),component.getTara(),component.getNet(),component.getuserID());
 		try {
 			Connector.doUpdate(cmd);
 			return true;
@@ -164,7 +163,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Returns a recipeComponent that has yet to weighed. 
 	 * @param pbid
@@ -174,17 +173,17 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	public RecipeCompDTO getNonWeighedComp(int pbid) {
 		String cmd = "CALL getProductBatchComponentNotWeighed('');";
 		cmd  = String.format(cmd, pbid);
-		
+
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			int productbatch_ID = rs.getInt("productbatch_ID");
 			int commodity_ID = rs.getInt("commodity_ID");
 			int	recipe_ID = rs.getInt("recipe_ID");
-			
+
 			String cmd2 = "CALL getSpecificRecipeComponent('','');";
 			cmd2 = String.format(cmd2, recipe_ID,commodity_ID);
 			ResultSet recipeCompRS = Connector.doQuery(cmd2);
-			
+
 			RecipeCompDTO recipeComp = new RecipeCompDTO(recipeCompRS.getInt("recipe_ID"),recipeCompRS.getInt("commodity_ID"),recipeCompRS.getInt("nom_net_weight"),recipeCompRS.getInt("tolerance"));
 			if(productbatch_ID != pbid) {
 				return null;
@@ -197,4 +196,26 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 		}
 	}
 
+
+
+	/**
+	 * Finds a free ProductBatchID that is not used. <br>
+	 * It's possible to use the ID returned as a new ID.
+	 * @return returns 0 if function fails <br>
+	 * A number in the interval 1-99999999 if functions succeeds
+	 */
+
+	@Override
+	public int findFreeProductBatchID() {
+		String cmd = "CALL findFreeProductBatchID();";
+		try {
+			ResultSet rs = Connector.doQuery(cmd);
+			return rs.getInt("max");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+
+		}
+
+	}
 }

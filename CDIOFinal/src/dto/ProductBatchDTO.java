@@ -1,7 +1,7 @@
 package dto;
 
 public class ProductBatchDTO {
-	private int ID = -1;
+	private int productBatchID = -1;
 	private int status = -1;
 	private int recipeID =-1;
 	private String startDate;
@@ -9,8 +9,8 @@ public class ProductBatchDTO {
 	
 	
 	
-	public ProductBatchDTO(int ID, int status, int recipeID, String startDate, String endDate) {
-		this.ID = ID;
+	public ProductBatchDTO(int productBatchID, int status, int recipeID, String startDate, String endDate) {
+		this.productBatchID = productBatchID;
 		this.status = status;
 		this.recipeID = recipeID; 
 		this.startDate = startDate;
@@ -18,21 +18,21 @@ public class ProductBatchDTO {
 	}
 
 public ProductBatchDTO(ProductBatchDTO productBatch){
-	this.ID = productBatch.getID();
+	this.productBatchID = productBatch.getproductBatchID();
 	this.status = productBatch.getStatus();
 	this.recipeID = productBatch.getRecipeID();
 	this.startDate = productBatch.getStartDate();
 	this.endDate = productBatch.getEndDate();
 }
 
-	public int getID() {
-		return ID;
+	public int getproductBatchID() {
+		return productBatchID;
 	}
 
 
 
-	public void setID(int iD) {
-		ID = iD;
+	public void setProductBatchID(int productBatchID) {
+		this.productBatchID = productBatchID;
 	}
 
 

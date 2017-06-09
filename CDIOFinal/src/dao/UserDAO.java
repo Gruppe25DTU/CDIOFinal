@@ -291,4 +291,22 @@ public class UserDAO implements UserInterfaceDAO{
 		}	
 		
 	}
+
+	
+	/**
+	 * Finds a free userID that is not used. <br>
+	 * It's possible to use the ID returned as a new ID.
+	 * @return returns 0 if function fails <br>
+	 * A number in the interval 1-99999999 if functions succeeds
+	 */
+	@Override
+	public int fintFreeUserID() {
+		String cmd = "CALL findFreeUserID();";
+		try {
+			ResultSet rs = Connector.doQuery(cmd);
+			return rs.getInt("max");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}	}
 }

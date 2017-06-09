@@ -9,4 +9,5 @@ public interface RecipeInterfaceDAO {
 	boolean update(RecipeDTO dto);
 	RecipeDTO getRecipe(int id);
 	List<RecipeDTO> getRecipeList();
+	int findFreeRecipeID();
 }

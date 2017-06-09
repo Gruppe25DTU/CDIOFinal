@@ -19,7 +19,7 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 	@Override
 	public boolean create(SupplierDTO dto){
 		String cmd = "CALL addSupplier('%d','%s');";
-		cmd = String.format(cmd, dto.getID(),dto.getName());
+		cmd = String.format(cmd, dto.getSupplierID(),dto.getName());
 
 		try {
 			Connector.doUpdate(cmd);
@@ -37,12 +37,12 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 	public SupplierDTO getSupplier(int ID){
 		String cmd = "CALL getSupplier('');";
 		cmd = String.format(cmd, ID);
-		
+
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			int supplier_ID = rs.getInt("supplier_I");
 			String supplier_Name = rs.getString("supplier_Name");
-			
+
 			return new SupplierDTO(supplier_ID,supplier_Name);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -50,7 +50,7 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 		}
 	}
 
-	
+
 	/**
 	 * Returns every existing supplier in the database
 	 */
@@ -60,13 +60,13 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 		List<SupplierDTO> list = new ArrayList<SupplierDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			
+
 			while(rs.next()) {
 				int supplier_ID = rs.getInt("supplier_I");
 				String supplier_Name = rs.getString("supplier_Name");
 				list.add(new SupplierDTO(supplier_ID,supplier_Name));			
-		}
-		
+			}
+
 			return list;
 		} catch (SQLException e) {			
 			e.printStackTrace();
@@ -74,4 +74,23 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 		}
 	}
 
+	
+	/**
+	 * Finds a free supplierID that is not used. <br>
+	 * It's possible to use the ID returned as a new ID.
+	 * @return returns 0 if function fails <br>
+	 * A number in the interval 1-99999999 if functions succeeds
+	 */
+	@Override
+	public int findFreeSupplierID() {
+		String cmd = "CALL findFreeSupplierID();";
+		try {
+			ResultSet rs = Connector.doQuery(cmd);
+			return rs.getInt("max");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+
+	}
 }
