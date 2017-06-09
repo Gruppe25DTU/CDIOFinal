@@ -18,7 +18,8 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 * Creates a ProductBatch. <br>
 	 * Please note that it does NOT add the components
 	 * @param dto
-	 * @return
+	 * @return 
+	 * 
 	 */
 	@Override
 	public int create(ProductBatchDTO dto) {
@@ -35,6 +36,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 
 		return result;
 	}
+	
 	/**
 	 * Changes the starttime and stop time. <br>
 	 * If the stop time has yet to be determined please leave an empty string in its place <br>
@@ -55,6 +57,16 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			return false;
 		}
 	}
+	
+	/**
+	 * changes a productbatch status <br>
+	 * 0: production not started <br>
+	 * 1: production has started <br>
+	 * 2: production has finished<br>
+	 * @return true if function succeeds <br>
+	 * false if function fails
+	 *  
+	 */
 	@Override
 	public boolean changeStatus(int id, int status) {
 		String cmd = "CALL updateProductBatchStatus('%d','%d');";
@@ -68,17 +80,19 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 		}
 	}
 
+	/**
+	 * Return format for pdf print
+	 */
 	@Override
 	public void print(int id) {
 		// TODO create function
 
 	}
 	
-	
-	
 	/**
+	 * returns a productBatchDTO
 	 * @param id
-	 * @return
+	 * @return productBatchDTO
 	 * @throws SQLException
 	 */
 	@Override
@@ -104,6 +118,10 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 		
 	}
 	
+	/**
+	 * Returns a list over all existing productbatches
+	 * @return List< ProductBatchDTO >
+	 */
 	@Override
 	public List<ProductBatchDTO> getList() {
 		String cmd = "CALL getProductBatchList();";
@@ -126,6 +144,13 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			return null;
 		}
 	}
+	
+	/**
+	 * Adds a productBatchComponent to a specific productbatch
+	 * @return 
+	 * true if function succeeds <br>
+	 * false if function fails
+	 */
 	@Override
 	public boolean addComponent(ProductBatchDTO productBatch, ProductBatchCompDTO component) {
 		String cmd = "CALL addProductBatchComponent('%d','%d','%d','%d','%d');";
@@ -139,6 +164,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			return false;
 		}
 	}
+	
 	/**
 	 * Returns a recipeComponent that has yet to weighed. 
 	 * @param pbid

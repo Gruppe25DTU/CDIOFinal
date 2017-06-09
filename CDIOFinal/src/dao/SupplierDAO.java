@@ -1,6 +1,7 @@
 package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import dal.Connector;
@@ -9,6 +10,12 @@ import dto.SupplierDTO;
 
 public class SupplierDAO implements SupplierInterfaceDAO{
 
+	/**
+	 * Creates a supplier <br>
+	 * @return
+	 * true if function succeeds <br>
+	 * false if function fails
+	 */
 	@Override
 	public boolean create(SupplierDTO dto){
 		String cmd = "CALL addSupplier('%d','%s');";
@@ -43,10 +50,28 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 		}
 	}
 
+	
+	/**
+	 * Returns every existing supplier in the database
+	 */
 	@Override
 	public List<SupplierDTO> getList() {
-		// TODO Auto-generated method stub
-		return null;
+		String cmd = "CALL getSupplierList();";
+		List<SupplierDTO> list = new ArrayList<SupplierDTO>();
+		try {
+			ResultSet rs = Connector.doQuery(cmd);
+			
+			while(rs.next()) {
+				int supplier_ID = rs.getInt("supplier_I");
+				String supplier_Name = rs.getString("supplier_Name");
+				list.add(new SupplierDTO(supplier_ID,supplier_Name));			
+		}
+		
+			return list;
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

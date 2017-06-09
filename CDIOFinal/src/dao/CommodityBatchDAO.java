@@ -24,12 +24,14 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 			returnvalue = true;
 		} catch (SQLException e) {
 			returnvalue = false;
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return returnvalue;
 	}
 
+	/**
+	 * Creates a commodityBatch
+	 */
 	@Override
 	public int create(CommodityBatchDTO dto) {
 		String cmd = "CALL addCommodityBatch('%d','%d','%d');";
@@ -40,12 +42,14 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 			returnValue = Connector.doUpdate(cmd);
 		} catch (SQLException e1) {
 			returnValue = 0;
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		return returnValue;
 	}
 	
+	/**
+	 * Returns a commodityBatchDTO
+	 */
 	@Override
 	public CommodityBatchDTO get(int id) {
 		String cmd = "CALL getCommodityBatch('%d');";
@@ -63,6 +67,10 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 		return null;
 	}
 
+	/**
+	 * Returns a list over all existing CommodityBatches
+	 * @return list < commodityBatchDTO >
+	 */
 	@Override
 	public List<CommodityBatchDTO> getList() {
 		String cmd = "call getCommodityBatchList();";

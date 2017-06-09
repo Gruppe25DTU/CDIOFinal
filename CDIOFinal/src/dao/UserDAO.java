@@ -11,6 +11,10 @@ import dto.UserDTO;
 
 public class UserDAO implements UserInterfaceDAO{
 
+	/**
+	 * Returns a user
+	 * @return userDTO 
+	 */
 	@Override
 	public UserDTO getUser(int ID){
 		String cmd = "CALL getOperator('');";
@@ -36,6 +40,11 @@ public class UserDAO implements UserInterfaceDAO{
 			return null;
 		}	}
 
+	/**
+	 * Returns a list over a users roles
+	 * @param ID
+	 * @return
+	 */
 	private List<String> getRoles(int ID) {
 		List<String> roles = new ArrayList<String>();
 
@@ -55,6 +64,48 @@ public class UserDAO implements UserInterfaceDAO{
 		return roles;
 	}
 
+	/**
+	 * Returns a list over every user with a specific role
+	 * @param roleName
+	 * @return List < UserDTO >
+	 */
+	@Override
+	public List<UserDTO> getUserWithRole(String roleName) {
+		String cmd = "CALL getuserWithRole('');";
+		cmd = String.format(cmd, roleName);
+		List<UserDTO> list = new ArrayList<UserDTO>();
+		try {
+			ResultSet rs = Connector.doQuery(cmd);
+			while (rs.next()) 
+			{
+				String cpr = rs.getString("cpr");
+				int opr_ID = rs.getInt("opr_ID");
+				String username = rs.getString("username");
+				String password = rs.getString("password");
+				int active = rs.getInt("active");
+				String email = rs.getString("email");
+				String firstname = rs.getString("opr_firstname");
+				String lastname = rs.getString("opr_lastname");
+				String ini = rs.getString("ini");
+
+				List<String> roles = getRoles(opr_ID);
+				list.add(new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,password,email,roles,active));
+
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}	
+	}
+
+	/**
+	 * Changes a status of an user <br>
+	 * false if user is inactive<br>
+	 * true if user in active
+	 * 
+	 * 
+	 */
 	@Override
 	public boolean changeStatus(int ID, boolean active){
 		String cmd = "CALL setActive('','');";
@@ -65,7 +116,7 @@ public class UserDAO implements UserInterfaceDAO{
 		else
 			status = 0;
 		cmd = String.format(cmd, ID, status);
-		
+
 		try {
 			Connector.doUpdate(cmd);
 			return true;
@@ -75,15 +126,19 @@ public class UserDAO implements UserInterfaceDAO{
 		}
 
 	}
-	
+
+	/**
+	 * Creates an user
+	 * User is pr. default active.
+	 */
 	@Override
 	public boolean create(UserDTO dto){
 		String addOperator = "CALL addOperator('%d','%d','%s','%s','%s');";
 		String addOperatorInfo = "CALL addOperatorInfo('%s','%s','%s','%s')";
-		
+
 		addOperator = String.format(addOperator, dto.getUserID(),dto.getCpr(),dto.getPassword(),dto.getUserName(),dto.getEmail());
 		addOperatorInfo = String.format(addOperatorInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr());
-		
+
 		try {
 			Connector.doUpdate(addOperatorInfo);
 			Connector.doUpdate(addOperator);
@@ -93,7 +148,7 @@ public class UserDAO implements UserInterfaceDAO{
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Updates a userDTO
 	 * @param dto
@@ -103,11 +158,11 @@ public class UserDAO implements UserInterfaceDAO{
 	public boolean update(UserDTO dto,String old_cpr){
 		String updateOperator = "CALL updateOperator('%d','%s','%s','%d','%s');";
 		String updateOperatorInfo = "CALL updateOperatorInfo('%s','%s','%s','%s','%s');";
-		
-		
+
+
 		updateOperator = String.format(updateOperator, dto.getUserID(),dto.getUserName(),dto.getPassword(),dto.getStatus(),dto.getEmail());
 		updateOperatorInfo = String.format(updateOperatorInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr(),old_cpr);
-		
+
 		try {
 			Connector.doUpdate(updateOperatorInfo);
 			Connector.doUpdate(updateOperator);
@@ -162,16 +217,15 @@ public class UserDAO implements UserInterfaceDAO{
 
 				List<String> roles = getRoles(opr_ID);
 				list.add(new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,password,email,roles,active));
-				
+
 			}
 			return list;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Returns a list of activated users
 	 * @return
@@ -196,16 +250,15 @@ public class UserDAO implements UserInterfaceDAO{
 
 				List<String> roles = getRoles(opr_ID);
 				list.add(new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,password,email,roles,active));
-				
+
 			}
 			return list;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Returns every user regardless of their status
 	 */
@@ -229,12 +282,13 @@ public class UserDAO implements UserInterfaceDAO{
 
 				List<String> roles = getRoles(opr_ID);
 				list.add(new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,password,email,roles,active));
-				
+
 			}
 			return list;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		}	}
+		}	
+		
+	}
 }

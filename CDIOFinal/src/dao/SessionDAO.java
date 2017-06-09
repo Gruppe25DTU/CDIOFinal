@@ -8,6 +8,12 @@ import daoInterface.SessionInterfaceDAO;
 
 public class SessionDAO implements SessionInterfaceDAO{
 
+	/**
+	 * confirm login. If username and password login exists in database.
+	 * @return
+	 * true if username and password exists for an user <br>
+	 * false if username and password doesn't exists for an user
+	 */
 	@Override
 	public boolean login(String name, String pwd) {
 		String cmd = "CALL confirmLogin('','');";
@@ -25,8 +31,10 @@ public class SessionDAO implements SessionInterfaceDAO{
 			return false;
 		}
 	}
+	
+	
 	/**
-	 * Why?
+	 * 
 	 * @param ID
 	 */
 	@Override
