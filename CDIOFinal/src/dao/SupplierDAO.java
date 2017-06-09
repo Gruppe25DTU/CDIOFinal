@@ -1,6 +1,7 @@
 package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import dal.Connector;
 import daoInterface.SupplierInterfaceDAO;
@@ -8,6 +9,7 @@ import dto.SupplierDTO;
 
 public class SupplierDAO implements SupplierInterfaceDAO{
 
+	@Override
 	public boolean create(SupplierDTO dto){
 		String cmd = "CALL addSupplier('%d','%s');";
 		cmd = String.format(cmd, dto.getID(),dto.getName());
@@ -16,51 +18,15 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 			Connector.doUpdate(cmd);
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
 	}
 
-	/**
-	 * Updates a supplier <br>
-	 * 
-	 */
-	public boolean update(int ID,String name){
-		String cmd = "CALL updateSupplier('','')";
-		cmd = String.format(cmd, ID,name);
-
-		try {
-			Connector.doUpdate(cmd);
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-
-	}
-	/**
-	 * Deletes a supplier <br> 
-	 * returns true if the function succeeds <br>
-	 * and false if not
-	 */
-	public boolean delete(int ID){
-		String cmd = "CALL deleteSupplier('');";
-		cmd = String.format(cmd, ID);
-
-		try {
-			Connector.doUpdate(cmd);
-			return true;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-
-	}
 	/**
 	 * Returns a supplier
 	 */
+	@Override
 	public SupplierDTO getSupplier(int ID){
 		String cmd = "CALL getSupplier('');";
 		cmd = String.format(cmd, ID);
@@ -75,6 +41,12 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public List<SupplierDTO> getList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

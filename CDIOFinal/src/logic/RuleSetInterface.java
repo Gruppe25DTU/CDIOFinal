@@ -4,7 +4,7 @@ import java.util.function.Predicate;
 
 public interface RuleSetInterface {
 	static final int minID = 1, maxID = 99999999;
-	static final int minName = 2, maxName = 22;
+	static final int minName = 2, maxName = 20;
 	static final int minIni = 2, maxIni = 5;
 	static final int minPwd = 4, minPwdSymbols = 3, maxPwd = 30;
 	static final double minNomNetto = 0.05, maxNomNetto = 20.0;

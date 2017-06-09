@@ -8,6 +8,7 @@ import daoInterface.SessionInterfaceDAO;
 
 public class SessionDAO implements SessionInterfaceDAO{
 
+	@Override
 	public boolean login(String name, String pwd) {
 		String cmd = "CALL confirmLogin('','');";
 		cmd = String.format(cmd, name,pwd);
@@ -28,6 +29,7 @@ public class SessionDAO implements SessionInterfaceDAO{
 	 * Why?
 	 * @param ID
 	 */
+	@Override
 	public void logout(int ID) {
 
 	}

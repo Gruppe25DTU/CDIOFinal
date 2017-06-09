@@ -18,6 +18,7 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 	 * @return
 	 *
 	*/
+	@Override
 	public int create(CommodityDTO dto) {
 		String cmd = "CALL addCommodity('%d','%s','%d');";
 		cmd = String.format(cmd, dto.getID(),dto.getName(),dto.getSupplierID());
@@ -31,12 +32,14 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 		}
 	}
 
+	@Override
 	public boolean delete(CommodityDTO dto) {
 		String cmd = "CALL deleteCommdity('%s');";
 		cmd = String.format(cmd, dto.getID());
 		return true;
 	}
 
+	@Override
 	public List<CommodityDTO> getList() {
 		String cmd = "CALL getCommodityList();";
 		List<CommodityDTO> list = new ArrayList<CommodityDTO>();
@@ -55,6 +58,7 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 		return null;
 	}
 
+	@Override
 	public CommodityDTO get(int id) {
 		String cmd = "CALL getCommodity('');";
 		cmd = String.format(cmd, id);
