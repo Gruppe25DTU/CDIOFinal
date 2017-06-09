@@ -7,25 +7,29 @@ import java.util.List;
 
 import dal.Connector;
 import dal.DALException;
+import daoInterface.CommodityInterfaceDAO;
 import dto.CommodityDTO;
 
-public class CommodityDAO {
+public class CommodityDAO implements CommodityInterfaceDAO{
 
 
 	/**
 	 * Creates a commodity
 	 * @param dto
 	 * @return
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws ClassNotFoundException
-	 * @throws DALException
-	 * @throws SQLException
-	 */
-	public int create(CommodityDTO dto) throws SQLException {
+	 *
+	*/
+	public int create(CommodityDTO dto) {
 		String cmd = "CALL addCommodity('%d','%s','%d');";
 		cmd = String.format(cmd, dto.getID(),dto.getName(),dto.getSupplierID());
-		return Connector.doUpdate(cmd);
+		try {
+			return Connector.doUpdate(cmd);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
+
+		}
 	}
 
 	public boolean delete(CommodityDTO dto) {
