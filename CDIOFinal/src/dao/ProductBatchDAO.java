@@ -45,28 +45,39 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 * If the stop time has yet to be determined please leave an empty string in its place <br>
 	 * 
 	 * @param dto
-	 * @return
-	 * @throws SQLException 
-	 * @throws DALException 
-	 * @throws ClassNotFoundException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
+	 * @return true if functions succeeds. false if not
+	 * 
 	 */
-	public boolean update(ProductBatchDTO dto) throws SQLException {
+	public boolean update(ProductBatchDTO dto) {
 		String cmd = "CALL updateProductBatchTime('%s','%s','%d');";
 		cmd = String.format(cmd, dto.getStartDate(),dto.getEndDate(),dto.getID());
-		Connector.doUpdate(cmd);
-		return true;
+		try {
+			Connector.doUpdate(cmd);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
-	public int changeStatus(int id, int status) throws SQLException {
+	public boolean changeStatus(int id, int status) {
 		String cmd = "CALL updateProductBatchStatus('%d','%d');";
 		cmd = String.format(cmd, status,id);
-		return Connector.doUpdate(cmd);
+		try {
+			Connector.doUpdate(cmd);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public void print(int id) {
 		
 	}
+	
+	
+	
 	/**
 	 * Date.. How?
 	 * @param id
@@ -101,7 +112,6 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			Connector.doUpdate(cmd);
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
