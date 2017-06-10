@@ -1,5 +1,6 @@
 package ase;
 
+
 public class SocketInMessage {
 
 	private MessageType replyType;

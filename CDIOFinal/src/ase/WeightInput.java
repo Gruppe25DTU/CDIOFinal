@@ -5,12 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+
 public class WeightInput implements Runnable{
 
 	private BufferedReader input;
-	private Connection conn;
+	private ASEConnection conn;
 
-	public WeightInput(InputStream in , Connection conn) {
+	public WeightInput(InputStream in , ASEConnection conn) {
 		this.input = new BufferedReader(new InputStreamReader(in));
 		this.conn = conn;
 	}
@@ -66,7 +67,7 @@ public class WeightInput implements Runnable{
 				{
 					if(input.split("\"").length>1)
 						input = input.split("\"")[1];
-					sInMsg = new SocketInMessage(MessageType.RM20_A , "");
+					sInMsg = new SocketInMessage(MessageType.RM20_A , input);
 					conn.processInput(sInMsg);
 				}
 				break;
@@ -76,12 +77,12 @@ public class WeightInput implements Runnable{
 				break;
 			case "S" : 
 				input = input.split(" ")[6];
-				sInMsg = new SocketInMessage(MessageType.WEIGHT , input);
+				sInMsg = new SocketInMessage(MessageType.WEIGHT_REPLY , input);
 				conn.processInput(sInMsg);
 				break;
 			case "T" :
 				input = input.split(" ")[6];
-				sInMsg = new SocketInMessage(MessageType.TARA , input);
+				sInMsg = new SocketInMessage(MessageType.TARA_REPLY , input);
 				conn.processInput(sInMsg);
 				break;
 			case "DW" : 
@@ -121,11 +122,27 @@ public class WeightInput implements Runnable{
 				conn.processInput(sInMsg);
 				break;
 			case "C" :
-				sInMsg = new SocketInMessage(MessageType.K_C_4 , input);
-				conn.processInput(sInMsg);
+				switch(input.split(" ")[2])
+				{
+				case "2" : 
+					sInMsg = new SocketInMessage(MessageType.ZERO , input);
+					conn.processInput(sInMsg);
+					break;
+				case "3" :
+					sInMsg = new SocketInMessage(MessageType.TARE , input);
+					conn.processInput(sInMsg);
+					break;
+				case "4" :
+					sInMsg = new SocketInMessage(MessageType.SEND , input);
+					conn.processInput(sInMsg);
+					break;
+				default :
+					break;
+				}
+				
 				break;
-			case "F" :
-				sInMsg = new SocketInMessage(MessageType.K_F_4 , input);
+			case "R" :
+				sInMsg = new SocketInMessage(MessageType.EXIT , input);
 				conn.processInput(sInMsg);
 				break;
 			default : 

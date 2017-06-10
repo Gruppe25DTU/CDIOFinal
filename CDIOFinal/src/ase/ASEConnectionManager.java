@@ -3,12 +3,12 @@ package ase;
 import java.io.IOException;
 import java.net.Socket;
 
-public class ConnectionManager {
+public class ASEConnectionManager {
 
-	private Connection[] connections;
+	private ASEConnection[] connections;
 	
-	public ConnectionManager() {
-		connections = new Connection[10];
+	public ASEConnectionManager() {
+		connections = new ASEConnection[10];
 		
 	}
 	
@@ -32,7 +32,7 @@ public class ConnectionManager {
 		{
 			if(connections[i] == null)
 			{
-				connections[i] = new Connection(socket);
+				connections[i] = new ASEConnection(socket);
 				break;
 			}
 				
