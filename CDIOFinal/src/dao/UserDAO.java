@@ -358,7 +358,7 @@ public class UserDAO implements UserInterfaceDAO{
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			if(rs == null) {
-				return null;
+				return 0;
 			}
 			int result = 0;
 			while(rs.next())  {
