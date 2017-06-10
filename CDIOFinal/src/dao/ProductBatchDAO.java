@@ -190,18 +190,8 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			int productbatch_ID = rs.getInt("productbatch_ID");
-			int commodity_ID = rs.getInt("commodity_ID");
-			int	recipe_ID = rs.getInt("recipe_ID");
-
-			String cmd2 = "CALL getSpecificRecipeComponent('','');";
-			cmd2 = String.format(cmd2, recipe_ID,commodity_ID);
-			ResultSet recipeCompRS = Connector.doQuery(cmd2);
-
-			RecipeCompDTO recipeComp = new RecipeCompDTO(recipeCompRS.getInt("recipe_ID"),recipeCompRS.getInt("commodity_ID"),recipeCompRS.getInt("nom_net_weight"),recipeCompRS.getInt("tolerance"));
-			if(productbatch_ID != pbid) {
-				return null;
-			}
+			RecipeCompDTO recipeComp = new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getInt("nom_net_weight"),rs.getInt("tolerance"));
+			
 			return recipeComp;
 		} catch (SQLException e) {
 			e.printStackTrace();
