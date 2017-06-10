@@ -118,7 +118,7 @@ public class UserDAO implements UserInterfaceDAO{
 		}
 		else
 			status = 0;
-		cmd = String.format(cmd, ID, status);
+		cmd = String.format(cmd, status, ID);
 
 		try {
 			Connector.doUpdate(cmd);
@@ -143,8 +143,8 @@ public class UserDAO implements UserInterfaceDAO{
 
 		addUser = String.format(addUser, dto.getUserID(),dto.getCpr(),dto.getPassword(),dto.getUserName(),dto.getEmail());
 		addUserInfo = String.format(addUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr());
-		
-		
+
+
 		try {
 			int result1 = Connector.doUpdate(addUserInfo);
 			int result2 = Connector.doUpdate(addUser);
@@ -175,14 +175,13 @@ public class UserDAO implements UserInterfaceDAO{
 	public boolean update(UserDTO dto,String old_cpr){
 		String updateUser = "CALL updateUser('%d','%s','%s','%d','%s');";
 		String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
-		String deleteExistingRoles = "CALL deleteUserRoles();";
+		String deleteExistingRoles = "CALL deleteUserRoles('%d');";
 		String addUserRoles = "CALL addUserRole('%s','%d');";
-
 		updateUser = String.format(updateUser, dto.getUserID(),dto.getUserName(),dto.getPassword(),dto.getStatus(),dto.getEmail());
 		updateUserInfo = String.format(updateUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr(),old_cpr);
 		deleteExistingRoles = String.format(deleteExistingRoles, dto.getUserID());
-		
-		
+
+
 		try {
 			Connector.doUpdate(updateUserInfo);
 			Connector.doUpdate(updateUser);
@@ -332,13 +331,18 @@ public class UserDAO implements UserInterfaceDAO{
 	 * A number in the interval 1-99999999 if functions succeeds
 	 */
 	@Override
-	public int fintFreeUserID() {
+	public int findFreeUserID() {
 		String cmd = "CALL findFreeUserID();";
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			return rs.getInt("max");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
-		}	}
+			int result = 0;
+			while(rs.next())  {
+				
+				result = Integer.parseInt((rs.getString("max")));
+		}
+		return result;
+	} catch (SQLException e) {
+		e.printStackTrace();
+		return 0;
+	}	}
 }
