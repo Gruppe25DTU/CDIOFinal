@@ -17,7 +17,7 @@ import dto.CommodityBatchDTO;
 import logic.RuleSetInterface;
 import logic.RuleSet;
 
-@Path("/commodity")
+@Path("/commoditybatch")
 public class RESTCommodityBatch {
 
 	static final CommodityBatchDAO dao = new CommodityBatchDAO();
