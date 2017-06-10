@@ -21,13 +21,13 @@ import dto.CommodityDTO;
 import logic.RuleSetInterface;
 import logic.RuleSet;
 
-@Path("commodity")
+@Path("/commodity")
 public class RESTCommodity {
 	
-	static final RuleSetInterface ruleset = new RuleSet();
 	  static final CommodityDAO dao = new CommodityDAO();
 	  
 	  @PUT
+	  @Path("/commodity/create}")
 	  @Consumes(MediaType.APPLICATION_JSON)
 		public Response createCommodity(CommodityDTO dto) {
 			try {
@@ -40,21 +40,8 @@ public class RESTCommodity {
 
 		}
 	  
-	  @DELETE
-	  @Consumes(MediaType.APPLICATION_JSON)
-	  public Response deleteCommodity(CommodityDTO dto) {
-		  try {
-			  dao.delete(dto);
-			  return Response.status(Status.OK).build();
-			  
-		  } catch (Exception e) {
-			  return Response.status(Status.NOT_FOUND).build();
-		  }
-		  
-	  }
-	  
 	  @GET
-	  @Path("list/commodity")
+	  @Path("/list/commodity")
       @Consumes(MediaType.APPLICATION_JSON)
 		public Response getCommodityList() {
 			try {
@@ -67,7 +54,7 @@ public class RESTCommodity {
 		}
 	  
 	  @GET
-	  @Path("view/id={id : [0-9+]}")
+	  @Path("/view/id={id : [0-9+]}")
 	  @Produces(MediaType.APPLICATION_JSON)
 		public Response getCommodity(@PathParam("id") int id) {
 			try {	

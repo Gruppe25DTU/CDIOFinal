@@ -21,76 +21,62 @@ import dto.ProductBatchDTO;
 import logic.RuleSetInterface;
 import logic.RuleSet;
 
-@Path("productbatch")
+@Path("/productbatch")
 public class RESTProductBatch {
-	
-	 static final RuleSetInterface ruleset = new RuleSet();
-	  static final ProductBatchDAO dao = new ProductBatchDAO();
-	  
-	  @PUT
-	  @Consumes(MediaType.APPLICATION_JSON)
-	  public Response createProductBatch(ProductBatchDTO dto) {
-		  try {
-			  dao.create(dto);
-			  return Response.status(Status.CREATED).build();
-		  } catch (Exception e) {
-			  return Response.status(Status.UNAUTHORIZED).build();
-		  }
-		  
-	  }
-	  
-	  @PUT
-	  @Consumes(MediaType.APPLICATION_JSON)
-	  public Response printProductBatch(int id) {
-		  try {
-			  dao.print(id);
-			  
-		  } catch(Exception e) {
-			  
-		  }
-		  return null;
-	  }
-	  
-	  @POST
-	  @Consumes(MediaType.APPLICATION_JSON)
-		public Response updateProductBatch(ProductBatchDTO dto) {
-			try {
-			dao.update(dto);
-			return Response.status(Status.ACCEPTED).build();
 
-			} catch (Exception e) {
-				return Response.status(Status.NOT_FOUND).build();
-			}
-		}
-	  
-	  @GET
-	  @Path("view/id={id : [0-9+]}")
-	  @Produces(MediaType.APPLICATION_JSON)
-		public Response getProductBatch(@PathParam("id") int id) {
-			try {	
-				dao.get(id);
-			 return Response.status(Status.OK).entity(dao.get(id)).build();
-			 
-			} catch (Exception e) {
-				return Response.status(Status.NOT_FOUND).build();
-				
-			} 
-			
-		}
-	  
-	  @GET
-	  @Path("list/productbatch")
-	  @Consumes(MediaType.APPLICATION_JSON)
-		public Response getProductBatchList() {
-			try {
-				dao.getList();
-				 return Response.status(Status.OK).entity(dao.getList()).build();
+	static final ProductBatchDAO dao = new ProductBatchDAO();
 
-			} catch (Exception e) {
-				return Response.status(Status.NOT_FOUND).build();
-			}
+	@PUT
+	@Path("/ProductBatch/create}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response createProductBatch(ProductBatchDTO dto) {
+		try {
+			dao.create(dto);
+			return Response.status(Status.CREATED).build();
+		} catch (Exception e) {
+			return Response.status(Status.UNAUTHORIZED).build();
 		}
-	  
-	  
 
+	}
+
+	@PUT
+	@Path("/ProductBatch/print}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response printProductBatch(int id) {
+		try {
+			dao.print(id);
+
+		} catch(Exception e) {
+
+		}
+		return null;
+	}
+
+	@GET
+	@Path("/view/id={id : [0-9+]}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getProductBatch(@PathParam("id") int id) {
+		try {	
+			dao.get(id);
+			return Response.status(Status.OK).entity(dao.get(id)).build();
+
+		} catch (Exception e) {
+			return Response.status(Status.NOT_FOUND).build();
+
+		} 
+
+	}
+
+	@GET
+	@Path("/list/productbatch")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getProductBatchList() {
+		try {
+			dao.getList();
+			return Response.status(Status.OK).entity(dao.getList()).build();
+
+		} catch (Exception e) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+	}
 }
