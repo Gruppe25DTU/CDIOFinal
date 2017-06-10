@@ -21,10 +21,9 @@ import dto.RecipeDTO;
 import logic.RuleSetInterface;
 import logic.RuleSet;
 
-@Path("recipe")
+@Path("/recipe")
 public class RESTRecipe {
 	
-	 static final RuleSetInterface ruleset = new RuleSet();
 	  static final RecipeDAO dao = new RecipeDAO();
 	  
 	  @PUT
@@ -39,31 +38,4 @@ public class RESTRecipe {
 		  } 
 		  
 	  }
-	  
-	  @POST
-	  @Path("update/old_cpr={old_cpr : [0-9+]}")
-	  @Consumes(MediaType.APPLICATION_JSON)
-	  public Response updateRecipe(RecipeDTO dto){
-		  try {
-			  dao.update(dto);
-			  return Response.status(Status.ACCEPTED).build();
-			  
-		  } catch (Exception e) {
-			  return Response.status(Status.NOT_FOUND).build(); 
-		  }
-	  }
-	  
-	  @GET
-	  @Path("view/id={id : [0-9+]}")
-	  @Produces(MediaType.APPLICATION_JSON)
-	  public Response getRecipe (@PathParam("id") int id) {
-		  try {
-			  dao.get(id);
-			  return Response.status(Status.OK).entity(dao.get(id)).build();
-			  
-		  } catch (Exception e) {
-			  return Response.status(Status.NOT_FOUND).build();
-		  }
-	  }
-
 }

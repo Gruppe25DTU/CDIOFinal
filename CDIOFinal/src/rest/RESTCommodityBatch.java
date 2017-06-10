@@ -17,14 +17,13 @@ import dto.CommodityBatchDTO;
 import logic.RuleSetInterface;
 import logic.RuleSet;
 
-@Path("commodity")
+@Path("/commodity")
 public class RESTCommodityBatch {
 	
-	 static final RuleSetInterface ruleset = new RuleSet();
 	  static final CommodityBatchDAO dao = new CommodityBatchDAO();
 	  
 	  @POST
-	  @Path("update/id={id : [0-9+]}")
+	  @Path("/update/id={id : [0-9+]}")
 	  @Produces(MediaType.APPLICATION_JSON)
 		public Response changeAmount(int amount, @PathParam("id") int id) {
 			try {
@@ -49,21 +48,10 @@ public class RESTCommodityBatch {
 			}
 
 		}
-	  
-	  @POST
-	  @Consumes(MediaType.APPLICATION_JSON)
-		public Response updateUser(CommodityBatchDTO dto) {
-			try {
-			dao.update(dto);
-			return Response.status(Status.ACCEPTED).build();
-
-			} catch (Exception e) {
-				return Response.status(Status.NOT_FOUND).build();
-			}
-		}
+	 
 	  
 	  @GET
-	  @Path("view/id={id : [0-9+]}")
+	  @Path("/view/id={id : [0-9+]}")
 	  @Produces(MediaType.APPLICATION_JSON)
 		public Response getUser(@PathParam("id") int id) {
 			try {	
@@ -76,5 +64,4 @@ public class RESTCommodityBatch {
 			} 
 			
 		}
-
 }

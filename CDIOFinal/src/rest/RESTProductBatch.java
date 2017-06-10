@@ -21,10 +21,9 @@ import dto.ProductBatchDTO;
 import logic.RuleSetInterface;
 import logic.RuleSet;
 
-@Path("productbatch")
+@Path("/productbatch")
 public class RESTProductBatch {
 	
-	 static final RuleSetInterface ruleset = new RuleSet();
 	  static final ProductBatchDAO dao = new ProductBatchDAO();
 	  
 	  @PUT
@@ -51,20 +50,8 @@ public class RESTProductBatch {
 		  return null;
 	  }
 	  
-	  @POST
-	  @Consumes(MediaType.APPLICATION_JSON)
-		public Response updateProductBatch(ProductBatchDTO dto) {
-			try {
-			dao.update(dto);
-			return Response.status(Status.ACCEPTED).build();
-
-			} catch (Exception e) {
-				return Response.status(Status.NOT_FOUND).build();
-			}
-		}
-	  
 	  @GET
-	  @Path("view/id={id : [0-9+]}")
+	  @Path("/view/id={id : [0-9+]}")
 	  @Produces(MediaType.APPLICATION_JSON)
 		public Response getProductBatch(@PathParam("id") int id) {
 			try {	
@@ -79,7 +66,7 @@ public class RESTProductBatch {
 		}
 	  
 	  @GET
-	  @Path("list/productbatch")
+	  @Path("/list/productbatch")
 	  @Consumes(MediaType.APPLICATION_JSON)
 		public Response getProductBatchList() {
 			try {
@@ -90,7 +77,4 @@ public class RESTProductBatch {
 				return Response.status(Status.NOT_FOUND).build();
 			}
 		}
-	  
-	  
-
 }

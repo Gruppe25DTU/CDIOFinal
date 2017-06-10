@@ -21,14 +21,14 @@ import dto.UserDTO;
 import logic.RuleSetInterface;
 import logic.RuleSet;
 
-@Path("user")
+@Path("/user")
 public class RESTUser {
 	
 	  static final UserDAO dao = new UserDAO();
 	
 	
 	@GET
-	@Path("view/id={id : [0-9]+}")
+	@Path("/view/id={id : [0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUser(@PathParam("id") int ID) {
 		try {	
@@ -43,7 +43,7 @@ public class RESTUser {
 	}
 
 	@POST
-	@Path("update/{id}")
+	@Path("/update/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response changeStatus(boolean active, @PathParam("id") int id) {
 		try {
@@ -57,7 +57,7 @@ public class RESTUser {
 	}
 	
 	@GET
-	@Path("list/deactivatedUsers")
+	@Path("/list/deactivatedUsers")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getDeactivatedUsers() {
 		try {
@@ -83,7 +83,7 @@ public class RESTUser {
 	}
 	
 	@POST
-	@Path("update/{old_cpr}")
+	@Path("/update/{old_cpr}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateUser(UserDTO dto, @PathParam("old_cpr") String old_cpr) {
 		try {
@@ -96,7 +96,7 @@ public class RESTUser {
 	}
 	
 	@GET
-	@Path("view/name={name : [a-zA-Z]+}")
+	@Path("/view/name={name : [a-zA-Z]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response UserExists(@PathParam("name") String name) {
 		try {
