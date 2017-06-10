@@ -74,7 +74,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 */
 	@Override
 	public List<UserDTO> getUserWithRole(String roleName) {
-		String cmd = "CALL getuserWithRole('%s');";
+		String cmd = "CALL getUserWithRole('%s');";
 		cmd = String.format(cmd, roleName);
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
@@ -175,14 +175,26 @@ public class UserDAO implements UserInterfaceDAO{
 	public boolean update(UserDTO dto,String old_cpr){
 		String updateUser = "CALL updateUser('%d','%s','%s','%d','%s');";
 		String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
-
+		String deleteExistingRoles = "CALL deleteUserRoles();";
+		String addUserRoles = "CALL addUserRole('%s','%d');";
 
 		updateUser = String.format(updateUser, dto.getUserID(),dto.getUserName(),dto.getPassword(),dto.getStatus(),dto.getEmail());
 		updateUserInfo = String.format(updateUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr(),old_cpr);
-
+		deleteExistingRoles = String.format(deleteExistingRoles, dto.getUserID());
+		
+		
 		try {
 			Connector.doUpdate(updateUserInfo);
 			Connector.doUpdate(updateUser);
+			Connector.doUpdate(deleteExistingRoles);
+			for(int i = 0;i<dto.getRoles().size();i++) {
+				addUserRoles = String.format(addUserRoles, dto.getRoles().get(i),dto.getUserID());
+				try {
+					Connector.doUpdate(addUserRoles);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -191,6 +203,9 @@ public class UserDAO implements UserInterfaceDAO{
 
 	/**
 	 * Checks the database to see if the username is in use.
+	 * @return
+	 * returns true if username exists <br>
+	 * returns false if username doesn't exists <br>
 	 */
 	@Override
 	public boolean userExists(String name){
