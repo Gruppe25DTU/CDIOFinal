@@ -35,7 +35,7 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 	 */
 	@Override
 	public SupplierDTO getSupplier(int ID){
-		String cmd = "CALL getSupplier('');";
+		String cmd = "CALL getSupplier('%d');";
 		cmd = String.format(cmd, ID);
 
 		try {

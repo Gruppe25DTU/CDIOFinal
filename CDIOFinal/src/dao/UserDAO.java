@@ -17,25 +17,28 @@ public class UserDAO implements UserInterfaceDAO{
 	 */
 	@Override
 	public UserDTO getUser(int ID){
-		String cmd = "CALL getOperator('');";
+		String cmd = "CALL getUser('%d');";
 		cmd = String.format(cmd, ID);
-
+		UserDTO dto;
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			String cpr = rs.getString("cpr");
-			int opr_ID = rs.getInt("opr_ID");
-			String username = rs.getString("username");
-			String password = rs.getString("password");
-			int active = rs.getInt("active");
-			String email = rs.getString("email");
-			String firstname = rs.getString("opr_firstname");
-			String lastname = rs.getString("opr_lastname");
-			String ini = rs.getString("ini");
-
-			List<String> roles = getRoles(opr_ID);
-			return new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,password,email,roles,active);
-
-		} catch (SQLException e) {
+			while(rs.next()) {
+				String cpr = rs.getString("cpr");
+				int opr_ID = rs.getInt("user_ID");
+				String username = rs.getString("username");
+				String password = rs.getString("password");
+				int active = rs.getInt("active");
+				String email = rs.getString("email");
+				String firstname = rs.getString("user_firstname");
+				String lastname = rs.getString("user_lastname");
+				String ini = rs.getString("ini");
+				rs.close();
+				List<String> roles = getRoles(opr_ID);
+				dto = new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,password,email,roles,active);
+				return dto;
+			}
+			return null;
+		} catch (SQLException e) {	
 			e.printStackTrace();
 			return null;
 		}	}
@@ -45,23 +48,23 @@ public class UserDAO implements UserInterfaceDAO{
 	 * @param ID
 	 * @return
 	 */
-	private List<String> getRoles(int ID) {
+	private static List<String> getRoles(int ID) {
 		List<String> roles = new ArrayList<String>();
 
-		String cmd = "CALL getOperatorRoles('');";
+		String cmd = "CALL getUserRoles('%d');";
 		cmd = String.format(cmd, ID);
-
-		ResultSet rs1;
+		ResultSet rs;
 		try {
-			rs1 = Connector.doQuery(cmd);
-			while(rs1.next()) {
-				roles.add(rs1.getString("role_Name"));
+			rs = Connector.doQuery(cmd);
+			while(rs.next()) {
+				roles.add(rs.getString("role_Name"));
 			}
+			return roles;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
 
-		return roles;
 	}
 
 	/**
@@ -71,7 +74,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 */
 	@Override
 	public List<UserDTO> getUserWithRole(String roleName) {
-		String cmd = "CALL getuserWithRole('');";
+		String cmd = "CALL getuserWithRole('%s');";
 		cmd = String.format(cmd, roleName);
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
@@ -108,7 +111,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 */
 	@Override
 	public boolean changeStatus(int ID, boolean active){
-		String cmd = "CALL setActive('','');";
+		String cmd = "CALL setActive('%d','%d');";
 		int status;
 		if(active) {
 			status = 1;
@@ -133,15 +136,29 @@ public class UserDAO implements UserInterfaceDAO{
 	 */
 	@Override
 	public boolean create(UserDTO dto){
-		String addOperator = "CALL addOperator('%d','%d','%s','%s','%s');";
-		String addOperatorInfo = "CALL addOperatorInfo('%s','%s','%s','%s')";
+		String addUser = "CALL addUser('%d','%s','%s','%s','%s');";
+		String addUserInfo = "CALL addUserInfo('%s','%s','%s','%s');";
+		String addUserRoles = "CALL addUserRole('%s','%d');";
+		List<String> roles = dto.getRoles();
 
-		addOperator = String.format(addOperator, dto.getUserID(),dto.getCpr(),dto.getPassword(),dto.getUserName(),dto.getEmail());
-		addOperatorInfo = String.format(addOperatorInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr());
-
+		addUser = String.format(addUser, dto.getUserID(),dto.getCpr(),dto.getPassword(),dto.getUserName(),dto.getEmail());
+		addUserInfo = String.format(addUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr());
+		
+		
 		try {
-			Connector.doUpdate(addOperatorInfo);
-			Connector.doUpdate(addOperator);
+			int result1 = Connector.doUpdate(addUserInfo);
+			int result2 = Connector.doUpdate(addUser);
+			for(int i = 0;i<roles.size();i++) {
+				addUserRoles = String.format(addUserRoles, roles.get(i),dto.getUserID());
+				try {
+					Connector.doUpdate(addUserRoles);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(result1 == 0 && result2 == 0) {
+				return false;
+			}
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -156,16 +173,16 @@ public class UserDAO implements UserInterfaceDAO{
 	 */
 	@Override
 	public boolean update(UserDTO dto,String old_cpr){
-		String updateOperator = "CALL updateOperator('%d','%s','%s','%d','%s');";
-		String updateOperatorInfo = "CALL updateOperatorInfo('%s','%s','%s','%s','%s');";
+		String updateUser = "CALL updateUser('%d','%s','%s','%d','%s');";
+		String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
 
 
-		updateOperator = String.format(updateOperator, dto.getUserID(),dto.getUserName(),dto.getPassword(),dto.getStatus(),dto.getEmail());
-		updateOperatorInfo = String.format(updateOperatorInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr(),old_cpr);
+		updateUser = String.format(updateUser, dto.getUserID(),dto.getUserName(),dto.getPassword(),dto.getStatus(),dto.getEmail());
+		updateUserInfo = String.format(updateUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr(),old_cpr);
 
 		try {
-			Connector.doUpdate(updateOperatorInfo);
-			Connector.doUpdate(updateOperator);
+			Connector.doUpdate(updateUserInfo);
+			Connector.doUpdate(updateUser);
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -199,7 +216,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 */
 	@Override
 	public List<UserDTO> getDeactiveUsers(){
-		String cmd = "CALL getDeactivatedOperatorList();";
+		String cmd = "CALL getDeactivatedUserList();";
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
@@ -232,7 +249,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 */
 	@Override
 	public List<UserDTO> getActivatedUsers() {
-		String cmd = "CALL getActivatedOperatorList();";
+		String cmd = "CALL getActivatedUserList();";
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
@@ -264,7 +281,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 */
 	@Override
 	public List<UserDTO> getUserList(){
-		String cmd = "CALL getOperatorList();";
+		String cmd = "CALL getUserList();";
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
@@ -289,10 +306,10 @@ public class UserDAO implements UserInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}	
-		
+
 	}
 
-	
+
 	/**
 	 * Finds a free userID that is not used. <br>
 	 * It's possible to use the ID returned as a new ID.

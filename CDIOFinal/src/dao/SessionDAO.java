@@ -16,7 +16,7 @@ public class SessionDAO implements SessionInterfaceDAO{
 	 */
 	@Override
 	public boolean login(String name, String pwd) {
-		String cmd = "CALL confirmLogin('','');";
+		String cmd = "CALL confirmLogin('%s','%s');";
 		cmd = String.format(cmd, name,pwd);
 		try {
 			ResultSet rs = Connector.doQuery(cmd);

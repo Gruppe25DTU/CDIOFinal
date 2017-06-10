@@ -19,7 +19,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	 */
 	@Override
 	public int create(RecipeDTO dto) {
-		String cmd = "CALL addRecipe('','')";
+		String cmd = "CALL addRecipe('%d','%s')";
 		cmd = String.format(cmd, dto.getRecipeID(),dto.getName());
 		try {
 			return Connector.doUpdate(cmd);
@@ -38,7 +38,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	 */
 	@Override
 	public boolean update(RecipeDTO dto) {
-		String cmd = "CALL updateRecipe('','');";
+		String cmd = "CALL updateRecipe('%d','%s');";
 		cmd = String.format(cmd, dto.getRecipeID(),dto.getName());
 		try {
 			Connector.doUpdate(cmd);
@@ -56,7 +56,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	 */
 	@Override
 	public RecipeDTO getRecipe(int id) {
-		String cmd = "getRecipe('');";
+		String cmd = "getRecipe('%d');";
 		cmd = String.format(cmd, id);
 		
 		try {
