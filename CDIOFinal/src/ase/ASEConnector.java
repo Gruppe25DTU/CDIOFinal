@@ -8,9 +8,9 @@ public class ASEConnector implements Runnable{
 
 	private String ip;
 	private int portNr;
-	private ConnectionManager cM;
+	private ASEConnectionManager cM;
 	
-	public ASEConnector(ConnectionManager cM , String ip , int portNr) {
+	public ASEConnector(ASEConnectionManager cM , String ip , int portNr) {
 		this.cM = cM;
 		this.ip = ip;
 		this.portNr = portNr;

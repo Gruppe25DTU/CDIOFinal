@@ -1,36 +1,42 @@
 package ase;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.Time;
-import java.util.Arrays;
-import java.util.List;
+import java.sql.Connection;
 import java.util.Scanner;
+
+import dal.Connector;
 
 public class Main implements Runnable{
 
-	private ConnectionManager cM;
+	private ASEConnectionManager cM;
 	private Scanner keyb;
 	private boolean running;
 	
 	public Main() {
-		cM = new ConnectionManager();
+		cM = new ASEConnectionManager();
 		keyb = new Scanner(System.in);
 		running = true;
 	}
 
 	public static void main(String[] args) {
-		new Thread(new Main()).start();
+		Connector.changeTestMode(true);
+			Connection dbConn = Connector.connectToDatabase();
+			if(dbConn != null)
+				new Thread(new Main()).start();
+		
+		
+		
 
 	}
 
 	@Override
 	public void run() {
-	
-		Date d = new Date(System.currentTimeMillis());
-		Time t = new Time(System.currentTimeMillis());
-		String dString = d.toString()+" "+t.toString();
-		System.out.println(dString);
+		
+		for(int i = 0; i<DefaultWeightAddresses.WEIGHT_ADDRESSES.length ; i++)
+		{
+			cM.connect(DefaultWeightAddresses.WEIGHT_ADDRESSES[i].ip(), 
+					   DefaultWeightAddresses.WEIGHT_ADDRESSES[i].port());
+		}
 		
 		
 		while(running)

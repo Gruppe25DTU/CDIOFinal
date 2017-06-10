@@ -4,14 +4,14 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class Connection {
+public class ASEConnection {
 
 	private Socket socket;
 	private SessionController sesh;
 	private WeightInput input;
 	private DataOutputStream output;
 	
-	public Connection(Socket socket) throws IOException {
+	public ASEConnection(Socket socket) throws IOException {
 			this.socket = socket;
 			this.input = new WeightInput(socket.getInputStream() , this);
 			this.output = new DataOutputStream(socket.getOutputStream());

@@ -2,9 +2,7 @@
 package ase;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Time;
 
 import dao.CommodityBatchDAO;
 import dao.CommodityDAO;
@@ -23,40 +21,35 @@ public class SessionController {
 	private ProductBatchDTO prod;
 	private RecipeCompDTO currentRecipeComp;
 	private CommodityDTO comm;
-	private Connection conn;
-	private int wStep;
+	private ASEConnection conn;
 	private double tara;
 	private double netto;
-	private MessageType expectedType;
 	private PhaseType phase;
 	private CommodityBatchDTO cBatch;
 	private boolean RM20Expecting;
-	private int errorsInARow;  // We track how many errors we get in a row and when we get to 10 we sleep for a second-
-	// so we won't spam the weight. 
 
-	public SessionController(Connection conn) {
+	public SessionController(ASEConnection conn) {
 		user = null;
 		prod = null;
 		currentRecipeComp  = null;
 		this.conn = conn;
-		wStep = 0;
 		tara = 0;
 		netto = 0;
 		cBatch = null;
-		errorsInARow = 0;
 		phase = PhaseType.LOGIN;
-		RM20Expecting = false;
+		
 		try 
 		{
 			// Setting the key controls so we can see key codes when buttons on weight are pressed-
 			//- but their functions aren't run on the weight
 			conn.outputMsg("K 3");
+			RM20Expecting = true;
 			conn.outputMsg("RM20 8 \"Enter lab ID\" \"\" \"&3\"");
 
 		} 
 		catch (IOException e) 
 		{
-
+			e.printStackTrace();
 		}
 	}
 
@@ -97,7 +90,7 @@ public class SessionController {
 		}
 		catch(SQLException e)
 		{
-
+			e.printStackTrace();
 		}
 
 	}
@@ -105,6 +98,7 @@ public class SessionController {
 
 	private void loginPhase(SocketInMessage message) throws IOException
 	{
+		System.out.println(message.getMsg() +" type: "+ message.getReplyType());
 		if(RM20Expecting)
 		{
 			switch(message.getReplyType())
@@ -115,6 +109,7 @@ public class SessionController {
 					int labId = Integer.parseInt(message.getMsg());
 					UserDAO uDAO = new UserDAO();
 					user = uDAO.getUser(labId);
+					
 					if(user != null)
 					{
 						if(user.getRoles().contains("Laboratory Technician") 
@@ -141,8 +136,9 @@ public class SessionController {
 							} 
 							catch (InterruptedException e) 
 							{
-								conn.outputMsg("RM20 8 \"Enter Lab ID\" \"\" \"&3\"");
+								
 							}
+							conn.outputMsg("RM20 8 \"Enter Lab ID\" \"\" \"&3\"");
 						}
 						
 					}
@@ -155,8 +151,9 @@ public class SessionController {
 						} 
 						catch (InterruptedException e) 
 						{
-							conn.outputMsg("RM20 8 \"Enter Lab ID\" \"\" \"&3\"");
+							
 						}
+						conn.outputMsg("RM20 8 \"Enter Lab ID\" \"\" \"&3\"");
 					}
 				}
 				else
@@ -168,15 +165,17 @@ public class SessionController {
 					} 
 					catch (InterruptedException e) 
 					{
-						conn.outputMsg("RM20 8 \"Enter Lab ID\" \"\" \"&3\"");
+						
 					}
+					conn.outputMsg("RM20 8 \"Enter Lab ID\" \"\" \"&3\"");
 
 				}
 				break;
 			case RM20_C:
 				conn.outputMsg("P111 \"Shutdown? Y:[-> N:Exit\"");
 				RM20Expecting = false;
-				//TODO ask to close terminal
+				break;
+			default :
 				break;
 			}
 		}
@@ -194,6 +193,8 @@ public class SessionController {
 			case TARE :
 				break;
 			case ZERO : 
+				break;
+			default : 
 				break;
 			}
 		}
@@ -214,7 +215,8 @@ public class SessionController {
 		case EXIT :
 			conn.createNewSession();
 			break;
-		
+		default :
+			break;
 		}
 	}
 
@@ -252,8 +254,9 @@ public class SessionController {
 							} 
 							catch (InterruptedException e) 
 							{
-								conn.outputMsg("RM20 8 \"Enter ProductBatch ID\" \"\" \"&3\"");
+								
 							}
+							conn.outputMsg("RM20 8 \"Enter ProductBatch ID\" \"\" \"&3\"");
 						}
 					}
 					else
@@ -265,8 +268,9 @@ public class SessionController {
 						} 
 						catch (InterruptedException e) 
 						{
-							conn.outputMsg("RM20 8 \"Enter ProductBatch ID\" \"\" \"&3\"");
+							
 						}
+						conn.outputMsg("RM20 8 \"Enter ProductBatch ID\" \"\" \"&3\"");
 					}
 				}
 				else
@@ -278,13 +282,16 @@ public class SessionController {
 					} 
 					catch (InterruptedException e) 
 					{
-						conn.outputMsg("RM20 8 \"Enter ProductBatch ID\" \"\" \"&3\"");
+						
 					}
+					conn.outputMsg("RM20 8 \"Enter ProductBatch ID\" \"\" \"&3\"");
 				}
 				break;
 			case RM20_C :
 				RM20Expecting = false;
 				conn.createNewSession();
+				break;
+			default : 
 				break;
 			}
 		}
@@ -318,6 +325,8 @@ public class SessionController {
 			}
 			break;
 		case WEIGHT_REPLY :
+			break;
+		default : 
 			break;
 		}
 	}
@@ -379,6 +388,8 @@ public class SessionController {
 
 			}
 			break;
+		default : 
+			break;
 		}
 	}
 
@@ -419,6 +430,8 @@ public class SessionController {
 				phase = PhaseType.CHOOSE_COMM_BATCH;
 				conn.outputMsg("RM20 8 \"Enter CommodityBatch ID\" \"\" \"&3\"");
 			}
+			break;
+		default : 
 			break;
 		}
 	}
@@ -474,6 +487,8 @@ public class SessionController {
 				RM20Expecting = false;
 				conn.createNewSession();
 				break;
+			default :
+				break;
 			}
 		}
 		else
@@ -491,6 +506,8 @@ public class SessionController {
 			case TARA_REPLY :
 				break;
 			case WEIGHT_REPLY :
+				break;
+			default : 
 				break;
 			}
 		}
@@ -535,6 +552,8 @@ public class SessionController {
 				conn.outputMsg("P111 \"Clear the weight [->\"");
 			}
 			break;
+		default : 
+			break;
 		}
 	}
 
@@ -545,6 +564,8 @@ public class SessionController {
 		case SEND :
 			break;
 		case EXIT :
+			break;
+		default :
 			break;
 		}
 	}
@@ -616,13 +637,10 @@ public class SessionController {
 		return currentRecipeComp;
 	}
 
-	public Connection getConn() {
+	public ASEConnection getConn() {
 		return conn;
 	}
 
-	public int getWeighingStep() {
-		return wStep;
-	}
 
 	public double getTara() {
 		return tara;
@@ -632,9 +650,7 @@ public class SessionController {
 		return netto;
 	}
 
-	public MessageType getExpectedType() {
-		return expectedType;
-	}
+
 
 	public CommodityBatchDTO getcBatch() {
 		return cBatch;
@@ -652,13 +668,11 @@ public class SessionController {
 		this.currentRecipeComp = currentRecipeComp;
 	}
 
-	public void setConn(Connection conn) {
+	public void setConn(ASEConnection conn) {
 		this.conn = conn;
 	}
 
-	public void setWeighingStep(int weighingStep) {
-		this.wStep = weighingStep;
-	}
+
 
 	public void setTara(double tara) {
 		this.tara = tara;
@@ -668,9 +682,6 @@ public class SessionController {
 		this.netto = netto;
 	}
 
-	public void setExpectedType(MessageType expectedType) {
-		this.expectedType = expectedType;
-	}
 
 	public void setcBatch(CommodityBatchDTO cBatch) {
 		this.cBatch = cBatch;

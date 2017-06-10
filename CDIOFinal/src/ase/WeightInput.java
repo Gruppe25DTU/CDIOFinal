@@ -9,9 +9,9 @@ import java.io.InputStreamReader;
 public class WeightInput implements Runnable{
 
 	private BufferedReader input;
-	private Connection conn;
+	private ASEConnection conn;
 
-	public WeightInput(InputStream in , Connection conn) {
+	public WeightInput(InputStream in , ASEConnection conn) {
 		this.input = new BufferedReader(new InputStreamReader(in));
 		this.conn = conn;
 	}
@@ -67,7 +67,7 @@ public class WeightInput implements Runnable{
 				{
 					if(input.split("\"").length>1)
 						input = input.split("\"")[1];
-					sInMsg = new SocketInMessage(MessageType.RM20_A , "");
+					sInMsg = new SocketInMessage(MessageType.RM20_A , input);
 					conn.processInput(sInMsg);
 				}
 				break;
