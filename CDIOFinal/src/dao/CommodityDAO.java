@@ -43,6 +43,9 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 		try
 		{
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			while (rs.next()) 
 			{
 				list.add(new CommodityDTO(rs.getInt("commodity_ID"), rs.getString("commodity_Name"), rs.getInt("supplier_ID")));
@@ -66,6 +69,9 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 		
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			return new CommodityDTO(rs.getInt("commodity_ID"), rs.getString("commodity_Name"), rs.getInt("supplier_ID"));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -85,6 +91,9 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 		String cmd = "CALL findFreeCommodityID();";
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return 0;
+			}
 			return rs.getInt("max");
 		} catch (SQLException e) {
 			e.printStackTrace();

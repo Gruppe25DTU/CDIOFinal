@@ -66,6 +66,9 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 		
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			int recipe_ID = rs.getInt("recipe_ID");
 			String recipe_Name = rs.getString("recipe_Name");
 			List<RecipeCompDTO> components = getRecipeComponent(recipe_ID);
@@ -87,6 +90,9 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 		
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			while(rs.next()) {
 				list.add(new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getInt("nom_net_weight"),rs.getInt("tolerance")));
 			}
@@ -106,6 +112,9 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 		
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			while (rs.next()) {
 				int recipe_ID = rs.getInt("recipe_ID");
 				String recipe_Name = rs.getString("recipe_Name");
@@ -132,6 +141,9 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 		String cmd = "CALL findFreeRecipeID();";
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return 0;
+			}
 			return rs.getInt("max");
 		} catch (SQLException e) {
 			e.printStackTrace();

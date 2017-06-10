@@ -20,6 +20,9 @@ public class SessionDAO implements SessionInterfaceDAO{
 		cmd = String.format(cmd, name,pwd);
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return false;
+			}
 			if(rs.getInt("result") == 1) {
 				return true;
 			}

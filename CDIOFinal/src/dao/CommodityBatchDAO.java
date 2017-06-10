@@ -57,6 +57,9 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 		
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			int ID = rs.getInt("commodityBatch_ID");
 			int commodity_ID = rs.getInt("commodity_ID");
 			int quantity = rs.getInt("quantity");
@@ -77,6 +80,9 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 		List<CommodityBatchDTO> list = new ArrayList<CommodityBatchDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			while(rs.next()) {
 				int ID = rs.getInt("commodityBatch_ID");
 				int commodity_ID = rs.getInt("commodity_ID");
@@ -105,6 +111,9 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 		
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return 0;
+			}
 			return rs.getInt("max");
 		} catch (SQLException e) {
 			e.printStackTrace();

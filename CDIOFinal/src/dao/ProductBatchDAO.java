@@ -117,6 +117,9 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 		ResultSet rs;
 		try {
 			rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			int ID = rs.getInt("productBatch_ID");
 			int status = rs.getInt("status");
 			int recipe_ID = rs.getInt("recipe_ID");
@@ -143,6 +146,9 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			while(rs.next()) {
 				int ID = rs.getInt("productBatch_ID");
 				int status = rs.getInt("status");
@@ -190,6 +196,9 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			RecipeCompDTO recipeComp = new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getInt("nom_net_weight"),rs.getInt("tolerance"));
 			
 			return recipeComp;
@@ -214,6 +223,9 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 		String cmd = "CALL findFreeProductBatchID();";
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return 0;
+			}
 			return rs.getInt("max");
 		} catch (SQLException e) {
 			e.printStackTrace();

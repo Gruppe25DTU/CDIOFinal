@@ -22,6 +22,9 @@ public class UserDAO implements UserInterfaceDAO{
 		UserDTO dto;
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			while(rs.next()) {
 				String cpr = rs.getString("cpr");
 				int opr_ID = rs.getInt("user_ID");
@@ -56,6 +59,9 @@ public class UserDAO implements UserInterfaceDAO{
 		ResultSet rs;
 		try {
 			rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			while(rs.next()) {
 				roles.add(rs.getString("role_Name"));
 			}
@@ -79,6 +85,9 @@ public class UserDAO implements UserInterfaceDAO{
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			while (rs.next()) 
 			{
 				String cpr = rs.getString("cpr");
@@ -205,6 +214,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 * @return
 	 * returns true if username exists <br>
 	 * returns false if username doesn't exists <br>
+	 * returns true if ResultSet == null
 	 */
 	@Override
 	public boolean userExists(String name){
@@ -212,6 +222,9 @@ public class UserDAO implements UserInterfaceDAO{
 		cmd = String.format(cmd, name);
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return true;
+			}
 			int result = rs.getInt("result");
 			if(result == 1) {
 				return true;
@@ -220,7 +233,7 @@ public class UserDAO implements UserInterfaceDAO{
 				return false;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			return true;
 		}
 	}
 
@@ -234,6 +247,9 @@ public class UserDAO implements UserInterfaceDAO{
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			while (rs.next()) 
 			{
 				String cpr = rs.getString("cpr");
@@ -267,6 +283,9 @@ public class UserDAO implements UserInterfaceDAO{
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			while (rs.next()) 
 			{
 				String cpr = rs.getString("cpr");
@@ -299,6 +318,9 @@ public class UserDAO implements UserInterfaceDAO{
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			while (rs.next()) 
 			{
 				String cpr = rs.getString("cpr");
@@ -335,6 +357,9 @@ public class UserDAO implements UserInterfaceDAO{
 		String cmd = "CALL findFreeUserID();";
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null) {
+				return null;
+			}
 			int result = 0;
 			while(rs.next())  {
 				
