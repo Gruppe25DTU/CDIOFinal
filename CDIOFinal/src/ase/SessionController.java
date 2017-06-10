@@ -74,7 +74,7 @@ public class SessionController {
 					int labId = Integer.parseInt(msg.getMsg());
 					System.out.println("here now" + labId);
 					UserDAO uDao = new UserDAO();
-					user = uDao.get(labId);
+					user = uDao.getUser(labId);
 					if(user != null)
 					{
 						//We send a message to confirm that the name is correct (There is no other choice but to confirm)
