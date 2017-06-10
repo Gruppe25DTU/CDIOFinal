@@ -1,6 +1,8 @@
 package ase;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -24,9 +26,12 @@ public class Main implements Runnable{
 
 	@Override
 	public void run() {
-		String test = "";
-		int k = Integer.parseInt(test);
-		System.out.println(k);
+	
+		Date d = new Date(System.currentTimeMillis());
+		Time t = new Time(System.currentTimeMillis());
+		String dString = d.toString()+" "+t.toString();
+		System.out.println(dString);
+		
 		
 		while(running)
 		{

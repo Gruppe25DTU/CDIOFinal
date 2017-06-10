@@ -1,7 +1,9 @@
 package ase;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
 
 import dao.CommodityBatchDAO;
 import dao.CommodityDAO;
@@ -64,252 +66,29 @@ public class SessionController {
 			switch(phase)
 			{
 			case LOGIN :
+				loginPhase(msg);
 				break;
 			case CLEAR_WEIGHT :
+				clearWeightPhase(msg);
 				break;
 			case CHOOSE_PRODUCT :
+				chooseProductPhase(msg);;
 				break;
 			case PUT_TARE :
+				putTarePhase(msg);
 				break;
 			case WEIGH_COMMODITY :
+				weighCommodityPhase(msg);
+				break;
+			case CHOOSE_COMM_BATCH :
+				chooseCommBatchPhase(msg);
 				break;
 			case BRUTTO_CONTROL :
+				bruttoControlPhase(msg);
 				break;
 			case END_OF_WEIGHING :
+				endOfWeighing(msg);
 				break;
-			}
-			if(msg.getReplyType().equals(expectedType))
-			{
-				switch(wStep)
-				{
-				case 0 :
-					//First Labworker types his id
-					lastMessageSent = "RM20 8 \"Indtast laborant nr\" \"\" \"&3\"";
-					expectedType = MessageType.RM20_B;
-					wStep++;
-					conn.outputMsg(lastMessageSent);
-					break;
-				case 1 :
-					//Message Is recieved
-					wStep++;
-					expectedType = MessageType.RM20_A;
-					break;
-				case 2 :
-					//Labworker has sent his id, here we check if it's valid or not
-					if(msg.getMsg().length() > 0)
-					{
-
-						int labId = Integer.parseInt(msg.getMsg());
-						System.out.println("here now" + labId);
-						UserDAO uDao = new UserDAO();
-						user = uDao.getUser(labId);
-						if(user != null)
-						{
-							//We send a message to confirm that the name is correct (There is no other choice but to confirm)
-							//
-							String name = user.getFirstName() + " " + user.getLastName();
-							if(name.length() > 26 )
-								name = user.getFirstName() + " "+user.getLastName().charAt(0);
-							expectedType = MessageType.P111_A;
-							wStep++;
-							lastMessageSent = "P111 \""+name+"? [->\"";
-							conn.outputMsg(lastMessageSent);
-						}
-						else
-						{
-							//ID was invalid and we resend the message and go back to step 1
-							lastMessageSent = "RM20 8 \"Indtast laborant nr\" \"\" \"&3\"";
-							conn.outputMsg(lastMessageSent);
-							expectedType = MessageType.RM20_B;
-							wStep = 1;
-						}
-					}
-					else
-					{
-						//ID was invalid and we resend the message and go back to step 1
-						lastMessageSent = "RM20 8 \"Indtast laborant nr\" \"\" \"&3\"";
-						conn.outputMsg(lastMessageSent);
-						expectedType = MessageType.RM20_B;
-						wStep = 1;
-					}
-					break;
-				case 3 :
-					//Labworker pressed the [-> key
-					expectedType = MessageType.K_C_4;
-					wStep++;
-					break;
-				case 4 :
-					//Labworker now has to type in the number for the productbatch
-					lastMessageSent = "RM20 8 \"Indtast Batch nr\" \"\" \"&3\"";
-					expectedType = MessageType.RM20_B;
-					wStep++;
-					conn.outputMsg(lastMessageSent);
-					break;
-				case 5 :
-					expectedType = MessageType.RM20_A;
-					wStep++;
-					break;
-				case 6 : 
-					//Labworker sent productbatch id number, now we check whether it's valid
-					//And whether there is anything to weigh
-					if(msg.getMsg().length() > 0)
-					{
-						int prodId = Integer.parseInt(msg.getMsg());
-						ProductBatchDAO prBDAO = new ProductBatchDAO();
-						prod = prBDAO.get(prodId);
-						if(prod != null)
-						{
-
-							currentRecipeComp = prBDAO.getNonWeightedComp(prodId);
-							if(currentRecipeComp != null)
-							{
-								// Now that we have something to weigh we need to remove everything from the weight
-								// And the labworker has to press [-> when it is done
-
-								lastMessageSent = "P111 \"Fjern alt fra vægten [->\"";
-								expectedType = MessageType.P111_A;
-								wStep++;
-								conn.outputMsg(lastMessageSent);
-
-
-							}
-							else
-							{
-								wStep = 5;
-								conn.outputMsg(lastMessageSent);
-							}
-						}
-						else
-						{
-							wStep = 5;
-							conn.outputMsg(lastMessageSent);
-						}
-					}
-					else
-					{
-						wStep = 5;
-						conn.outputMsg(lastMessageSent);
-					}
-					break;
-				case 7 :
-					expectedType = MessageType.K_C_4;
-					wStep++;
-					break;
-				case 8 :
-					//Labworker pressed [-> and we tare the weight
-					lastMessageSent = "T";
-					expectedType = MessageType.TARA_REPLY;
-					wStep++;
-					conn.outputMsg(lastMessageSent);
-					break;
-				case 9 :
-					if(Double.parseDouble(msg.getMsg()) > 0.01)
-					{
-						lastMessageSent = "P111 \"For meget vægt [->\"";
-						conn.outputMsg(lastMessageSent);
-						expectedType = MessageType.P111_A;
-						wStep = 7;
-					}
-					else
-					{
-						lastMessageSent = "P111 \"Placer tara på vægten [->\"";
-						expectedType = MessageType.P111_A;
-						wStep++;
-						conn.outputMsg(lastMessageSent);
-					}
-					break;
-				case 10 :
-					expectedType = MessageType.K_C_4;
-					wStep++;
-					break;
-				case 11 :
-					lastMessageSent = "S";
-					wStep++;
-					expectedType = MessageType.WEIGHT_REPLY;
-					conn.outputMsg(lastMessageSent);
-					break;
-				case 12 :
-					tara = Double.parseDouble(msg.getMsg());
-					lastMessageSent = "T";
-					wStep++;
-					expectedType = MessageType.TARA_REPLY;
-					conn.outputMsg(lastMessageSent);
-					break;
-				case 13 :
-					//TODO need commodity name and send it
-					lastMessageSent = "P111 \"Hæld "+ " i skålen [->\"";
-					expectedType = MessageType.P111_A;
-					wStep++;
-					conn.outputMsg(lastMessageSent);
-					break;
-				case 14 :
-					wStep++;
-					expectedType = MessageType.K_C_4;
-					break;
-				case 15 :
-					lastMessageSent = "S";
-					expectedType = MessageType.WEIGHT_REPLY;
-					wStep++;
-					conn.outputMsg(lastMessageSent);
-					break;
-				case 16 :
-					//TODO needs to check that netto is within limits
-					netto = Double.valueOf(msg.getMsg());
-					if(netto <= currentRecipeComp.getNomNetWeight()*(1+currentRecipeComp.getTolerance()) 
-							&& netto >= currentRecipeComp.getNomNetWeight()*(1-currentRecipeComp.getTolerance()))
-					{
-						lastMessageSent = "RM20 8 \"Hvilken batch kom råvaren fra?\" \"\" \"&3\"";
-						expectedType = MessageType.RM20_B;
-						wStep++;
-						conn.outputMsg(lastMessageSent);
-					}
-					else
-					{
-						lastMessageSent = "P111 \"Forkert mængde, prøv igen [->\"";
-						wStep = 14;
-						expectedType = MessageType.P111_A;
-						conn.outputMsg(lastMessageSent);
-					}
-					break;
-				case 17 :
-					expectedType = MessageType.RM20_B;
-					wStep++;
-					break;
-				case 18 :
-					int rb_id = Integer.parseInt(msg.getMsg());
-					CommodityBatchDAO cBatchDAO = new CommodityBatchDAO();
-					cBatch = cBatchDAO.get(rb_id);
-					if(cBatch != null)
-					{
-
-					}
-					else
-					{
-
-					}
-					break;
-				default: 
-					break;
-				}
-			}
-			else if(msg.getReplyType().equals(MessageType.ERROR))
-			{
-				if(errorsInARow < 10)
-				{
-					conn.outputMsg(lastMessageSent);
-					errorsInARow++;
-				}
-				else
-				{
-					try {
-						Thread.sleep(1000);
-						errorsInARow = 0;
-						conn.outputMsg(lastMessageSent);
-					} catch (InterruptedException e) {
-
-					}
-
-				}
 			}
 		}
 		catch(SQLException e)
@@ -440,7 +219,8 @@ public class SessionController {
 					{
 						if(prod.getStatus() < 2)
 						{
-							currentRecipeComp = pbDAO.getNonWeightedComp(pb_id);
+
+							currentRecipeComp = pbDAO.getNonWeighedComp(pb_id);
 							CommodityDAO cDAO = new CommodityDAO();
 							comm = cDAO.get(currentRecipeComp.getCommodityID());
 							phase = PhaseType.PUT_TARE;
@@ -553,15 +333,96 @@ public class SessionController {
 		}
 	}
 
-	private void weighCommodityPhase(SocketInMessage message)
+	private void weighCommodityPhase(SocketInMessage message) throws IOException
+	{
+		switch(message.getReplyType())
+		{
+		case SEND : 
+			conn.outputMsg("S");
+			break;
+		case EXIT :
+			conn.createNewSession();
+			break;
+		case TARE : 
+			break;
+		case ZERO :
+			break;
+		case TARA_REPLY :
+			break;
+		case WEIGHT_REPLY :
+			netto = Double.valueOf(message.getMsg());
+			double lowerBound = currentRecipeComp.getNomNetWeight()*(1-currentRecipeComp.getTolerance());
+			double upperBound = currentRecipeComp.getNomNetWeight()*(1+currentRecipeComp.getTolerance());
+			//First checks whether netto is lower than lowerbound then if it's higher than upper bound
+			if(netto < lowerBound)
+			{
+				conn.outputMsg("P111 \"Minimum: "+lowerBound+" kg [->\"");
+
+			}
+			else if(netto > upperBound)
+			{
+				conn.outputMsg("P111 \"Maximum: "+upperBound+" kg [->\"");
+			}
+			else
+			{
+				//Weight is accepted
+				RM20Expecting = true;
+				phase = PhaseType.CHOOSE_COMM_BATCH;
+				conn.outputMsg("RM20 8 \"Enter CommodityBatch ID\" \"\" \"&3\"");
+			}
+			break;
+		}
+	}
+
+	private void chooseCommBatchPhase(SocketInMessage message) throws IOException
 	{
 		if(RM20Expecting)
 		{
 			switch(message.getReplyType())
 			{
 			case RM20_A :
+				if(message.getMsg().length()>0)
+				{
+					int cb_id = Integer.parseInt(message.getMsg());
+					CommodityBatchDAO cbDAO = new CommodityBatchDAO();
+					cBatch = cbDAO.get(cb_id);
+					if(cBatch != null)
+					{
+						RM20Expecting = false;
+						phase = PhaseType.BRUTTO_CONTROL;
+						conn.outputMsg("P111 \"Clear the weight [->\"");
+					}
+					else
+					{
+						conn.outputMsg("P111 \"Invalid ID try again\"");
+						try 
+						{
+							Thread.sleep(2000);
+						}
+						catch (InterruptedException e) 
+						{
+
+						}
+						conn.outputMsg("RM20 8 \"Enter CommodityBatch ID\" \"\" \"&3\"");
+					}
+				}
+				else
+				{
+					conn.outputMsg("P111 \"Invalid ID try again\"");
+					try 
+					{
+						Thread.sleep(2000);
+					}
+					catch (InterruptedException e) 
+					{
+
+					}
+					conn.outputMsg("RM20 8 \"Enter CommodityBatch ID\" \"\" \"&3\"");
+				}
 				break;
 			case RM20_C :
+				RM20Expecting = false;
+				conn.createNewSession();
 				break;
 			}
 		}
@@ -585,29 +446,92 @@ public class SessionController {
 		}
 	}
 
-	private void bruttoControlPhase(SocketInMessage message)
+	private void bruttoControlPhase(SocketInMessage message) throws IOException
 	{
 		switch(message.getReplyType())
 		{
 		case SEND :
+			conn.outputMsg("S");
 			break;
 		case EXIT :
+			conn.createNewSession();
 			break;
 		case TARE : 
 			break;
 		case ZERO :
 			break;
 		case TARA_REPLY :
+			phase = PhaseType.END_OF_WEIGHING;
+			acceptResult();
 			break;
 		case WEIGHT_REPLY :
+			double w = Math.abs(Double.valueOf(message.getMsg()));
+			if(w <= tara*(1+0.02) && w >= tara*(1-0.02))
+			{
+				//ACCEPT THE RESULT
+				conn.outputMsg("T");
+			}
+			else
+			{
+				conn.outputMsg("P111 \"You haven't cleared the weight\"");
+				try 
+				{
+					Thread.sleep(2000);
+				} 
+				catch (InterruptedException e) {
+
+				}
+				conn.outputMsg("P111 \"Clear the weight [->\"");
+			}
 			break;
 		}
 	}
 
-	private void acceptResult()
+	private void endOfWeighing(SocketInMessage message)
+	{
+
+	}
+
+	private void acceptResult() throws IOException
 	{
 		//TODO write to database
+		ProductBatchDAO pbDAO = new ProductBatchDAO();
+		CommodityBatchDAO cbDAO = new CommodityBatchDAO();
+
+		ProductBatchCompDTO component = 
+				new ProductBatchCompDTO(prod.getproductBatchID() , cBatch.getCommoditybatchID(), tara, netto , user.getUserID());
+
+		pbDAO.addComponent(component);
+		cbDAO.changeAmount(cBatch.getCommoditybatchID(), cBatch.getQuantity()-netto);
+
+		if(prod.getStatus() == 0)
+			prod.setStatus(1);
+		currentRecipeComp = pbDAO.getNonWeighedComp(prod.getproductBatchID());
+		if(currentRecipeComp != null)
+		{
+
+		}
+		else
+		{
+			Date d = new Date(System.currentTimeMillis());
+			Time t = new Time(System.currentTimeMillis());
+			String dateTime = d.toString() + " " + t.toString();
+			prod.setEndDate(dateTime);
+			prod.setStatus(2);
+			pbDAO.update(prod);
+			conn.outputMsg("P111 \"ProductBatch finished!\"");
+			try 
+			{
+				Thread.sleep(2000);
+			} 
+			catch (InterruptedException e)
+			{
+			}
+			conn.createNewSession();
+		}
 	}
+
+
 
 
 
