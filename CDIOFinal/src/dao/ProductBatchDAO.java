@@ -38,17 +38,31 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	}
 
 	/**
-	 * Changes the starttime and stop time. <br>
-	 * If the stop time has yet to be determined please leave an empty string in its place <br>
-	 * 
+	 * Updates the startdate of a productbatch. <br>
 	 * @param dto
 	 * @return true if functions succeeds. false if not
-	 * 
 	 */
 	@Override
-	public boolean update(ProductBatchDTO dto) {
-		String cmd = "CALL updateProductBatchTime('%s','%s','%d');";
-		cmd = String.format(cmd, dto.getStartDate(),dto.getEndDate(),dto.getproductBatchID());
+	public boolean setStartdate(ProductBatchDTO dto) {
+		String cmd = "CALL setProductBatchStartDate('%s','%d');";
+		cmd = String.format(cmd, dto.getStartDate(),dto.getproductBatchID());
+		try {
+			Connector.doUpdate(cmd);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	/**
+	 * Updates the stopdate of a productbatch. <br>
+	 * @param dto
+	 * @return true if functions succeeds. false if not
+	 */
+	@Override
+	public boolean setStopdate(ProductBatchDTO dto) {
+		String cmd = "CALL setProductBatchStopDate('%s','%d');";
+		cmd = String.format(cmd, dto.getStartDate(),dto.getproductBatchID());
 		try {
 			Connector.doUpdate(cmd);
 			return true;
