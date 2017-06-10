@@ -4,14 +4,14 @@ public class Constant {
 
 	public static final String
 
-	server					= "localhost",  		// 	database-serveren. Her enten localhost eller IP på den fremmede server.
+	server					= "88.99.32.10",  		// 	database-serveren. Her enten localhost eller IP på den fremmede server.
 	database				= "cdiofinal",   		//	Navnet på selve databasen.
-	username				= "root", 				//	Username til at logge på databasen med .
-	password				= "", 					// 	password til at logge på databasen med.
-	testserver				= "localhost",			//	Addresse på testdatabase
+	username				= "cdio", 				//	Username til at logge på databasen med .
+	password				= "cdio", 					// 	password til at logge på databasen med.
+	testserver				= "88.99.32.10",			//	Addresse på testdatabase
 	testdatabase			= "testcdiofinal",		//	Navnet på test databasen.
-	testusername 			= "root",				//  Username brugt i testdatabasen
-	testpassword			= "";					//	Password brugt i testdatabasen
+	testusername 			= "cdio",				//  Username brugt i testdatabasen
+	testpassword			= "cdio";					//	Password brugt i testdatabasen
 	
 	public static final int
 		port				= 3306,					//	Porten der bruges til at tilgå databasen
