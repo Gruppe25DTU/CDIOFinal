@@ -1,6 +1,7 @@
 package dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +16,9 @@ public class UserDTO implements Serializable {
 	private String ini = "";
 	private String cpr = "";
 	private String password = "";
-	private Set<String> roles = new HashSet<>();
+	private ArrayList<String> roles;
+	
+
 	private String email = "";
 	private int status = -1;
 
@@ -28,7 +31,7 @@ public class UserDTO implements Serializable {
 		this.cpr = cpr;
 		this.password = password;
 		this.email = email;
-		this.roles = new HashSet<>(roles);
+		this.roles = new ArrayList<>(roles);
 		this.status = status;
 	}
 
@@ -102,11 +105,11 @@ public class UserDTO implements Serializable {
 		this.password = password;
 	}
 
-	public Set<String> getRoles() {
+	public ArrayList<String> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<String> roles) {
+	public void setRoles(ArrayList<String> roles) {
 		this.roles = roles;
 	}
 
@@ -126,6 +129,11 @@ public class UserDTO implements Serializable {
 		this.status = status;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "UserDTO [firstName=" + firstName + ", lastName=" + lastName + ", userID=" + userID + ", userName="
+				+ userName + ", ini=" + ini + ", cpr=" + cpr + ", password=" + password + ", roles=" + roles
+				+ ", email=" + email + ", status=" + status + "]";
+	}
 
 }

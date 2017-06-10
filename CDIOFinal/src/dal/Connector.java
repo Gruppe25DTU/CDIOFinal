@@ -30,7 +30,6 @@ public class Connector {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -88,12 +87,15 @@ public class Connector {
 	public static ResultSet doQuery(String cmd) throws SQLException	{
 		Connection conn = connectToDatabase();
 		Statement stm = conn.createStatement();
-		try { return stm.executeQuery(cmd); }
+		try { 
+			ResultSet rs = stm.executeQuery(cmd);
+			return rs; 
+		}
 		catch (SQLException e) 
 		{return null;}
 		finally {
-			stm.close();
-			conn.close();
+			//stm.close();
+			//conn.close();
 		}
 
 	}
@@ -113,7 +115,10 @@ public class Connector {
 	{
 		Connection conn = connectToDatabase();
 		Statement stm = conn.createStatement();
-		try { return stm.executeUpdate(cmd); }
+		try { 
+			int result = stm.executeUpdate(cmd);
+			return result; 
+		}
 		catch (SQLException e) 
 		{return 0;
 		}
