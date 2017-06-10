@@ -19,7 +19,7 @@ public class Main implements Runnable{
 	}
 
 	public static void main(String[] args) {
-		Connector.changeTestMode(true);
+		Connector.changeTestMode(false);
 			Connection dbConn = Connector.connectToDatabase();
 			if(dbConn != null)
 				new Thread(new Main()).start();
@@ -31,6 +31,14 @@ public class Main implements Runnable{
 
 	@Override
 	public void run() {
+		
+		String t = "RM20 A \"\"";
+		String[] ta = t.split("\"");
+		System.out.println(ta.length);
+		for(int i = 0; i<ta.length ; i++)
+		{
+			System.out.println(ta[i]);
+		}
 		
 		for(int i = 0; i<DefaultWeightAddresses.WEIGHT_ADDRESSES.length ; i++)
 		{

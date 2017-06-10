@@ -10,18 +10,25 @@ public class ASEConnection {
 	private SessionController sesh;
 	private WeightInput input;
 	private DataOutputStream output;
+	private ASEConnectionManager cM;
+	private int connNr;
 	
-	public ASEConnection(Socket socket) throws IOException {
+	public ASEConnection(Socket socket , ASEConnectionManager cM , int connNr) throws IOException {
 			this.socket = socket;
 			this.input = new WeightInput(socket.getInputStream() , this);
 			this.output = new DataOutputStream(socket.getOutputStream());
 			sesh = new SessionController(this);
+			this.cM = cM;
+			this.connNr = connNr;
 			new Thread(this.input).start();
 	}
 	
 	public void disconnect() throws IOException
 	{
+		this.outputMsg("Q");
+		this.cM.disconnect(connNr);
 		this.socket.close();
+		
 	}
 	
 	public void processInput(SocketInMessage msg) throws IOException

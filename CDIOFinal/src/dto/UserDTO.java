@@ -31,7 +31,10 @@ public class UserDTO implements Serializable {
 		this.cpr = cpr;
 		this.password = password;
 		this.email = email;
-		this.roles = new ArrayList<>(roles);
+		if(roles == null)
+			this.roles = new ArrayList<String>();
+		else
+			this.roles = new ArrayList<>(roles);
 		this.status = status;
 	}
 

@@ -34,7 +34,7 @@ public class WeightInput implements Runnable{
 		}
 		catch(IOException e)
 		{
-
+			
 		}
 		finally
 		{
@@ -54,21 +54,30 @@ public class WeightInput implements Runnable{
 			switch(input.split(" ")[0])
 			{
 			case "RM20" :
-
+				
+				
 				if(input.split(" ").length <= 1)
 					break;
-
-				if(input.split(" ")[1].equals("B"))
+				
+				char rm = input.split(" ")[1].charAt(0);
+				if(rm == 'B')
 				{
 					sInMsg = new SocketInMessage(MessageType.RM20_B , input);
 					conn.processInput(sInMsg);
 				}
-				else if(input.split(" ")[1].equals("A"))
+				else if(rm == 'A')
 				{
 					if(input.split("\"").length>1)
 						input = input.split("\"")[1];
+					else
+						input = "";
 					sInMsg = new SocketInMessage(MessageType.RM20_A , input);
 					conn.processInput(sInMsg);
+				}
+				else if(rm == 'C')
+				{
+					sInMsg = new SocketInMessage(MessageType.RM20_C , input);
+					conn.processInput(sInMsg);	
 				}
 				break;
 			case "P111" :

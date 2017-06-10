@@ -32,7 +32,7 @@ public class ASEConnectionManager {
 		{
 			if(connections[i] == null)
 			{
-				connections[i] = new ASEConnection(socket);
+				connections[i] = new ASEConnection(socket, this , i);
 				break;
 			}
 				
