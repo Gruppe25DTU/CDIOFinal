@@ -24,12 +24,11 @@ import logic.RuleSet;
 @Path("user")
 public class RESTUser {
 	
-	 static final RuleSetInterface ruleset = new RuleSet();
 	  static final UserDAO dao = new UserDAO();
 	
 	
 	@GET
-	@Path("view/id={id : [0-9+]}")
+	@Path("view/id={id : [0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUser(@PathParam("id") int ID) {
 		try {	
