@@ -27,6 +27,7 @@ public class RESTCommodity {
 	  static final CommodityDAO dao = new CommodityDAO();
 	  
 	  @PUT
+	  @Path("/commodity/create}")
 	  @Consumes(MediaType.APPLICATION_JSON)
 		public Response createCommodity(CommodityDTO dto) {
 			try {

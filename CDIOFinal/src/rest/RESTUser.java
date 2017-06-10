@@ -23,23 +23,23 @@ import logic.RuleSet;
 
 @Path("/user")
 public class RESTUser {
-	
-	  static final UserDAO dao = new UserDAO();
-	
-	
+
+	static final UserDAO dao = new UserDAO();
+
+
 	@GET
 	@Path("/view/id={id : [0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUser(@PathParam("id") int ID) {
 		try {	
 			dao.getUser(ID);
-		 return Response.status(Status.OK).entity(dao.getUser(ID)).build();
-		 
+			return Response.status(Status.OK).entity(dao.getUser(ID)).build();
+
 		} catch (Exception e) {
 			return Response.status(Status.NOT_FOUND).build();
-			
+
 		} 
-		
+
 	}
 
 	@POST
@@ -55,53 +55,54 @@ public class RESTUser {
 		}
 
 	}
-	
+
 	@GET
 	@Path("/list/deactivatedUsers")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getDeactivatedUsers() {
 		try {
 			dao.getDeactiveUsers();
-			 return Response.status(Status.OK).entity(dao.getDeactiveUsers()).build();
+			return Response.status(Status.OK).entity(dao.getDeactiveUsers()).build();
 
 		} catch (Exception e) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
-	
+
 	@PUT
+	@Path("/user/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createUser(UserDTO dto) {
 		try {
 			dao.create(dto); 
-			 return Response.status(Status.CREATED).build();
+			return Response.status(Status.CREATED).build();
 
 		} catch (Exception e) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		}
 
 	}
-	
+
 	@POST
 	@Path("/update/{old_cpr}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateUser(UserDTO dto, @PathParam("old_cpr") String old_cpr) {
 		try {
-		dao.update(dto, old_cpr);
-		return Response.status(Status.ACCEPTED).build();
+			dao.update(dto, old_cpr);
+			return Response.status(Status.ACCEPTED).build();
 
 		} catch (Exception e) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
-	
+
 	@GET
 	@Path("/view/name={name : [a-zA-Z]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response UserExists(@PathParam("name") String name) {
 		try {
 			dao.userExists(name);
-			 return Response.status(Status.OK).entity(dao.userExists(name)).build();
+			return Response.status(Status.OK).entity(dao.userExists(name)).build();
 
 		} catch (Exception e) {
 			return Response.status(Status.NOT_FOUND).build();

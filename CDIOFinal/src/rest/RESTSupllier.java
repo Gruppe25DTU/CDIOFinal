@@ -23,33 +23,34 @@ import logic.RuleSet;
 
 @Path("/supllier")
 public class RESTSupllier {
-	
-	  static final SupplierDAO dao = new SupplierDAO();
-	  
-	  
-	  @PUT
-	  @Consumes(MediaType.APPLICATION_JSON)
-		public Response createSupllier(SupplierDTO dto) {
-			try {
-				dao.create(dto); 
-				 return Response.status(Status.CREATED).build();
 
-			} catch (Exception e) {
-				return Response.status(Status.UNAUTHORIZED).build();
-			}
-			
+	static final SupplierDAO dao = new SupplierDAO();
+
+
+	@PUT
+	@Path("/supllier/create}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response createSupllier(SupplierDTO dto) {
+		try {
+			dao.create(dto); 
+			return Response.status(Status.CREATED).build();
+
+		} catch (Exception e) {
+			return Response.status(Status.UNAUTHORIZED).build();
 		}
-	  
-	  @GET
-	  @Path("/view/id={id : [0-9+]}")
-	  @Produces(MediaType.APPLICATION_JSON)
-	  public Response getSupplier(@PathParam("id") int ID) {
-		  try {
-			  dao.getSupplier(ID);
-			  return Response.status(Status.OK).entity(dao.getSupplier(ID)).build();
-			  
-		  } catch (Exception e) {
-			  return Response.status(Status.NOT_FOUND).build();
-		  }
-	  }
+
+	}
+
+	@GET
+	@Path("/view/id={id : [0-9+]}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSupplier(@PathParam("id") int ID) {
+		try {
+			dao.getSupplier(ID);
+			return Response.status(Status.OK).entity(dao.getSupplier(ID)).build();
+
+		} catch (Exception e) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+	}
 }

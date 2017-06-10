@@ -23,19 +23,20 @@ import logic.RuleSet;
 
 @Path("/recipe")
 public class RESTRecipe {
-	
-	  static final RecipeDAO dao = new RecipeDAO();
-	  
-	  @PUT
-	  @Consumes(MediaType.APPLICATION_JSON)
-	  public Response createRecipe(RecipeDTO dto) {
-		  try{
-			  dao.create(dto);
-			  return Response.status(Status.CREATED).build();
-			  
-		  } catch (Exception e) {
-			  return Response.status(Status.UNAUTHORIZED).build();
-		  } 
-		  
-	  }
+
+	static final RecipeDAO dao = new RecipeDAO();
+
+	@PUT
+	@Path("/recipe/create}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response createRecipe(RecipeDTO dto) {
+		try{
+			dao.create(dto);
+			return Response.status(Status.CREATED).build();
+
+		} catch (Exception e) {
+			return Response.status(Status.UNAUTHORIZED).build();
+		} 
+
+	}
 }
