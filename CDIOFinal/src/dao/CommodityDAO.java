@@ -61,7 +61,7 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 	 */
 	@Override
 	public CommodityDTO get(int id) {
-		String cmd = "CALL getCommodity('');";
+		String cmd = "CALL getCommodity('%d');";
 		cmd = String.format(cmd, id);
 		
 		try {

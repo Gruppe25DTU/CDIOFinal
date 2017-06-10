@@ -185,7 +185,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 */
 	@Override
 	public RecipeCompDTO getNonWeighedComp(int pbid) {
-		String cmd = "CALL getProductBatchComponentNotWeighed('');";
+		String cmd = "CALL getProductBatchComponentNotWeighed('%d');";
 		cmd  = String.format(cmd, pbid);
 
 		try {

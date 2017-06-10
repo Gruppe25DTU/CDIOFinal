@@ -74,7 +74,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 */
 	@Override
 	public List<UserDTO> getUserWithRole(String roleName) {
-		String cmd = "CALL getuserWithRole('');";
+		String cmd = "CALL getuserWithRole('%s');";
 		cmd = String.format(cmd, roleName);
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
@@ -111,7 +111,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 */
 	@Override
 	public boolean changeStatus(int ID, boolean active){
-		String cmd = "CALL setActive('','');";
+		String cmd = "CALL setActive('%d','%d');";
 		int status;
 		if(active) {
 			status = 1;
