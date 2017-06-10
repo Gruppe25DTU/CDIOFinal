@@ -2,6 +2,7 @@ package ase;
 
 public enum PhaseType {
 	LOGIN,
+	CONFIRM_NAME,
 	CLEAR_WEIGHT,
 	CHOOSE_PRODUCT,
 	PUT_TARE,
