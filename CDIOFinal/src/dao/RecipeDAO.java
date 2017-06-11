@@ -69,6 +69,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 			if(rs == null) {
 				return null;
 			}
+			rs.next();
 			int recipe_ID = rs.getInt("recipe_ID");
 			String recipe_Name = rs.getString("recipe_Name");
 			List<RecipeCompDTO> components = getRecipeComponent(recipe_ID);
@@ -144,6 +145,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 			if(rs == null) {
 				return 0;
 			}
+			rs.next();
 			return rs.getInt("max");
 		} catch (SQLException e) {
 			e.printStackTrace();

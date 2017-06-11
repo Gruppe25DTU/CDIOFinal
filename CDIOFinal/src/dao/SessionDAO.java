@@ -23,6 +23,8 @@ public class SessionDAO implements SessionInterfaceDAO{
 			if(rs == null) {
 				return false;
 			}
+			rs.next();
+
 			if(rs.getInt("result") == 1) {
 				return true;
 			}

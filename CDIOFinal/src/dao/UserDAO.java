@@ -225,6 +225,8 @@ public class UserDAO implements UserInterfaceDAO{
 			if(rs == null) {
 				return true;
 			}
+			rs.next();
+
 			int result = rs.getInt("result");
 			if(result == 1) {
 				return true;

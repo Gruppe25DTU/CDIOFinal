@@ -17,7 +17,7 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 	 * @param dto
 	 * @return
 	 *
-	*/
+	 */
 	@Override
 	public int create(CommodityDTO dto) {
 		String cmd = "CALL addCommodity('%d','%s','%d');";
@@ -66,20 +66,22 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 	public CommodityDTO get(int id) {
 		String cmd = "CALL getCommodity('%d');";
 		cmd = String.format(cmd, id);
-		
+
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			if(rs == null) {
 				return null;
 			}
-			return new CommodityDTO(rs.getInt("commodity_ID"), rs.getString("commodity_Name"), rs.getInt("supplier_ID"));
+			while(rs.next()) {
+				return new CommodityDTO(rs.getInt("commodity_ID"), rs.getString("commodity_Name"), rs.getInt("supplier_ID"));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	
+
 	/**
 	 * Finds a free CommodityID that is not used. <br>
 	 * It's possible to use the ID returned as a new ID.
@@ -94,7 +96,11 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 			if(rs == null) {
 				return 0;
 			}
-			return rs.getInt("max");
+			while(rs.next()) {
+				return rs.getInt("max");
+
+			}
+			return 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;

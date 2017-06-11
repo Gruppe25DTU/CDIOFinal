@@ -120,6 +120,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			if(rs == null) {
 				return null;
 			}
+			rs.next();
 			int ID = rs.getInt("productBatch_ID");
 			int status = rs.getInt("status");
 			int recipe_ID = rs.getInt("recipe_ID");
@@ -199,9 +200,11 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			if(rs == null) {
 				return null;
 			}
-			RecipeCompDTO recipeComp = new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getInt("nom_net_weight"),rs.getInt("tolerance"));
-			
-			return recipeComp;
+			while(rs.next()) {
+				RecipeCompDTO recipeComp = new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getInt("nom_net_weight"),rs.getInt("tolerance"));
+				return recipeComp;
+			}
+			return null;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -226,7 +229,10 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			if(rs == null) {
 				return 0;
 			}
-			return rs.getInt("max");
+			while(rs.next()) {
+				return rs.getInt("max");
+			}
+			return 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;

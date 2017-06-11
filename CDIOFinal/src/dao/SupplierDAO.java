@@ -43,6 +43,8 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 			if(rs == null) {
 				return null;
 			}
+			rs.next();
+
 			int supplier_ID = rs.getInt("supplier_I");
 			String supplier_Name = rs.getString("supplier_Name");
 
@@ -94,6 +96,8 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 			if(rs == null) {
 				return 0;
 			}
+			rs.next();
+
 			return rs.getInt("max");
 		} catch (SQLException e) {
 			e.printStackTrace();
