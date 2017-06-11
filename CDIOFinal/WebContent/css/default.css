@@ -40,10 +40,31 @@
 }
 
 .optionline {
+	 position: static;
     background-color: #e7ebe8; 
     width: 100%;
     position: relative;
     padding: 5px;
+}
+
+.optionlineUser {
+	position: relative;
+    width: 100%;
+    padding: 5px;
+    justify-content: center;
+}
+
+.optionlineUser input[type=button]{
+	width: 200px;
+	float: right;
+    margin-right:10px;
+ 
+    
+}
+
+
+.optionlineUser input[type=button]:hover {
+opacity: 0.8;
 }
 
  /* dropdown */
@@ -120,6 +141,10 @@ table thead {
     -webkit-flex: 1 100%;
     flex: 1 100%;
 }
+
+.rolebox {
+	min-width: 280px;
+}
     
 .informationbox {
 float: left;
@@ -135,6 +160,7 @@ display:block;
 
 .detailsForm {
     text-align: left;
+    text-align: justify;
 }
  
 .blockbox {
@@ -156,10 +182,21 @@ display: block;
     padding: 5px 20px;
     margin: 8px 0;
     cursor: pointer;
-    width: 100%;
+    width: 51%;
     font-family: Candara;
-    font-size: 25px;
+    font-size: 18px;
+     min-width: 240px;
+    
 }
+
+input[type=button]:hover {
+opacity: 0.8;
+}
+    
+    .icon {
+	padding: 10px;
+}
+    
     
 #id
 {
@@ -170,8 +207,18 @@ display: block;
 
 #CPR
 {
-    font-family: Candara;
-    width : 180px;
+	font-family: Candara;
+	width : 90px;
+}
+
+#CPR2
+{
+	font-family: Candara;
+	width : 75px;
+}
+#CPRTOTAL
+{
+	min-width:170px;
 }
 
 input[type=checkbox] {

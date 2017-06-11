@@ -9,6 +9,9 @@
 <script type="text/javascript" src="script/default.js"></script>
 <script type="text/javascript" src="script/commoditybatch.js"></script>
 <link rel="stylesheet" type="text/css" href="css/default.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
 </head>
 <div class="informationboxsmall search">  
     <form class="searchForm" id="searchForm" name="searchForm">
@@ -17,10 +20,19 @@
     </form> 
 </div>
 <div id="details" class="details">
-    <form id="detailsForm" class="detailsForm" name="commoditybatch">
-        <h2 style="font-family: Candara;">
-        <i class="glyphicon glyphicon-user">Commodity Batch Information</i></h2>
-        <br>
+	<div id="contentfield">
+		<form id="detailsForm" class="detailsForm" name="user">
+			<section class="optionlineUser">
+				<h2 style="font-family: candara;">
+					<i class="icon glyphicon glyphicon-apple" style="font-size: 30px;"></i>
+					Commodity Batch Information <input type="button" name="newuser"
+						class="create" id="newuser" value="Add New Commodity Batch"
+						style="left: 50%; min-width: 240px;"> <input type="button" name="edit"
+						id="edit" class="edit" value="Edit Commodity Batch" style="left: 50%;min-width: 220px;">
+				</h2>
+			</section>
+
+			<div class="content">
         <div class="informationboxsmall">
             ID:<br>
                 <input type="text" name="id" id="id" class="protected auto" disabled>
@@ -32,22 +44,17 @@
             <input type="text" id="quantity" name="quantity" class="editable protected" onkeyup="checkState.call(this)" disabled>
         </div>
         <div class="informationbox">
-            <table>
-               <tr>
-                   <td>
-                       <input type="button" name="edit" id="edit" class="edit" value="Edit">
-                       <input type="button" name="update" id="update" class="update" value="Update" style="display: none;">
-                       <input type="button" name="cancel" id="cancel" class="cancel" value="Cancel" style="display: none;">
-                   </td>
-               </tr>
-               <tr>
-                   <td>
-                       <input type="button" id="create" value="Create New Commodity Batch">
-                   </td>
-               </tr>
-            </table>
+           	<br>
+						<input type="button" name="update" id="update" class="update"
+							value="Update" style="display: none;"> <input
+							type="button" name="create" class="create" id="create"
+							value="Create New Commodity Batch" style="display: none;"> <input
+							type="button" name="cancel" id="cancel" class="cancel"
+							value="Cancel" style="display: none;">
+            </div>
         </div>
     </form>
+    </div>
 </div>
 </body>
 </html>

@@ -9,65 +9,88 @@
 <script type="text/javascript" src="script/default.js"></script>
 <script type="text/javascript" src="script/user.js"></script>
 <link rel="stylesheet" type="text/css" href="css/default.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
 </head>
-<div class="informationboxsmall search">  
+<div class="informationboxsmall search">
 	<form class="searchForm" id="searchForm" name="searchForm">
-	    Search for users by ID or name: <input type="text" name="search" class="search" autofocus>
-	    <input type="submit" value="Submit"/>
-	</form> 
-</div>
-<div id="details" class="details">
-	<form id="detailsForm" class="detailsForm" name="user">
-		<h2 style="font-family: Candara;">
-		<i class="glyphicon glyphicon-user">User Information</i></h2>
-		<br>
-		<div class="informationboxsmall">
-			ID:<br>
-			    <input type="text" name="id" id="id" class="protected auto" onkeyup="checkState.call(this)" disabled>
-		</div>
-		<div class="informationbox">
-			Username:<br> <input type="text" oninput="checkUsername()" name="userName" id="userName" class="editable protected" onkeyup="checkState.call(this)" disabled>
-			CPR:<br>
-			<input type="text" id="CPR" name="cpr" class="editable protected" onkeyup="checkState.call(this)" disabled>
-		</div>
-		<div class="informationbox">
-			First Name:<br>
-			<input type="text" name="firstName" id="FirstnField" class="editable protected" onkeyup="checkState.call(this)" disabled><br>
-			Surname:<br>
-			<input type="text" name="lastName" id="SurnameField" class="editable protected" onkeyup="checkState.call(this)" disabled><br>
-			Initials:<br>
-			<input type="text" id="initialsField" name="ini" maxlength="4" class="protected" onkeyup="checkState.call(this)" disabled><br>
-		</div>
-		<div class="informationbox">
-			Email:<br>
-			<input type="email" name="email" id="EmailField" class="editable protected" onkeyup="checkState.call(this)" disabled>
-			Roles:<br>
-			Pharmacist:
-			<input type="checkbox" value="pharmacist" name="roles[]" name="pharmacist" class="editable protected" onkeyup="checkState.call(this)" disabled>
-			Administrator:
-			<input type="checkbox" value="admin" name="roles[]" class="editable protected" onkeyup="checkState.call(this)" disabled><br>
-			Production Manager:
-			<input type="checkbox" value="productionManager" name="roles[]" class="editable protected" onkeyup="checkState.call(this)" disabled>
-			Lab assistant:
-			<input type="checkbox" value="labAssistant" name="roles[]" class="editable protected" onkeyup="checkState.call(this)" disabled><br>
-		</div>
-		<div class="informationbox">
-		    <table>
-		       <tr>
-                   <td>
-                       <input type="button" name="edit" id="edit" class="edit" value="Edit">
-                       <input type="button" name="update" id="update" class="update" value="Update" style="display: none;">
-		               <input type="button" name="cancel" id="cancel" class="cancel" value="Cancel" style="display: none;">
-		           </td>
-		       </tr>
-		       <tr>
-		           <td>
-		               <input type="button" id="create" value="Create New User">
-		           </td>
-		       </tr>
-		    </table>
-	    </div>
+		Search for users by ID or name: <input type="text" name="search"
+			class="search" autofocus> <input type="submit" value="Submit" />
 	</form>
+</div>
+
+<div id="details" class="details">
+	<div id="contentfield">
+		<form id="detailsForm" class="detailsForm" name="user">
+			<section class="optionlineUser">
+				<h2 style="font-family: candara;">
+					<i class="icon glyphicon glyphicon-user" style="font-size: 30px;"></i>
+					User Information <input type="button" name="newuser" class="create"
+						id="newuser" value="Add New User" style="left: 50%;"> <input
+						type="button" name="edit" id="edit" class="edit" value="Edit User"
+						style="left: 50%;">
+				</h2>
+			</section>
+
+			<div class="content">
+				<div class="informationboxsmall">
+					ID:<br> <input type="text" name="id" id="id"
+						class="protected auto" onkeyup="checkState.call(this)" disabled>
+				</div>
+				<div class="informationbox">
+					Username:<br> <input type="text" oninput="checkUsername()"
+						name="userName" id="userName" class="editable protected"
+						onkeyup="checkState.call(this)" disabled> CPR:<br>
+					<div id="CPRTOTAL">
+						<input type="text" id="CPR" name="cpr" maxlength="6"
+							onkeyup="checkState.call(this)" class="protected" disabled>-<input
+							type="text" id="CPR2" maxlength="4"
+							onkeyup="checkState.call(this)" disabled class="protected">
+					</div>
+					Email:<br> <input type="email" name="email" id="EmailField"
+						class="editable protected" onkeyup="checkState.call(this)"
+						disabled>
+				</div>
+				<div class="informationbox">
+					First Name:<br> <input type="text" name="firstName"
+						id="FirstnField" class="editable protected"
+						onkeyup="checkState.call(this)" disabled><br>
+					Surname:<br> <input type="text" name="lastName"
+						id="SurnameField" class="editable protected"
+						onkeyup="checkState.call(this)" disabled><br>
+					Initials:<br> <input type="text" id="initialsField" name="ini"
+						maxlength="4" class="protected" onkeyup="checkState.call(this)"
+						disabled><br>
+				</div>
+				<div class="informationbox">
+
+					<div class="rolebox">
+						Roles:<br> Pharmacist:<input type="checkbox"
+							value="pharmacist" name="roles[]" name="pharmacist"
+							class="editable protected" onkeyup="checkState.call(this)"
+							disabled> Administrator:<input type="checkbox"
+							value="admin" name="roles[]" class="editable protected"
+							onkeyup="checkState.call(this)" disabled><br>
+						Production Manager: <input type="checkbox"
+							value="productionManager" name="roles[]"
+							class="editable protected" onkeyup="checkState.call(this)"
+							disabled> Lab assistant: <input type="checkbox"
+							value="labAssistant" name="roles[]" class="editable protected"
+							onkeyup="checkState.call(this)" disabled><br>
+					</div>
+				</div>
+				<div class="informationbox">
+					<input type="button" name="update" id="update" class="update"
+						value="Update" style="display: none;"> <input
+						type="button" name="create" class="create" id="create"
+						value="Create New User" style="display: none;"> <input
+						type="button" name="cancel" id="cancel" class="cancel"
+						value="Cancel" style="display: none;">
+				</div>
+			</div>
+		</form>
+	</div>
 </div>
 </body>
 </html>
