@@ -3,6 +3,7 @@ package ase;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 import dal.Connector;
@@ -22,7 +23,7 @@ public class Main{
 	public static void main(String[] args) {
 		Connector.changeTestMode(true);
 			Connection dbConn = Connector.connectToDatabase();
-			try
+		try
 			{
 				if(dbConn != null)
 				{

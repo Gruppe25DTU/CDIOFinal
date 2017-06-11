@@ -425,12 +425,16 @@ public class SessionController {
 			//First checks whether netto is lower than lowerbound then if it's higher than upper bound
 			if(netto < lowerBound)
 			{
-				conn.outputMsg("P111 \"Minimum: "+lowerBound+" kg [->\"");
+				String lBS = Double.toString(lowerBound).replaceAll(",", ".");
+				lBS = lBS.length() > 6 ? lBS.substring(0 , 6) : lBS.substring(0 , lBS.length());
+				conn.outputMsg("P111 \"Minimum: "+lBS+" kg [->\"");
 
 			}
 			else if(netto > upperBound)
 			{
-				conn.outputMsg("P111 \"Maximum: "+upperBound+" kg [->\"");
+				String uBS = Double.toString(lowerBound).replaceAll(",", ".");
+				uBS = uBS.length() > 6 ? uBS.substring(0 , 6) : uBS.substring(0 , uBS.length());
+				conn.outputMsg("P111 \"Maximum: "+uBS+" kg [->\"");
 			}
 			else
 			{
