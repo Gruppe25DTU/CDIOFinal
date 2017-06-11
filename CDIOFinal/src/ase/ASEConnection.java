@@ -38,6 +38,7 @@ public class ASEConnection {
 	
 	public void outputMsg(String msg) throws IOException
 	{	
+		System.out.println("Output: "+msg);
 		msg = msg + "\r\n";
 		this.output.write(msg.getBytes());
 		this.output.flush();

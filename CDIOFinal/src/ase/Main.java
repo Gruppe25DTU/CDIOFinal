@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 import dal.Connector;
 
-public class Main implements Runnable{
+public class Main{
 
 	private ASEConnectionManager cM;
 	private Scanner keyb;
@@ -27,7 +27,7 @@ public class Main implements Runnable{
 				if(dbConn != null)
 				{
 					dbConn.close();
-					new Thread(new Main()).start();
+					new Main().run();
 				}	
 			}
 			catch(SQLException e)
@@ -42,16 +42,7 @@ public class Main implements Runnable{
 
 	}
 
-	@Override
 	public void run() {
-		
-		String t = "RM20 A \"\"";
-		String[] ta = t.split("\"");
-		System.out.println(ta.length);
-		for(int i = 0; i<ta.length ; i++)
-		{
-			System.out.println(ta[i]);
-		}
 		
 		for(int i = 0; i<DefaultWeightAddresses.WEIGHT_ADDRESSES.length ; i++)
 		{
@@ -92,6 +83,7 @@ public class Main implements Runnable{
 		case "quit" :
 			cM.disconnectAll();
 			running = false;
+			System.exit(1);
 			break;
 		default : 
 			System.out.println("Invalid command");
