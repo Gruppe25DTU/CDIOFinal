@@ -45,7 +45,7 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 			}
 			rs.next();
 
-			int supplier_ID = rs.getInt("supplier_I");
+			int supplier_ID = rs.getInt("supplier_ID");
 			String supplier_Name = rs.getString("supplier_Name");
 
 			return new SupplierDTO(supplier_ID,supplier_Name);
@@ -69,7 +69,7 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 				return null;
 			}
 			while(rs.next()) {
-				int supplier_ID = rs.getInt("supplier_I");
+				int supplier_ID = rs.getInt("supplier_ID");
 				String supplier_Name = rs.getString("supplier_Name");
 				list.add(new SupplierDTO(supplier_ID,supplier_Name));			
 			}

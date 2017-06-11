@@ -7,7 +7,7 @@ public class CommodityBatchDTO {
 
 	public CommodityBatchDTO(int commoditybatchID, int commodityID, double quantity){
 		this.commoditybatchID = commoditybatchID;
-		this.commoditybatchID = commodityID;
+		this.commodityID = commodityID;
 		this.quantity = quantity;
 
 	}

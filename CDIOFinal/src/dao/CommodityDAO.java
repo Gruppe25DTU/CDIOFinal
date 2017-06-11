@@ -50,6 +50,7 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 			{
 				list.add(new CommodityDTO(rs.getInt("commodity_ID"), rs.getString("commodity_Name"), rs.getInt("supplier_ID")));
 			}
+			return list;
 		}
 		catch (SQLException e) { 
 			e.printStackTrace();}

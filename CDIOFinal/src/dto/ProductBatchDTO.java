@@ -1,31 +1,35 @@
 package dto;
 
+import java.util.List;
 public class ProductBatchDTO {
 	private int productBatchID = -1;
 	private int status = -1;
 	private int recipeID =-1;
 	private String startDate;
 	private String endDate;
+	private List<ProductBatchCompDTO> components;
 	
 	
 	
-	public ProductBatchDTO(int productBatchID, int status, int recipeID, String startDate, String endDate) {
+	public ProductBatchDTO(int productBatchID, int status, int recipeID, String startDate, String endDate,List<ProductBatchCompDTO> components) {
 		this.productBatchID = productBatchID;
 		this.status = status;
 		this.recipeID = recipeID; 
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.components = components;
 	}
 
 public ProductBatchDTO(ProductBatchDTO productBatch){
-	this.productBatchID = productBatch.getproductBatchID();
+	this.productBatchID = productBatch.getProductBatchID();
 	this.status = productBatch.getStatus();
 	this.recipeID = productBatch.getRecipeID();
 	this.startDate = productBatch.getStartDate();
 	this.endDate = productBatch.getEndDate();
+	this.components = productBatch.getComponents();
 }
 
-	public int getproductBatchID() {
+	public int getProductBatchID() {
 		return productBatchID;
 	}
 
@@ -82,7 +86,16 @@ public ProductBatchDTO(ProductBatchDTO productBatch){
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	
+
+	public List<ProductBatchCompDTO> getComponents() {
+		return components;
+	}
+
+	public void setComponents(List<ProductBatchCompDTO> components) {
+		this.components = components;
+	}
+
+
 	
 	
 }
