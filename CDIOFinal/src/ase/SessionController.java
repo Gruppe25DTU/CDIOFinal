@@ -577,9 +577,9 @@ public class SessionController {
 		CommodityBatchDAO cbDAO = new CommodityBatchDAO();
 
 		ProductBatchCompDTO component = 
-				new ProductBatchCompDTO(prod.getproductBatchID() , 
+				new ProductBatchCompDTO(prod.getId() , 
 										cBatch.getCommoditybatchID(), 
-										tara, netto , user.getUserID());
+										tara, netto , user.getId());
 
 		pbDAO.addComponent(component);
 		cbDAO.changeAmount(cBatch.getCommoditybatchID(), cBatch.getQuantity()-netto);
@@ -590,14 +590,14 @@ public class SessionController {
 			
 		}
 		conn.outputMsg("DW");
-		currentRecipeComp = pbDAO.getNonWeighedComp(prod.getproductBatchID());
+		currentRecipeComp = pbDAO.getNonWeighedComp(prod.getId());
 		if(currentRecipeComp != null)
 		{
 			//There is more to weigh so we ask if the lab tech wishes to continue
 			if(prod.getStatus() == 0)
 			{	
 				prod.setStatus(1);
-				pbDAO.changeStatus(prod.getproductBatchID(), 1);
+				pbDAO.changeStatus(prod.getId(), 1);
 			}
 			phase = PhaseType.CLEAR_WEIGHT;
 			conn.outputMsg("P111 \"Continue? Y:[-> N:Exit\"");
@@ -607,7 +607,7 @@ public class SessionController {
 		{
 			//There is nothing more to weigh on this productbatch so it's finished 
 			prod.setStatus(2);
-			pbDAO.changeStatus(prod.getproductBatchID(), 2);
+			pbDAO.changeStatus(prod.getId(), 2);
 			pbDAO.setStopdate(prod);
 			conn.outputMsg("P111 \"ProductBatch finished!\"");
 			try 

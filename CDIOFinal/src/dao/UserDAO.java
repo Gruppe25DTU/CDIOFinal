@@ -150,7 +150,7 @@ public class UserDAO implements UserInterfaceDAO{
 		String addUserRoles = "CALL addUserRole('%s','%d');";
 		List<String> roles = dto.getRoles();
 
-		addUser = String.format(addUser, dto.getUserID(),dto.getCpr(),dto.getPassword(),dto.getUserName(),dto.getEmail());
+		addUser = String.format(addUser, dto.getId(),dto.getCpr(),dto.getPassword(),dto.getUserName(),dto.getEmail());
 		addUserInfo = String.format(addUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr());
 
 
@@ -158,7 +158,7 @@ public class UserDAO implements UserInterfaceDAO{
 			int result1 = Connector.doUpdate(addUserInfo);
 			int result2 = Connector.doUpdate(addUser);
 			for(int i = 0;i<roles.size();i++) {
-				addUserRoles = String.format(addUserRoles, roles.get(i),dto.getUserID());
+				addUserRoles = String.format(addUserRoles, roles.get(i),dto.getId());
 				try {
 					Connector.doUpdate(addUserRoles);
 				} catch (SQLException e) {
@@ -186,9 +186,9 @@ public class UserDAO implements UserInterfaceDAO{
 		String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
 		String deleteExistingRoles = "CALL deleteUserRoles('%d');";
 		String addUserRoles = "CALL addUserRole('%s','%d');";
-		updateUser = String.format(updateUser, dto.getUserID(),dto.getUserName(),dto.getPassword(),dto.getStatus(),dto.getEmail());
+		updateUser = String.format(updateUser, dto.getId(),dto.getUserName(),dto.getPassword(),dto.getStatus(),dto.getEmail());
 		updateUserInfo = String.format(updateUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr(),old_cpr);
-		deleteExistingRoles = String.format(deleteExistingRoles, dto.getUserID());
+		deleteExistingRoles = String.format(deleteExistingRoles, dto.getId());
 
 
 		try {
@@ -196,7 +196,7 @@ public class UserDAO implements UserInterfaceDAO{
 			Connector.doUpdate(updateUser);
 			Connector.doUpdate(deleteExistingRoles);
 			for(int i = 0;i<dto.getRoles().size();i++) {
-				addUserRoles = String.format(addUserRoles, dto.getRoles().get(i),dto.getUserID());
+				addUserRoles = String.format(addUserRoles, dto.getRoles().get(i),dto.getId());
 				try {
 					Connector.doUpdate(addUserRoles);
 				} catch (SQLException e) {
