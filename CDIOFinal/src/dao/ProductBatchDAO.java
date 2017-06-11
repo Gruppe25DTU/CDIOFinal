@@ -27,6 +27,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 		String cmd = "CALL addProductBatch('%d','%d');";
 
 		cmd = String.format(cmd, dto.getProductBatchID(),dto.getRecipeID());
+
 		int result;
 		try {
 			result = Connector.doUpdate(cmd);
@@ -53,6 +54,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	public boolean setStartdate(ProductBatchDTO dto) {
 		String cmd = "CALL setProductBatchStartDate('%s','%d');";
 		cmd = String.format(cmd, dto.getStartDate(),dto.getProductBatchID());
+
 		try {
 			Connector.doUpdate(cmd);
 			return true;
@@ -70,6 +72,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	public boolean setStopdate(ProductBatchDTO dto) {
 		String cmd = "CALL setProductBatchStopDate('%s','%d');";
 		cmd = String.format(cmd, dto.getStartDate(),dto.getProductBatchID());
+
 		try {
 			Connector.doUpdate(cmd);
 			return true;
@@ -162,8 +165,8 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 				int ID = rs.getInt("productBatch_ID");
 				int status = rs.getInt("status");
 				int recipe_ID = rs.getInt("recipe_ID");
-				String startdate = rs.getString("startdate");
-				String stopdate = rs.getString("stopdate");
+				Timestamp startdate = rs.getTimestamp("startdate");
+				Timestamp stopdate = rs.getTimestamp("stopdate");
 				List<ProductBatchCompDTO> components = getProductBatchComponents(ID);
 				list.add(new ProductBatchDTO(ID,status,recipe_ID,startdate,stopdate,components));
 			}

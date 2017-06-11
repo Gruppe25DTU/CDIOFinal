@@ -11,15 +11,15 @@ public class SupplierDTO {
 	}
 
 	public SupplierDTO(SupplierDTO supplier){
-		this.supplierID = supplier.getSupplierID();
+		this.supplierID = supplier.getId();
 		this.name = supplier.getName();
 	}
 	
-	public int getSupplierID() {
+	public int getId() {
 		return supplierID;
 	}
 
-	public void setSupplierID(int supplierID) {
+	public void setId(int supplierID) {
 		this.supplierID = supplierID;
 	}
 

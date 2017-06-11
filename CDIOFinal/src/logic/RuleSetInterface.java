@@ -43,8 +43,12 @@ public interface RuleSetInterface {
 	class RuleException extends Exception {
 		private static final long serialVersionUID = 1090620171957L;
 
-		public RuleException(Throwable e) {
-			super(e);
+		public RuleException(String message, Throwable e) {
+			super(message, e);
+		}
+		
+		public RuleException(String message){
+			super(message);
 		}
 	}
 }	

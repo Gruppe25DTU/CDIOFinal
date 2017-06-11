@@ -19,7 +19,7 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 	@Override
 	public boolean create(SupplierDTO dto){
 		String cmd = "CALL addSupplier('%d','%s');";
-		cmd = String.format(cmd, dto.getSupplierID(),dto.getName());
+		cmd = String.format(cmd, dto.getId(),dto.getName());
 
 		try {
 			Connector.doUpdate(cmd);

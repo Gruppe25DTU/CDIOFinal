@@ -40,7 +40,7 @@ public class UserDTO implements Serializable {
 
 	public UserDTO(UserDTO user)
 	{
-		this.userID = user.getUserID();
+		this.userID = user.getId();
 		this.userName = user.getUserName();
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
@@ -52,11 +52,11 @@ public class UserDTO implements Serializable {
 		this.status = user.getStatus();
 	}
 
-	public int getUserID() {
+	public int getId() {
 		return userID;
 	}
 
-	public void setUserID(int userID) {
+	public void setId(int userID) {
 		this.userID = userID;
 	}
 
