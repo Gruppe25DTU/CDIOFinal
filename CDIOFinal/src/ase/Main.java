@@ -2,6 +2,7 @@ package ase;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import dal.Connector;
@@ -19,10 +20,22 @@ public class Main implements Runnable{
 	}
 
 	public static void main(String[] args) {
-		Connector.changeTestMode(false);
+		Connector.changeTestMode(true);
 			Connection dbConn = Connector.connectToDatabase();
-			if(dbConn != null)
-				new Thread(new Main()).start();
+			try
+			{
+				if(dbConn != null)
+				{
+					dbConn.close();
+					new Thread(new Main()).start();
+				}	
+			}
+			catch(SQLException e)
+			{
+				System.out.println("Problem occured trying to close a db connection");
+			}
+			
+				
 		
 		
 		
