@@ -18,8 +18,8 @@ import javax.ws.rs.core.Response.Status;
 
 import dao.CommodityDAO;
 import dto.CommodityDTO;
-import logic.RuleSetInterface;
-import logic.RuleSet;
+import logic.validation.RuleSet;
+import logic.validation.RuleSetInterface;
 
 @Path("/commodity")
 public class RESTCommodity {

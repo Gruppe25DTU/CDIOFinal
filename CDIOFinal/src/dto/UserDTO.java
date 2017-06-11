@@ -1,14 +1,10 @@
 package dto;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class UserDTO implements Serializable {
+public class UserDTO implements IDTO  {
 
-	private static final long serialVersionUID = 45458645875555L;
 	private String firstName = "";
 	private String lastName = "";
 	private int userID = -1;

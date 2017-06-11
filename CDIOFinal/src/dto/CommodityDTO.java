@@ -1,6 +1,6 @@
 package dto;
 
-public class CommodityDTO{
+public class CommodityDTO implements IDTO {
 	private int commodityID = -1;
 	private String name = "";
 	private int supplierID = -1;

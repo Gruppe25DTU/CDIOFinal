@@ -1,6 +1,6 @@
 package dto;
 
-public class ProductBatchCompDTO {
+public class ProductBatchCompDTO implements IDTO {
 	private int productBatchID = -1;
 	private int commodityBatchID = -1;
 	private double tara = -1;

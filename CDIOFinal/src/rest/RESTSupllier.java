@@ -18,8 +18,8 @@ import javax.ws.rs.core.Response.Status;
 
 import dao.SupplierDAO;
 import dto.SupplierDTO;
-import logic.RuleSetInterface;
-import logic.RuleSet;
+import logic.validation.RuleSet;
+import logic.validation.RuleSetInterface;
 
 @Path("/supllier")
 public class RESTSupllier {

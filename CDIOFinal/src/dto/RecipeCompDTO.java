@@ -1,6 +1,6 @@
 package dto;
 
-public class RecipeCompDTO {
+public class RecipeCompDTO implements IDTO {
 	private int recipeID = -1;
 	private int commodityID = -1;
 	private double nomNetWeight = -1;
