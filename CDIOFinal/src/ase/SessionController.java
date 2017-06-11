@@ -578,11 +578,11 @@ public class SessionController {
 
 		ProductBatchCompDTO component = 
 				new ProductBatchCompDTO(prod.getId() , 
-										cBatch.getCommoditybatchID(), 
+										cBatch.getId(), 
 										tara, netto , user.getId());
 
 		pbDAO.addComponent(component);
-		cbDAO.changeAmount(cBatch.getCommoditybatchID(), cBatch.getQuantity()-netto);
+		cbDAO.changeAmount(cBatch.getId(), cBatch.getQuantity()-netto);
 
 		try {
 			Thread.sleep(1000);

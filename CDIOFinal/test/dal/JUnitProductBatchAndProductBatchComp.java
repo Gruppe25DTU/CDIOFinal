@@ -76,7 +76,7 @@ public class JUnitProductBatchAndProductBatchComp {
 	}
 
 	private static void compareRecipe(RecipeDTO dto1,RecipeDTO dto2) {
-		assertEquals(dto1.getRecipeID(),dto2.getRecipeID());
+		assertEquals(dto1.getId(),dto2.getId());
 		assertEquals(dto1.getName(),dto2.getName());
 		
 		for(int i = 0;i<dto1.getComponents().size();i++) {
@@ -95,7 +95,7 @@ public class JUnitProductBatchAndProductBatchComp {
 	
 	private static void compareProductBatch(ProductBatchDTO dto1, ProductBatchDTO dto2) {
 		assertEquals(dto1.getRecipeID(),dto2.getRecipeID());
-		assertEquals(dto1.getProductBatchID(),dto2.getProductBatchID());
+		assertEquals(dto1.getId(),dto2.getId());
 		assertEquals(dto1.getStatus(),dto2.getStatus());
 		if(dto1.getStartDate() == null && dto2.getStartDate() == null) {
 			assertEquals(1,1);

@@ -23,7 +23,7 @@ public class ProductBatchDTO {
 	}
 
 public ProductBatchDTO(ProductBatchDTO productBatch){
-	this.productBatchID = productBatch.getProductBatchID();
+	this.productBatchID = productBatch.getId();
 	this.status = productBatch.getStatus();
 	this.recipeID = productBatch.getRecipeID();
 	this.startDate = productBatch.getStartDate();
@@ -31,13 +31,13 @@ public ProductBatchDTO(ProductBatchDTO productBatch){
 	this.components = productBatch.getComponents();
 }
 
-	public int getProductBatchID() {
+	public int getId() {
 		return productBatchID;
 	}
 
 
 
-	public void setProductBatchID(int productBatchID) {
+	public void setId(int productBatchID) {
 		this.productBatchID = productBatchID;
 	}
 
