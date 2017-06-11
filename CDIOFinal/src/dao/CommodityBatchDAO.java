@@ -35,7 +35,7 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 	@Override
 	public int create(CommodityBatchDTO dto) {
 		String cmd = "CALL addCommodityBatch('%d','%d','%s');";
-		int commodityBatchID = dto.getCommoditybatchID();
+		int commodityBatchID = dto.getId();
 		int commodityID = dto.getCommodityID();
 		double quantity = dto.getQuantity();
 		String sQuantity = Double.toString(quantity);

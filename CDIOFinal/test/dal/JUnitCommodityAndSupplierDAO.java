@@ -122,7 +122,7 @@ public class JUnitCommodityAndSupplierDAO {
 
 	@SuppressWarnings("deprecation")
 	private static void compareCommodityBatchDTO(CommodityBatchDTO dto1, CommodityBatchDTO dto2) {
-		assertEquals(dto1.getCommoditybatchID(),dto2.getCommoditybatchID());
+		assertEquals(dto1.getId(),dto2.getId());
 		assertEquals(dto1.getCommodityID(),dto2.getCommodityID());
 		assertEquals(Double.toString(dto1.getQuantity()),Double.toString(dto2.getQuantity()));
 
