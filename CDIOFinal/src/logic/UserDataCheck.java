@@ -34,8 +34,6 @@ public class UserDataCheck {
 			throw new RuleException("Invalid Initiale!");
 		};
 
-		
-		
 		dto.setPassword(PasswordGenerator.makePassword(8));	
 
 	}
