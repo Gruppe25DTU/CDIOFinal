@@ -14,15 +14,15 @@ public class RecipeDTO {
 	}
 	
 	public RecipeDTO(RecipeDTO recipe){
-		this.recipeID = recipe.getId();
+		this.recipeID = recipe.getRecipeID();
 		this.name = recipe.getName();
 	}
 
-	public int getId() {
+	public int getRecipeID() {
 		return this.recipeID;
 	}
 
-	public void setId(int recipeID) {
+	public void setRecipeID(int recipeID) {
 		this.recipeID = recipeID;
 	}
 

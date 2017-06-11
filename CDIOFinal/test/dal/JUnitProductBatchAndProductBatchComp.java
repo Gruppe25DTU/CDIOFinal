@@ -1,12 +1,10 @@
 package dal;
 
-import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.validation.constraints.AssertTrue;
 
 import org.junit.Test;
 
@@ -58,7 +56,8 @@ public class JUnitProductBatchAndProductBatchComp {
 		
 		
 		RecipeDTO recipeDTO = new RecipeDTO(4,"Dej",recipeCompList);
-		ProductBatchDTO productbatchDTO = new ProductBatchDTO(4, 0, 4, "2017-06-02 16:23:46",null,productBatchCompList);
+		Timestamp startdate = Timestamp.valueOf("2017-06-02 16:23:46");
+		ProductBatchDTO productbatchDTO = new ProductBatchDTO(4, 0, 4, startdate,null,productBatchCompList);
 
 		//Create the recipe. Both recipe and it's components
 		recipe.create(recipeDTO);
@@ -107,12 +106,21 @@ public class JUnitProductBatchAndProductBatchComp {
 		}
 		assertEquals(dto1.getEndDate(),dto2.getEndDate());
 		
+		for(int i = 0;i<dto1.getComponents().size();i++) {
+			compareProductBatchComp(dto1.getComponents().get(i), dto2.getComponents().get(i));
+		}
+		
 
 
 	}
 	
 	private static void compareProductBatchComp(ProductBatchCompDTO dto1, ProductBatchCompDTO dto2) {
-		
+		assertEquals(dto1.getcommodityBatchID(),dto2.getcommodityBatchID());
+		assertEquals(Double.toString(dto1.getNet()),Double.toString(dto2.getNet()));
+		assertEquals(Double.toString(dto1.getTara()),Double.toString(dto2.getTara()));
+		assertEquals(dto1.getProductBatchID(),dto2.getProductBatchID());
+		assertEquals(dto1.getuserID(),dto2.getuserID());
+
 	}
 	
 	
