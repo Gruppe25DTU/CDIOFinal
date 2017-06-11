@@ -40,8 +40,7 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 		int commodityID = dto.getCommodityID();
 		double quantity = dto.getQuantity();
 		String sQuantity = Double.toString(quantity);
-		sQuantity = sQuantity.replace(",", ".");
-		cmd = String.format(cmd,commodityBatchID,commodityID,quantity);
+		cmd = String.format(cmd,commodityBatchID,commodityID,sQuantity);
 		
 		int returnValue;
 		try {
