@@ -2,7 +2,8 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<link rel="stylesheet" type="text/css" href="css/default.css">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<script src="jquery-3.2.1.js"></script>
 <script src="script/jquery-3.2.1.js"></script>
 <script src="script/jquery.serialize-object.js"></script>
 <script type="text/javascript" src="script/default.js"></script>
@@ -12,45 +13,45 @@
 <title>Yanki er et dejligt skæg</title>
 </head>
 <body>
-	<table style="position: absolute; width: 80%; height: 100%; margin-left: auto; margin-right: auto;">
-	    <thead>
-	        <tr class="header">
-	           <td>
-	                <h1>
-	                    <b>Welcome Lasse Jensen</b>
-	                </h1>
-	            </td>
-	        </tr>
-		   <tr class="optionline">
-					<td class="dropdown">
-						<button class="dropbtn glyphicon glyphicon-menu-hamburger"
-							style="font-size: 36px;"></button>
-						<div class="dropdown-content" style="left:0;">
-	                        <a href="#" onclick="setframe('commodity.html');">Commodities</a>
-	                        <a href="#" onclick="setframe('commoditybatch.html');">Commodity Batches</a>
-	                        <a href="#" onclick="setframe('productbatch.html');">Product Batches</a>
-							<a href="#" onclick="setframe('recipe.html');">Recipes</a>
-	                        <a href="#" onclick="setframe('supplier.html');">Suppliers</a>
-	                        <a href="#" onClick="setframe('user.html');">Users</a>
-						</div>
-					</td>
-					<td class="dropdown" style="float: right;">
-						<button class="dropbtn glyphicon glyphicon-user"
-							style="font-size: 36px;"></button>
-						<div class="dropdown-content">
-							<a id="showPD">Personal Details</a>
-							<a href="login.html">Logout</a>
-						</div>
-					</td>
-		    </tr>
-	    </thead>
-	    <tbody>
-		    <tr class="optionline">
-				<td class="content">
-				   <iframe id="frame" src="user.html"></iframe>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+
+	<div class="header">
+		<h1>
+			<b>Welcome Lasse Jensen</b>
+		</h1>
+	</div>
+
+<section class="optionline">
+	<div class="dropdown" style="float: left;">
+		<button class="dropbtn glyphicon glyphicon-menu-hamburger"
+			style="font-size: 36px;"></button>
+				<div class="dropdown-content" style="left:0;">
+			  <a href="#" onclick="setframe('commodity.html');">Commodities</a>
+	           <a href="#" onclick="setframe('commoditybatch.html');">Commodity Batches</a>
+	           <a href="#" onclick="setframe('productbatch.html');">Product Batches</a>
+				<a href="#" onclick="setframe('recipe.html');">Recipes</a>
+	            <a href="#" onclick="setframe('supplier.html');">Suppliers</a>
+	            <a href="#" onClick="setframe('user.html');">Users</a>
+		</div>
+	</div>
+
+	<div class="dropdown" style="float: right;">
+		<button class="dropbtn glyphicon glyphicon-user"
+			style="font-size: 36px;"></button>
+		<div class="dropdown-content">
+			<a id="showPD">Personal Details</a>
+			<a href="login.html">Logout</a>
+		</div>
+	</div>
+	
+	
+</section>
+
+
+<section class="section">
+<iframe  id="frame" src="user.html" width="100%" height="1000px"></iframe>
+
+
+
+</section>
 </body>
 </html>
