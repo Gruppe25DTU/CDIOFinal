@@ -1,15 +1,17 @@
 package dto;
 
+import java.security.Timestamp;
+
 public class ProductBatchDTO {
 	private int productBatchID = -1;
 	private int status = -1;
 	private int recipeID =-1;
-	private String startDate;
-	private String endDate;
+	private Timestamp startDate;
+	private Timestamp endDate;
 	
 	
 	
-	public ProductBatchDTO(int productBatchID, int status, int recipeID, String startDate, String endDate) {
+	public ProductBatchDTO(int productBatchID, int status, int recipeID, Timestamp startDate, Timestamp endDate) {
 		this.productBatchID = productBatchID;
 		this.status = status;
 		this.recipeID = recipeID; 
@@ -61,25 +63,25 @@ public ProductBatchDTO(ProductBatchDTO productBatch){
 
 
 
-	public String getStartDate() {
+	public Timestamp getStartDate() {
 		return startDate;
 	}
 
 
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(Timestamp startDate) {
 		this.startDate = startDate;
 	}
 
 
 
-	public String getEndDate() {
+	public Timestamp getEndDate() {
 		return endDate;
 	}
 
 
 
-	public void setEndDate(String endDate) {
+	public void setEndDate(Timestamp endDate) {
 		this.endDate = endDate;
 	}
 	
