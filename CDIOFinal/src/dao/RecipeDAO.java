@@ -21,7 +21,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	@Override
 	public int create(RecipeDTO dto) {
 		String cmd = "CALL addRecipe('%d','%s')";
-		cmd = String.format(cmd, dto.getRecipeID(),dto.getName());
+		cmd = String.format(cmd, dto.getId(),dto.getName());
 		try {
 			int result = Connector.doUpdate(cmd);
 			createRecipeComponent(dto.getComponents());
@@ -38,9 +38,16 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	 */
 	@Override
 	public int createRecipeComponent(List<RecipeCompDTO> components) {
-		String cmd = "CALL addRecipeComponent('%d','%d','%d','%d');";
-		for(int i = 0;i<components.size();i++) {
-			cmd = String.format(cmd, components.get(i).getRecipeID(),components.get(i).getCommodityID(),components.get(i).getNomNetWeight(),components.get(i).getTolerance());
+		
+		for(RecipeCompDTO dto : components) {
+			String cmd = "CALL addRecipeComponent('%d','%d','%s','%s');";
+
+			int recipeID = dto.getRecipeID();
+			int commodityID = dto.getCommodityID();
+			String nom_net_weight = Double.toString(dto.getNomNetWeight());
+			String tolerance = Double.toString(dto.getTolerance());
+
+			cmd = String.format(cmd, recipeID,commodityID,nom_net_weight,tolerance);
 			try {
 				Connector.doUpdate(cmd);
 			} catch (SQLException e) {
@@ -61,7 +68,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	 */
 	@Override
 	public RecipeDTO getRecipe(int id) {
-		String cmd = "getRecipe('%d');";
+		String cmd = "CALL getRecipe('%d');";
 		cmd = String.format(cmd, id);
 		
 		try {
@@ -69,6 +76,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 			if(rs == null) {
 				return null;
 			}
+			rs.next();
 			int recipe_ID = rs.getInt("recipe_ID");
 			String recipe_Name = rs.getString("recipe_Name");
 			List<RecipeCompDTO> components = getRecipeComponent(recipe_ID);
@@ -84,7 +92,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	 */
 	@Override
 	public List<RecipeCompDTO> getRecipeComponent(int ID) {
-		String cmd = "CALL getRecipeComponent(%d);";
+		String cmd = "CALL getRecipeComponent('%d');";
 		List<RecipeCompDTO> list = new ArrayList<>();
 		cmd = String.format(cmd, ID);
 		
@@ -94,7 +102,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 				return null;
 			}
 			while(rs.next()) {
-				list.add(new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getInt("nom_net_weight"),rs.getInt("tolerance")));
+				list.add(new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getDouble("nom_net_weight"),rs.getDouble("tolerance")));
 			}
 			return list;
 		} catch (SQLException e) {
@@ -144,6 +152,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 			if(rs == null) {
 				return 0;
 			}
+			rs.next();
 			return rs.getInt("max");
 		} catch (SQLException e) {
 			e.printStackTrace();

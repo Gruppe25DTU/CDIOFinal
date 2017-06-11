@@ -7,22 +7,22 @@ public class CommodityBatchDTO {
 
 	public CommodityBatchDTO(int commoditybatchID, int commodityID, double quantity){
 		this.commoditybatchID = commoditybatchID;
-		this.commoditybatchID = commodityID;
+		this.commodityID = commodityID;
 		this.quantity = quantity;
 
 	}
 
 	public CommodityBatchDTO(CommodityBatchDTO commodityBatch){
-		this.commoditybatchID = commodityBatch.getCommoditybatchID();
+		this.commoditybatchID = commodityBatch.getId();
 		this.commoditybatchID = commodityBatch.getCommodityID();
 		this.quantity = commodityBatch.getQuantity();
 	}
 
-	public int getCommoditybatchID() {
+	public int getId() {
 		return commoditybatchID;
 	}
 
-	public void setCommoditybatchID(int commoditybatchID) {
+	public void setId(int commoditybatchID) {
 		this.commoditybatchID = commoditybatchID;
 	}
 

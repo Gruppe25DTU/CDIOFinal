@@ -17,6 +17,7 @@ public interface ProductBatchInterfaceDAO {
 	int findFreeProductBatchID();
 	boolean setStartdate(ProductBatchDTO dto);
 	boolean setStopdate(ProductBatchDTO dto);
+	List<ProductBatchCompDTO> getProductBatchComponents(int productBatchID);
 
 
 }

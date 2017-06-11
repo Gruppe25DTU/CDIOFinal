@@ -34,8 +34,13 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 	 */
 	@Override
 	public int create(CommodityBatchDTO dto) {
-		String cmd = "CALL addCommodityBatch('%d','%d','%d');";
-		cmd = String.format(cmd, dto.getCommoditybatchID(),dto.getCommodityID(),dto.getQuantity());
+		String cmd = "CALL addCommodityBatch('%d','%d','%s');";
+		int commodityBatchID = dto.getId();
+		int commodityID = dto.getCommodityID();
+		double quantity = dto.getQuantity();
+		String sQuantity = Double.toString(quantity);
+		sQuantity = sQuantity.replace(",", ".");
+		cmd = String.format(cmd,commodityBatchID,commodityID,quantity);
 		
 		int returnValue;
 		try {
@@ -60,9 +65,10 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 			if(rs == null) {
 				return null;
 			}
+			rs.next();
 			int ID = rs.getInt("commodityBatch_ID");
 			int commodity_ID = rs.getInt("commodity_ID");
-			int quantity = rs.getInt("quantity");
+			double quantity = rs.getDouble("quantity");
 			return new CommodityBatchDTO(ID,commodity_ID,quantity);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -86,7 +92,7 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 			while(rs.next()) {
 				int ID = rs.getInt("commodityBatch_ID");
 				int commodity_ID = rs.getInt("commodity_ID");
-				int quantity = rs.getInt("quantity");
+				Double quantity = rs.getDouble("quantity");
 				list.add(new CommodityBatchDTO(ID,commodity_ID,quantity));
 				
 			}
@@ -114,6 +120,7 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 			if(rs == null) {
 				return 0;
 			}
+			rs.next();
 			return rs.getInt("max");
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -19,7 +19,7 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 	@Override
 	public boolean create(SupplierDTO dto){
 		String cmd = "CALL addSupplier('%d','%s');";
-		cmd = String.format(cmd, dto.getSupplierID(),dto.getName());
+		cmd = String.format(cmd, dto.getId(),dto.getName());
 
 		try {
 			Connector.doUpdate(cmd);
@@ -43,7 +43,9 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 			if(rs == null) {
 				return null;
 			}
-			int supplier_ID = rs.getInt("supplier_I");
+			rs.next();
+
+			int supplier_ID = rs.getInt("supplier_ID");
 			String supplier_Name = rs.getString("supplier_Name");
 
 			return new SupplierDTO(supplier_ID,supplier_Name);
@@ -67,7 +69,7 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 				return null;
 			}
 			while(rs.next()) {
-				int supplier_ID = rs.getInt("supplier_I");
+				int supplier_ID = rs.getInt("supplier_ID");
 				String supplier_Name = rs.getString("supplier_Name");
 				list.add(new SupplierDTO(supplier_ID,supplier_Name));			
 			}
@@ -94,6 +96,8 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 			if(rs == null) {
 				return 0;
 			}
+			rs.next();
+
 			return rs.getInt("max");
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -12,16 +12,16 @@ public CommodityDTO(int commodityID, String name, int supplierID){
 	}
 
 public CommodityDTO(CommodityDTO commodity){
-	this.commodityID = commodity.getcommodityID();
+	this.commodityID = commodity.getId();
 	this.name = commodity.getName();
 	this.supplierID = commodity.getSupplierID();
 }
 
-public int getcommodityID() {
+public int getId() {
 	return commodityID;
 }
 
-public void setcommodityID(int commodityID) {
+public void setId(int commodityID) {
 	this.commodityID = commodityID;
 }
 

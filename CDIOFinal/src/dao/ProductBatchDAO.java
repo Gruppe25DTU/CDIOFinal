@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +24,19 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 */
 	@Override
 	public int create(ProductBatchDTO dto) {
-		String cmd = "CALL addProductBatch('%d',%d');";
+		String cmd = "CALL addProductBatch('%d','%d');";
 
-		cmd = String.format(cmd, dto.getproductBatchID(),dto.getRecipeID());
+		cmd = String.format(cmd, dto.getId(),dto.getRecipeID());
+
 		int result;
 		try {
 			result = Connector.doUpdate(cmd);
+			if(dto.getStartDate() != null) {
+				setStartdate(dto);
+			}
+			if(dto.getEndDate() != null) {
+				setStopdate(dto);
+			}
 		} catch (SQLException e) {
 			result = 0;
 			e.printStackTrace();
@@ -45,7 +53,8 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	@Override
 	public boolean setStartdate(ProductBatchDTO dto) {
 		String cmd = "CALL setProductBatchStartDate('%s','%d');";
-		cmd = String.format(cmd, dto.getStartDate(),dto.getproductBatchID());
+		cmd = String.format(cmd, dto.getStartDate().toString(),dto.getId());
+
 		try {
 			Connector.doUpdate(cmd);
 			return true;
@@ -62,7 +71,8 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	@Override
 	public boolean setStopdate(ProductBatchDTO dto) {
 		String cmd = "CALL setProductBatchStopDate('%s','%d');";
-		cmd = String.format(cmd, dto.getStartDate(),dto.getproductBatchID());
+		cmd = String.format(cmd, dto.getEndDate().toString(),dto.getId());
+
 		try {
 			Connector.doUpdate(cmd);
 			return true;
@@ -120,12 +130,14 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			if(rs == null) {
 				return null;
 			}
+			rs.next();
 			int ID = rs.getInt("productBatch_ID");
 			int status = rs.getInt("status");
 			int recipe_ID = rs.getInt("recipe_ID");
-			String startdate = rs.getString("startdate");
-			String stopdate = rs.getString("stopdate");
-			ProductBatchDTO pbDTO = new ProductBatchDTO(ID,status,recipe_ID,startdate,stopdate);
+			Timestamp startdate = rs.getTimestamp("startdate");
+			Timestamp stopdate = rs.getTimestamp("stopdate");
+			List<ProductBatchCompDTO> components = getProductBatchComponents(ID);
+			ProductBatchDTO pbDTO = new ProductBatchDTO(ID,status,recipe_ID,startdate,stopdate,components);
 			return pbDTO;
 
 		} catch (SQLException e) {
@@ -153,9 +165,10 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 				int ID = rs.getInt("productBatch_ID");
 				int status = rs.getInt("status");
 				int recipe_ID = rs.getInt("recipe_ID");
-				String startdate = rs.getString("startdate");
-				String stopdate = rs.getString("stopdate");
-				list.add(new ProductBatchDTO(ID,status,recipe_ID,startdate,stopdate));
+				Timestamp startdate = rs.getTimestamp("startdate");
+				Timestamp stopdate = rs.getTimestamp("stopdate");
+				List<ProductBatchCompDTO> components = getProductBatchComponents(ID);
+				list.add(new ProductBatchDTO(ID,status,recipe_ID,startdate,stopdate,components));
 			}
 			return list;
 
@@ -173,8 +186,12 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 */
 	@Override
 	public boolean addComponent(ProductBatchCompDTO component) {
-		String cmd = "CALL addProductBatchComponent('%d','%d','%d','%d','%d');";
-		cmd = String.format(cmd, component.getproductBatchID(),component.getcommodityBatchID(),component.getTara(),component.getNet(),component.getuserID());
+		String cmd = "CALL addProductBatchComponent('%d','%d','%s','%s','%d');";
+		String tare = Double.toString(component.getTara());
+		String net = Double.toString(component.getNet());
+
+
+		cmd = String.format(cmd, component.getProductBatchID(),component.getcommodityBatchID(),tare,net,component.getuserID());
 		try {
 			Connector.doUpdate(cmd);
 			return true;
@@ -199,17 +216,44 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			if(rs == null) {
 				return null;
 			}
-			RecipeCompDTO recipeComp = new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getInt("nom_net_weight"),rs.getInt("tolerance"));
-			
-			return recipeComp;
+			while(rs.next()) {
+				RecipeCompDTO recipeComp = new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getInt("nom_net_weight"),rs.getInt("tolerance"));
+				return recipeComp;
+			}
+			return null;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 
 		}
 	}
+	
+	@Override
+	public List<ProductBatchCompDTO> getProductBatchComponents(int productBatchID) {
+		String cmd = "CALL getProductBatchComponent('%d')";
+		cmd = String.format(cmd, productBatchID);
+		List<ProductBatchCompDTO> list = new ArrayList<>();
 
+		try {
+			ResultSet rs = Connector.doQuery(cmd);
+			while(rs.next()) {
+				if(rs.getInt("productbatch_ID") != productBatchID) {
+					return null;
+				}
+				int commodityBatchID = rs.getInt("commodityBatch_ID");
+				Double tare = rs.getDouble("tare");
+				Double net = rs.getDouble("net");
+				int userID = rs.getInt("user_ID");
+				ProductBatchCompDTO dto = new ProductBatchCompDTO(productBatchID,commodityBatchID,tare,net,userID);
+				list.add(dto);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 
+	}
 
 	/**
 	 * Finds a free ProductBatchID that is not used. <br>
@@ -226,7 +270,10 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			if(rs == null) {
 				return 0;
 			}
-			return rs.getInt("max");
+			while(rs.next()) {
+				return rs.getInt("max");
+			}
+			return 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;

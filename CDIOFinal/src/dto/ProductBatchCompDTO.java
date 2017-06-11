@@ -16,7 +16,7 @@ public class ProductBatchCompDTO {
 	}
 
 	public ProductBatchCompDTO(ProductBatchCompDTO productBatchComp){
-		this.productBatchID = productBatchComp.getproductBatchID();
+		this.productBatchID = productBatchComp.getProductBatchID();
 		this.commodityBatchID = productBatchComp.getcommodityBatchID();
 		this.tara = productBatchComp.getTara();
 		this.net = productBatchComp.getNet();
@@ -24,7 +24,7 @@ public class ProductBatchCompDTO {
 	}
 
 
-	public int getproductBatchID() {
+	public int getProductBatchID() {
 		return productBatchID;
 	}
 
