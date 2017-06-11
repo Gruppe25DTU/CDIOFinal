@@ -16,6 +16,7 @@ public class RuleSet implements RuleSetInterface {
 	private static final String Status_String = "Status";
 	private static final String NonNetto_String = "Nom Netto Weight";
 	private static final String Tolerance_String = "Tolerance";
+	private static final String Quantity_String = "Quantity";
 	
     @SuppressWarnings("rawtypes")
 	Map<String, Rule> ruleList = new HashMap<>();
@@ -32,6 +33,11 @@ public class RuleSet implements RuleSetInterface {
 		("Name must be between " + minName + " and " + maxName + " characters"
 				, t -> t.length() >= minName && t.length() <= maxName);
 
+		//QuantityRule
+		Rule<Double> QuanRule = new Rule<>
+		("Quantity must be between " + minQuan + " and " + maxQuan + " kg",
+				t -> t >= minQuan && t <= maxQuan); 
+		
 		//Initials Rule
 		Rule<String> iniRule = new Rule<>
 		("Initials must be between " + minIni + " and " + maxIni + " characters"
@@ -88,6 +94,7 @@ public class RuleSet implements RuleSetInterface {
 		ruleList.put(Status_String, statusRule);
 		ruleList.put(NonNetto_String, nomNettoRule);
 		ruleList.put(Tolerance_String, toleranceRule);
+		ruleList.put(Quantity_String, QuanRule);
 	}
 
 	@Override
@@ -128,6 +135,11 @@ public class RuleSet implements RuleSetInterface {
 	@Override
 	public Rule<String> getPwd() {
 		return ruleList.get(Pwd_String);
+	}
+	
+	@Override
+	public Rule<Double> getQuantity() {
+		return ruleList.get(Quantity_String);
 	}
 	
 //	@Override

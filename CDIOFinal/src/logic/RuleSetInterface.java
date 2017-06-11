@@ -10,6 +10,7 @@ public interface RuleSetInterface {
 	static final double minNomNetto = 0.05, maxNomNetto = 20.0;
 	static final double minTolerance = 0.1, maxTolerance = 10.0;
 	static final int minStatus = 0, midStatus = 1, maxStatus = 2;
+	static final double minQuan = 0, maxQuan = 99.9999;
 
 	Rule<Integer> getID();
 	Rule<Integer> getStatus();
@@ -19,6 +20,7 @@ public interface RuleSetInterface {
 	Rule<String> getIni();
 	Rule<String> getCpr();
 	Rule<String> getPwd(); 
+	Rule<Double> getQuantity();
 	//	Rule<Set<String>> getRole();
 
 	class Rule<T> {
