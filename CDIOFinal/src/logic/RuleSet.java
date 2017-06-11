@@ -41,7 +41,7 @@ public class RuleSet implements RuleSetInterface {
 		Rule<String> cprRule = new Rule<>
 		("CPR must be entered as 'xxxxxx-yyyy' or 'xxxxxxyyyy'"
 				, t -> Pattern.matches("[0-9]{6}-?[0-9]{4}", t));
-
+		
 		//Status Rule
 		Rule<Integer> statusRule = new Rule<>
 		("Stauts must be either " + minStatus + "If the process isn't started yet. "
