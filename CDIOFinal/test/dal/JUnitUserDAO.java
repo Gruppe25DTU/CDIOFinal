@@ -64,12 +64,12 @@ public class JUnitUserDAO {
 		roles.add("Foreman");
 		UserDTO actualUser = new UserDTO(1,"Username2","firstname2","lastname2","ini2","1111111111","password2","email2",roles,1);
 
-		userDAO.changeStatus(actualUser.getUserID(), false);
+		userDAO.changeStatus(actualUser.getId(), false);
 		UserDTO dto1 = userDAO.getUser(1);
 		
 		assertEquals(dto1.getStatus(),0);
 		
-		userDAO.changeStatus(actualUser.getUserID(), true);
+		userDAO.changeStatus(actualUser.getId(), true);
 		UserDTO dto2 = userDAO.getUser(1);
 		
 		assertEquals(dto2.getStatus(),1);
@@ -98,7 +98,7 @@ public class JUnitUserDAO {
 
 		userDAO.create(activatedUser);
 		userDAO.create(deactivatedUser);
-		userDAO.changeStatus(deactivatedUser.getUserID(), false);
+		userDAO.changeStatus(deactivatedUser.getId(), false);
 		
 		List<UserDTO> actual = new ArrayList<>();
 		actual.add(existingUser);
@@ -153,7 +153,7 @@ public class JUnitUserDAO {
 		assertEquals(dto1.getPassword(),dto2.getPassword());
 		assertEquals(dto1.getRoles(),dto2.getRoles());
 		assertEquals(dto1.getStatus(),dto2.getStatus());
-		assertEquals(dto1.getUserID(),dto2.getUserID());
+		assertEquals(dto1.getId(),dto2.getId());
 		assertEquals(dto1.getUserName(),dto2.getUserName());
 	}
 	
