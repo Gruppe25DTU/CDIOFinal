@@ -22,6 +22,8 @@ public class ProductBatchCompDTO {
 		this.net = productBatchComp.getNet();
 		this.userID = productBatchComp.getuserID();
 	}
+	
+	public ProductBatchCompDTO() {}
 
 
 	public int getProductBatchID() {

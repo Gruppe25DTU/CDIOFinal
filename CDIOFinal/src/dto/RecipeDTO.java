@@ -18,6 +18,8 @@ public class RecipeDTO {
 		this.name = recipe.getName();
 	}
 
+	public RecipeDTO() {}
+	
 	public int getId() {
 		return this.recipeID;
 	}

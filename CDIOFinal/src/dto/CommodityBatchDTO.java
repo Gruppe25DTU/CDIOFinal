@@ -17,6 +17,8 @@ public class CommodityBatchDTO {
 		this.commoditybatchID = commodityBatch.getCommodityID();
 		this.quantity = commodityBatch.getQuantity();
 	}
+	
+	public CommodityBatchDTO() {}
 
 	public int getId() {
 		return commoditybatchID;

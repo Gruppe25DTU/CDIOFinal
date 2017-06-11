@@ -15,6 +15,8 @@ public class SupplierDTO {
 		this.name = supplier.getName();
 	}
 	
+	public SupplierDTO() {}
+	
 	public int getId() {
 		return supplierID;
 	}

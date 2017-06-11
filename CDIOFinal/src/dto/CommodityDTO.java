@@ -17,6 +17,8 @@ public CommodityDTO(CommodityDTO commodity){
 	this.supplierID = commodity.getSupplierID();
 }
 
+public CommodityDTO() {}
+
 public int getId() {
 	return commodityID;
 }

@@ -52,6 +52,9 @@ public class UserDTO implements Serializable {
 		this.status = user.getStatus();
 	}
 
+	public UserDTO() {}
+	
+	
 	public int getId() {
 		return userID;
 	}

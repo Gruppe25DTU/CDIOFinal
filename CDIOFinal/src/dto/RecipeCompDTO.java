@@ -19,6 +19,8 @@ public class RecipeCompDTO {
 		this.nomNetWeight = recipeComp.getNomNetWeight();
 		this.tolerance = recipeComp.getTolerance();
 	}
+	
+	public RecipeCompDTO() {}
 
 	public int getRecipeID() {
 		return this.recipeID;

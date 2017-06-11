@@ -31,6 +31,8 @@ public ProductBatchDTO(ProductBatchDTO productBatch){
 	this.components = productBatch.getComponents();
 }
 
+public ProductBatchDTO() {}
+
 	public int getId() {
 		return productBatchID;
 	}
