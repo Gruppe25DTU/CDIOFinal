@@ -18,8 +18,8 @@ import javax.ws.rs.core.Response.Status;
 
 import dao.UserDAO;
 import dto.UserDTO;
-import logic.RuleSetInterface;
-import logic.RuleSet;
+import logic.validation.RuleSet;
+import logic.validation.RuleSetInterface;
 
 @Path("/user")
 public class RESTUser {

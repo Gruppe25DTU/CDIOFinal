@@ -1,0 +1,60 @@
+<html>
+<body>
+<head>
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+<script src="script/jquery-3.2.1.js"></script>
+<script src="script/jquery.serialize-object.js"></script>
+<script type="text/javascript" src="script/default.js"></script>
+<script type="text/javascript" src="script/recipe.js"></script>
+<link rel="stylesheet" type="text/css" href="css/default.css">
+</head>
+<div class="informationboxsmall search">  
+    <form class="searchForm" id="searchForm" name="searchForm">
+        Search for recipes by ID: <input type="text" name="search" class="search" autofocus>
+        <input type="submit" value="Submit"/>
+    </form> 
+</div>
+<div id="details" class="details">
+    <form id="detailsForm" class="detailsForm" name="recipe">
+        <h2 style="font-family: Candara;">
+        <i class="glyphicon glyphicon-user">Recipe Information</i></h2>
+        <br>
+        <div class="informationboxsmall">
+            ID:<br>
+                <input type="text" name="id" id="id" class="protected auto" onkeyup="checkState.call(this)" disabled>
+        </div>
+        <div class="informationbox">
+            Name:<br>
+            <input type="text" name="name" id="name" class="editable protected" onkeyup="checkState.call(this)" disabled>
+        </div>
+        <div class="components">
+        <table>
+            <tbody id="componentTable" align="right">
+                <tr><td>
+                    Commodity </td><td> Non Net Weight </td><td> Tolerance
+                </td></tr>
+            </tbody>
+        </table>
+        </div>
+        <div class="informationbox">
+            <table>
+               <tr>
+                   <td>
+                       <input type="button" name="edit" id="edit" class="edit" value="Edit">
+                       <input type="button" name="update" id="update" class="update" value="Update" style="display: none;">
+                       <input type="button" name="cancel" id="cancel" class="cancel" value="Cancel" style="display: none;">
+                   </td>
+               </tr>
+               <tr>
+                   <td>
+                       <input type="button" id="create" value="Create New User">
+                   </td>
+               </tr>
+            </table>
+        </div>
+    </form>
+</div>
+</body>
+</html>

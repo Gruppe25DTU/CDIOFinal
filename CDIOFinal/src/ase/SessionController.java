@@ -112,9 +112,10 @@ public class SessionController {
 					
 					if(user != null)
 					{
-						if(user.getRoles().contains("Laboratory Technician") 
+						System.out.println(user);
+						if((user.getRoles().contains("LaboratoryTechnician") 
 						|| user.getRoles().contains("Pharmacist")
-						|| user.getRoles().contains("Foreman"))
+						|| user.getRoles().contains("Foreman")) && user.getStatus()==1)
 						{
 							//Progress to next phase --Confirm the user name--
 							String name = user.getFirstName()+" "+user.getLastName();
@@ -234,6 +235,7 @@ public class SessionController {
 					int pb_id = Integer.parseInt(message.getMsg());
 					ProductBatchDAO pbDAO = new ProductBatchDAO();
 					prod = pbDAO.get(pb_id);
+					System.out.println(prod);
 					if(prod != null)
 					{
 						if(prod.getStatus() < 2)
@@ -578,11 +580,11 @@ public class SessionController {
 
 		ProductBatchCompDTO component = 
 				new ProductBatchCompDTO(prod.getId() , 
-										cBatch.getCommoditybatchID(), 
+										cBatch.getId(), 
 										tara, netto , user.getId());
 
 		pbDAO.addComponent(component);
-		cbDAO.changeAmount(cBatch.getCommoditybatchID(), cBatch.getQuantity()-netto);
+		cbDAO.changeAmount(cBatch.getId(), cBatch.getQuantity()-netto);
 
 		try {
 			Thread.sleep(1000);

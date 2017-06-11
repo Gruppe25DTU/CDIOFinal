@@ -21,7 +21,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	@Override
 	public int create(RecipeDTO dto) {
 		String cmd = "CALL addRecipe('%d','%s')";
-		cmd = String.format(cmd, dto.getRecipeID(),dto.getName());
+		cmd = String.format(cmd, dto.getId(),dto.getName());
 		try {
 			int result = Connector.doUpdate(cmd);
 			createRecipeComponent(dto.getComponents());

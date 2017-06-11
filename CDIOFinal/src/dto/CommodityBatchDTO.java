@@ -1,6 +1,6 @@
 package dto;
 
-public class CommodityBatchDTO {
+public class CommodityBatchDTO implements IDTO {
 	private int commoditybatchID = -1;
 	private int commodityID = -1;
 	private double quantity = -1;
@@ -13,16 +13,18 @@ public class CommodityBatchDTO {
 	}
 
 	public CommodityBatchDTO(CommodityBatchDTO commodityBatch){
-		this.commoditybatchID = commodityBatch.getCommoditybatchID();
+		this.commoditybatchID = commodityBatch.getId();
 		this.commoditybatchID = commodityBatch.getCommodityID();
 		this.quantity = commodityBatch.getQuantity();
 	}
+	
+	public CommodityBatchDTO() {}
 
-	public int getCommoditybatchID() {
+	public int getId() {
 		return commoditybatchID;
 	}
 
-	public void setCommoditybatchID(int commoditybatchID) {
+	public void setId(int commoditybatchID) {
 		this.commoditybatchID = commoditybatchID;
 	}
 

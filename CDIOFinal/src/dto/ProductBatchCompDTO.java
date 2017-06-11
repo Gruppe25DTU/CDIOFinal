@@ -1,6 +1,6 @@
 package dto;
 
-public class ProductBatchCompDTO {
+public class ProductBatchCompDTO implements IDTO {
 	private int productBatchID = -1;
 	private int commodityBatchID = -1;
 	private double tara = -1;
@@ -22,6 +22,8 @@ public class ProductBatchCompDTO {
 		this.net = productBatchComp.getNet();
 		this.userID = productBatchComp.getuserID();
 	}
+	
+	public ProductBatchCompDTO() {}
 
 
 	public int getProductBatchID() {

@@ -18,8 +18,8 @@ import javax.ws.rs.core.Response.Status;
 
 import dao.RecipeDAO;
 import dto.RecipeDTO;
-import logic.RuleSetInterface;
-import logic.RuleSet;
+import logic.validation.RuleSet;
+import logic.validation.RuleSetInterface;
 
 @Path("/recipe")
 public class RESTRecipe {

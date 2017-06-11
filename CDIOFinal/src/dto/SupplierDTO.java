@@ -1,6 +1,6 @@
 package dto;
 
-public class SupplierDTO {
+public class SupplierDTO implements IDTO {
 
 	private int supplierID = -1;
 	private String name = "";
@@ -14,6 +14,8 @@ public class SupplierDTO {
 		this.supplierID = supplier.getId();
 		this.name = supplier.getName();
 	}
+	
+	public SupplierDTO() {}
 	
 	public int getId() {
 		return supplierID;

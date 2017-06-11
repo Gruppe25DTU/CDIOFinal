@@ -3,7 +3,7 @@ package dto;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class ProductBatchDTO {
+public class ProductBatchDTO implements IDTO {
 	private int productBatchID = -1;
 	private int status = -1;
 	private int recipeID =-1;
@@ -23,7 +23,7 @@ public class ProductBatchDTO {
 	}
 
 public ProductBatchDTO(ProductBatchDTO productBatch){
-	this.productBatchID = productBatch.getProductBatchID();
+	this.productBatchID = productBatch.getId();
 	this.status = productBatch.getStatus();
 	this.recipeID = productBatch.getRecipeID();
 	this.startDate = productBatch.getStartDate();
@@ -31,13 +31,15 @@ public ProductBatchDTO(ProductBatchDTO productBatch){
 	this.components = productBatch.getComponents();
 }
 
-	public int getProductBatchID() {
+public ProductBatchDTO() {}
+
+	public int getId() {
 		return productBatchID;
 	}
 
 
 
-	public void setProductBatchID(int productBatchID) {
+	public void setId(int productBatchID) {
 		this.productBatchID = productBatchID;
 	}
 

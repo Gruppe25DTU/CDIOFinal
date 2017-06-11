@@ -1,6 +1,6 @@
 package dto;
 
-public class RecipeCompDTO {
+public class RecipeCompDTO implements IDTO {
 	private int recipeID = -1;
 	private int commodityID = -1;
 	private double nomNetWeight = -1;
@@ -19,6 +19,8 @@ public class RecipeCompDTO {
 		this.nomNetWeight = recipeComp.getNomNetWeight();
 		this.tolerance = recipeComp.getTolerance();
 	}
+	
+	public RecipeCompDTO() {}
 
 	public int getRecipeID() {
 		return this.recipeID;
