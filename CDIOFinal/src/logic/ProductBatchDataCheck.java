@@ -9,8 +9,8 @@ public class ProductBatchDataCheck {
 	private RuleSet rules;
 
 	public void CreateProductBatchDC(ProductBatchDTO dto) throws RuleException{
-		if(rules.getID().test(dto.getProductBatchID()) == false ||
-				String.valueOf(dto.getProductBatchID()) == null){
+		if(rules.getID().test(dto.getId()) == false ||
+				String.valueOf(dto.getId()) == null){
 			throw new RuleException("Invalid ProductBatch ID!");
 		}
 		if(rules.getID().test(dto.getRecipeID()) == false ||

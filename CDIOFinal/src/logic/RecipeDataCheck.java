@@ -10,7 +10,7 @@ public class RecipeDataCheck {
 	private RuleSet rules;
 
 	public void CreateRecipeDC(RecipeDTO dto) throws RuleException{
-		if(rules.getID().test(dto.getRecipeID()) == false){
+		if(rules.getID().test(dto.getId()) == false){
 			throw new RuleException("Invalid ID!");
 		}
 		if(rules.getName().test(dto.getName()) == false || dto.getName() == null){
