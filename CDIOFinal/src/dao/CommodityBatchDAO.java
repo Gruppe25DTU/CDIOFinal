@@ -16,8 +16,9 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 	 */
 	@Override
 	public boolean changeAmount(int id, double amount) {
-		String cmd = "CALL changeQuantity('%d','%d');";
-		cmd = String.format(cmd, id,amount);
+		String cmd = "CALL changeQuantity('%d','%s');";
+		String quantity = Double.toString(amount);
+		cmd = String.format(cmd, id,quantity);
 		boolean returnvalue;
 		try {
 			Connector.doUpdate(cmd);
@@ -39,8 +40,7 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 		int commodityID = dto.getCommodityID();
 		double quantity = dto.getQuantity();
 		String sQuantity = Double.toString(quantity);
-		sQuantity = sQuantity.replace(",", ".");
-		cmd = String.format(cmd,commodityBatchID,commodityID,quantity);
+		cmd = String.format(cmd,commodityBatchID,commodityID,sQuantity);
 		
 		int returnValue;
 		try {

@@ -14,8 +14,8 @@ import javax.ws.rs.core.Response.Status;
 
 import dao.CommodityBatchDAO;
 import dto.CommodityBatchDTO;
-import logic.RuleSetInterface;
-import logic.RuleSet;
+import logic.validation.RuleSet;
+import logic.validation.RuleSetInterface;
 
 @Path("/commoditybatch")
 public class RESTCommodityBatch {
