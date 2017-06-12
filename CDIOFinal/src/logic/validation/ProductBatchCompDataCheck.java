@@ -4,19 +4,20 @@ import dto.ProductBatchCompDTO;
 import logic.validation.RuleSetInterface.RuleException;
 
 public class ProductBatchCompDataCheck {
-	private RuleSet rules;
 
-	public void ProductBatchCompDC(ProductBatchCompDTO dto) throws RuleException{
+  private static RuleSetInterface rules = new RuleSet();
+
+	public static void ProductBatchCompDC(ProductBatchCompDTO dto) throws RuleException{
 		if(rules.getID().test(dto.getProductBatchID()) == false ||
 				String.valueOf(dto.getProductBatchID()) == null){
 			throw new RuleException("Invalid ProductBatchComp ID!");
 		}
-		if(rules.getID().test(dto.getcommodityBatchID()) == false ||
-				String.valueOf(dto.getcommodityBatchID())== null){
+		if(rules.getID().test(dto.getCommodityBatchID()) == false ||
+				String.valueOf(dto.getCommodityBatchID())== null){
 			throw new RuleException("Invalid CommodityBatch ID!");
 		}
-		if(rules.getID().test(dto.getuserID()) == false ||
-				String.valueOf(dto.getuserID()) == null){
+		if(rules.getID().test(dto.getUserID()) == false ||
+				String.valueOf(dto.getUserID()) == null){
 			throw new RuleException("Invalid UserID!");
 		}
 		if(String.valueOf(dto.getNet()) == null){
@@ -27,30 +28,30 @@ public class ProductBatchCompDataCheck {
 		}
 	}
 
-	public void ProductBatchCompIDDC(int id) throws RuleException{
+	public static void productBatchID(int id) throws RuleException{
 		if(rules.getID().test(id) == false ||
 				String.valueOf(id) == null){
 			throw new RuleException("Invalid ProductBatchComp ID!");
 		}
 	}
-	public void ProductBatchCompComBatchID(int id) throws RuleException{
+	public static void commodityBatchID(int id) throws RuleException{
 		if(rules.getID().test(id) == false ||
 				String.valueOf(id) == null){
 			throw new RuleException("Invalid CommodityBatch ID!");
 		}
 	}
-	public void ProductBatchCompUserID(int id) throws RuleException{
+	public static void userID(int id) throws RuleException{
 		if(rules.getID().test(id) == false ||
 				String.valueOf(id) == null){
 			throw new RuleException("Invalid User ID!");
 		}
 	}
-	public void ProductBatchCompNet(double net) throws RuleException{
+	public static void net(double net) throws RuleException{
 		if(String.valueOf(net) == null){
 			throw new RuleException("Invalid Net!");
 		}
 	}
-	public void ProductBatchCompTara(double tara) throws RuleException{
+	public static void tara(double tara) throws RuleException{
 		if(String.valueOf(tara) == null){
 			throw new RuleException("Invalid Tara!");
 		}

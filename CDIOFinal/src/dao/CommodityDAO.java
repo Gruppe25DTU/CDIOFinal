@@ -6,10 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dal.Connector;
-import daoInterface.CommodityInterfaceDAO;
 import dto.CommodityDTO;
 
-public class CommodityDAO implements CommodityInterfaceDAO{
+public class CommodityDAO {
 
 
 	/**
@@ -18,8 +17,8 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 	 * @return
 	 *
 	 */
-	@Override
-	public int create(CommodityDTO dto) {
+	
+	public static int create(CommodityDTO dto) {
 		String cmd = "CALL addCommodity('%d','%s','%d');";
 		cmd = String.format(cmd, dto.getId(),dto.getName(),dto.getSupplierID());
 		try {
@@ -35,7 +34,7 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 	 * Returns a list of all existing commodities
 	 * @return List< CommodityDTO >
 	 */
-	@Override
+	
 	public List<CommodityDTO> getList() {
 		String cmd = "CALL getCommodityList();";
 		List<CommodityDTO> list = new ArrayList<CommodityDTO>();
@@ -71,7 +70,7 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 	 * @param commodity_ID
 	 * @return commodityDTO
 	 */
-	@Override
+	
 	public CommodityDTO get(int id) {
 		String cmd = "CALL getCommodity('%d');";
 		cmd = String.format(cmd, id);
@@ -105,7 +104,7 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 	 * @return returns 0 if function fails <br>
 	 * A number in the interval 1-99999999 if functions succeeds
 	 */
-	@Override
+	
 	public int findFreeCommodityID() {
 		String cmd = "CALL findFreeCommodityID();";
 		try {

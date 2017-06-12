@@ -4,9 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import dal.Connector;
-import daoInterface.SessionInterfaceDAO;
 
-public class SessionDAO implements SessionInterfaceDAO{
+public class SessionDAO {
 
 	/**
 	 * confirm login. If username and password login exists in database.
@@ -14,7 +13,7 @@ public class SessionDAO implements SessionInterfaceDAO{
 	 * true if username and password exists for an user <br>
 	 * false if username and password doesn't exists for an user
 	 */
-	@Override
+	
 	public boolean login(String name, String pwd) {
 		String cmd = "CALL confirmLogin('%s','%s');";
 		cmd = String.format(cmd, name,pwd);
@@ -49,7 +48,7 @@ public class SessionDAO implements SessionInterfaceDAO{
 	 * 
 	 * @param ID
 	 */
-	@Override
+	
 	public void logout(int ID) {
 
 	}

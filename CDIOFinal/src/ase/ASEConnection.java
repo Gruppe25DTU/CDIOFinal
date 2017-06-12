@@ -25,6 +25,8 @@ public class ASEConnection {
 	
 	public void disconnect() throws IOException
 	{
+		this.outputMsg("P111 \"\"");
+		this.outputMsg("K 1");
 		this.outputMsg("Q");
 		this.cM.disconnect(connNr);
 		this.socket.close();

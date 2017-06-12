@@ -29,6 +29,7 @@ public class DataCheckerInterface {
       String[] lines = line.split(" ");
       if (lines.length != 3) {
         System.out.println("Enter 3 strings\n");
+        continue;
       }
       String type = lines[0];
       String field = lines[1];
@@ -79,7 +80,7 @@ public class DataCheckerInterface {
       throw new UnexpectedDataException();
     }
     try {
-      method.invoke(UserDataCheck.class, value);
+      method.invoke(method.getDeclaringClass(), value);
     } catch (IllegalAccessException e) {
       throw new UnauthorizedException(e);
     } catch (IllegalArgumentException e) {
@@ -89,7 +90,7 @@ public class DataCheckerInterface {
     }
   }
   
-  private static boolean checkDTO(IDTO dto) throws DALException, DTOException
+  public static boolean checkDTO(IDTO dto, String dtoType) throws DALException, DTOException
   {
     return true;
   }

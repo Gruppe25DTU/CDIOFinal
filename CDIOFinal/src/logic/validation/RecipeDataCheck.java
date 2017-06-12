@@ -7,9 +7,9 @@ import logic.validation.RuleSetInterface.RuleException;
 
 public class RecipeDataCheck {
 
-	private RuleSet rules;
+  private static RuleSetInterface rules = new RuleSet();
 
-	public void CreateRecipeDC(RecipeDTO dto) throws RuleException{
+	public static void CreateRecipeDC(RecipeDTO dto) throws RuleException{
 		if(rules.getID().test(dto.getId()) == false){
 			throw new RuleException("Invalid ID!");
 		}
@@ -21,13 +21,20 @@ public class RecipeDataCheck {
 		}
 	}
 
-	public void RecipeNameDC(String name) throws RuleException{
+  public static void id(int id) throws RuleException{
+    if(rules.getID().test(id) == false ||
+        String.valueOf(id) == null){
+      throw new RuleException("Invalid ID!");
+    }
+  }
+
+	public static void name(String name) throws RuleException{
 		if(rules.getName().test(name) == false || name == null){
 			throw new RuleException("Invalid Recipe name!");
 		}
 	}
 
-	public void RecipeCompDC(List components)  throws RuleException{
+	public static void components(List components)  throws RuleException{
 		if(components == null){
 			throw new RuleException("Invalid number of components!");
 		}

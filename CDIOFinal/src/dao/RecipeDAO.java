@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dal.Connector;
-import daoInterface.RecipeInterfaceDAO;
 import dto.RecipeCompDTO;
 import dto.RecipeDTO;
 
-public class RecipeDAO implements RecipeInterfaceDAO{
+public class RecipeDAO {
 
 	/**
 	 * Creates a recipe. <br>
@@ -18,8 +17,8 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	 * @param dto
 	 * @return
 	 */
-	@Override
-	public int create(RecipeDTO dto) {
+	
+	public static int create(RecipeDTO dto) {
 		String cmd = "CALL addRecipe('%d','%s')";
 		cmd = String.format(cmd, dto.getId(),dto.getName());
 		try {
@@ -37,8 +36,8 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	/**
 	 * Adds list of recipeComponents
 	 */
-	@Override
-	public int createRecipeComponent(List<RecipeCompDTO> components) {
+	
+	public static int createRecipeComponent(List<RecipeCompDTO> components) {
 
 		for(RecipeCompDTO dto : components) {
 			String cmd = "CALL addRecipeComponent('%d','%d','%s','%s');";
@@ -75,7 +74,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	 * @param id
 	 * @return
 	 */
-	@Override
+	
 	public RecipeDTO getRecipe(int id) {
 		String cmd = "CALL getRecipe('%d');";
 		cmd = String.format(cmd, id);
@@ -107,7 +106,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	/**
 	 * Returns a list of recipecomponents
 	 */
-	@Override
+	
 	public List<RecipeCompDTO> getRecipeComponent(int ID) {
 		String cmd = "CALL getRecipeComponent('%d');";
 		List<RecipeCompDTO> list = new ArrayList<>();
@@ -138,7 +137,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	/**
 	 * Returns a list over every existing recipes
 	 */
-	@Override
+	
 	public List<RecipeDTO> getRecipeList() {
 		String cmd = "CALL getRecipeList();";
 		List<RecipeDTO> list = new ArrayList<RecipeDTO>();
@@ -177,7 +176,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	 * @return returns 0 if function fails <br>
 	 * A number in the interval 1-99999999 if functions succeeds
 	 */
-	@Override
+	
 	public int findFreeRecipeID() {
 		String cmd = "CALL findFreeRecipeID();";
 		try {

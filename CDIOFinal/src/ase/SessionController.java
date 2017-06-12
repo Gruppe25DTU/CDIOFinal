@@ -121,9 +121,9 @@ public class SessionController {
 						{
 							//Progress to next phase --Confirm the user name--
 							String name = user.getFirstName()+" "+user.getLastName();
-							if(name.length() > 20)
-								name = user.getFirstName()+" "+user.getLastName().charAt(0);
-							String output = "P111 \""+name+"? Y:[-> N:Exit\"";
+							if(name.length() > 16)
+								name = user.getIni();
+							String output = "P111 \""+name+"? y:[-> n:Exit\"";
 							phase = PhaseType.CONFIRM_NAME;
 							RM20Expecting = false;
 							conn.outputMsg(output);
@@ -178,7 +178,7 @@ public class SessionController {
 				}
 				break;
 			case RM20_C:
-				conn.outputMsg("P111 \"Shutdown? Y:[-> N:Exit\"");
+				conn.outputMsg("P111 \"Shutdown? y:[-> n:Exit\"");
 				RM20Expecting = false;
 				break;
 			default :
@@ -322,7 +322,7 @@ public class SessionController {
 			break;
 		case TARA_REPLY :
 			double t = Double.valueOf(message.getMsg());
-			if(t > 0.002)
+			if(t > 0.020)
 			{
 				conn.outputMsg("P111 \"Clear the weight [->\"");
 			}
@@ -358,7 +358,7 @@ public class SessionController {
 			double t = Double.valueOf(message.getMsg());
 			//If the weight has changed less than 4% between the the two commands
 			//Then we accept the result
-			if(t >= tara*(1-0.04) && t<= tara*(1+0.04))
+			if(t >= tara*(1-0.10) && t<= tara*(1+0.10))
 			{
 				//Progress to the next phase --Weighing the commodity--
 				conn.outputMsg("P111 \""+comm.getName()+" [->\"");
@@ -432,7 +432,7 @@ public class SessionController {
 			}
 			else if(netto > upperBound)
 			{
-				String uBS = Double.toString(lowerBound).replaceAll(",", ".");
+				String uBS = Double.toString(upperBound).replaceAll(",", ".");
 				uBS = uBS.length() > 6 ? uBS.substring(0 , 6) : uBS.substring(0 , uBS.length());
 				conn.outputMsg("P111 \"Maximum: "+uBS+" kg [->\"");
 			}
@@ -648,9 +648,9 @@ public class SessionController {
 		}
 		conn.outputMsg("DW");
 		currentRecipeComp = pbDAO.getNonWeighedComp(prod.getId());
-		comm = cDAO.get(currentRecipeComp.getCommodityID());
 		if(currentRecipeComp != null)
 		{
+			comm = cDAO.get(currentRecipeComp.getCommodityID());
 			//There is more to weigh so we ask if the lab tech wishes to continue
 			if(prod.getStatus() == 0)
 			{	
@@ -658,7 +658,7 @@ public class SessionController {
 				pbDAO.changeStatus(prod.getId(), 1);
 			}
 			phase = PhaseType.END_OF_WEIGHING;
-			conn.outputMsg("P111 \"Continue? Y:[-> N:Exit\"");
+			conn.outputMsg("P111 \"Continue? y:[-> n:Exit\"");
 
 		}
 		else
@@ -680,6 +680,7 @@ public class SessionController {
 			conn.createNewSession();
 		}
 	}
+	
 
 	public UserDTO getUser() {
 		return user;
