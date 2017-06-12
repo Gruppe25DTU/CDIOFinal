@@ -22,6 +22,10 @@ public class RecipeCompDTO implements IDTO {
 	
 	public RecipeCompDTO() {}
 
+	public int getId() {
+	  return getRecipeID();
+	}
+	
 	public int getRecipeID() {
 		return this.recipeID;
 	}

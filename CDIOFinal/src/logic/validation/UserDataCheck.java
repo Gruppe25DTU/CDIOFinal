@@ -1,6 +1,11 @@
 package logic.validation;
 
 import dto.UserDTO;
+import logic.CDIOException.DALException;
+import logic.CDIOException.DTOException;
+import logic.CDIOException.InvalidDataException;
+import logic.CDIOException.UnauthorizedException;
+import logic.CDIOException.UnexpectedDataException;
 import logic.PasswordGenerator;
 import logic.validation.RuleSetInterface.RuleException;
 

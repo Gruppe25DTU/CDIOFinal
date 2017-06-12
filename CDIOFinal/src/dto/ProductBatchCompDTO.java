@@ -25,10 +25,13 @@ public class ProductBatchCompDTO implements IDTO {
 	
 	public ProductBatchCompDTO() {}
 
-
 	public int getProductBatchID() {
 		return productBatchID;
 	}
+
+  public int getId() {
+    return getProductBatchID();
+  }
 
 	public void setproductBatchID(int productBatchID) {
 		this.productBatchID = productBatchID;

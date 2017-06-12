@@ -43,25 +43,33 @@ public class DataCheckerInterface {
     }
   }
   
-  private static final HashMap<String, Method> userChecks = new HashMap<String, Method>() {{
+  private static final HashMap<String, HashMap<String, Method>> checklist = new HashMap<String, HashMap<String, Method>>() {{
+    this.put("commodityBatch", mapMaker("CommodityBatchDataCheck"));
+    this.put("commodity", mapMaker("CommodityDataCheck"));
+    this.put("productBatchComponent", mapMaker("ProductBatchCompDataCheck"));
+    this.put("productBatch", mapMaker("ProductBatchDataCheck"));
+    this.put("recipeComponent", mapMaker("RecipeCompDataCheck"));
+    this.put("recipe", mapMaker("RecipeDataCheck"));
+    this.put("supplier", mapMaker("SupplierDataCheck"));
+    this.put("user", mapMaker("UserDataCheck"));
+  }};
+  
+  private static HashMap<String, Method> mapMaker(String path) {
+    HashMap<String, Method> map = new HashMap<String, Method>();
     try {
-      Class user = Class.forName("logic.validation.UserDataCheck");
+      Class user = Class.forName("logic.validation." + path);
       Method[] methods = user.getDeclaredMethods();
       for (Method method : methods) {
-        this.put(method.getName(), method);
+        map.put(method.getName(), method);
       }
     } catch (ClassNotFoundException e1) {
       e1.printStackTrace();
     }
-  }};
-  
-  private static final HashMap<String, HashMap<String, Method>> checklist = new HashMap<String, HashMap<String, Method>>() {{
-    this.put("user", userChecks);
-  }};
+    return map;
+  }
   
   public static void checkField(String dtoType, String field, String value) throws DALException, DTOException, UnauthorizedException
   {
-    boolean valid = false;
     HashMap<String, Method> map = checklist.get(dtoType);
     if (map == null) {
       throw new UnknownDTOException();
@@ -81,7 +89,7 @@ public class DataCheckerInterface {
     }
   }
   
-  public static boolean checkDTO(IDTO dto) throws DALException, DTOException
+  private static boolean checkDTO(IDTO dto) throws DALException, DTOException
   {
     return true;
   }
