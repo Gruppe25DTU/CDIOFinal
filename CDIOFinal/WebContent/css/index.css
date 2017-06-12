@@ -91,20 +91,7 @@ font-family: Candara;
 
 /* Create User css */
 
- .createU {
-    display: -webkit-flex;
-    display: flex;  
-    -webkit-flex-flow: row wrap;
-    flex-flow: row wrap;
-    text-align: center;
-}
 
-.createU > * {
-    padding: 15px;
-    -webkit-flex: 1 100%;
-    flex: 1 100%;
-}
-    
 .informationbox {
 float: left;
 padding: 10px 20px;
@@ -119,25 +106,25 @@ min-width: 200px;
 .blockbox {
 display: block;
 }
- 
-.createU input[type=text], .createU input[type=password], .createU input[type=email] {
-	font-family: Candara;
-	width: 100%;
-	padding: 12px 20px;
-	margin: 8px 0;
-	display: inline-block;
-	box-sizing: border-box;
+
+input[type=text]{
+    font-family: Candara;
+    width: 90%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    box-sizing: border-box;
+    outline: none;
 }
 
-.createU input[type=submit] {
-background-color: #ff8000;
-color: white;
-padding: 5px 20px;
-margin: 8px 0;
-cursor: pointer;
-width: 100%;
-font-family: Candara;
-font-size: 25px;
+.searchForm,  .searchForm input[type=text]  {
+	float: left;
+	 width: 50%;
+}
+ 
+ .searchForm input[type=submit]{
+    visibility: hidden;
+    float: left;
 }
     
 #IDField

@@ -9,15 +9,16 @@
 <script type="text/javascript" src="script/default.js"></script>
 <script type="text/javascript" src="script/commoditybatch.js"></script>
 <link rel="stylesheet" type="text/css" href="css/default.css">
+<link rel="stylesheet" type="text/css" href="css/commoditybatch.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
 </head>
-<div class="informationboxsmall search">  
-    <form class="searchForm" id="searchForm" name="searchForm">
-        Search for commodity batches by ID: <input type="text" name="search" class="search" autofocus>
-        <input type="submit" value="Submit"/>
-    </form> 
+<div class="informationboxsmall search">
+	<form class="searchForm" id="searchForm" name="searchForm">
+		Search for commodity batches by ID: <input type="text" name="search"
+			class="search" autofocus> <input type="submit" value="Submit" />
+	</form>
 </div>
 <div id="details" class="details">
 	<div id="contentfield">
@@ -25,36 +26,61 @@
 			<section class="optionlineUser">
 				<h2 style="font-family: candara;">
 					<i class="icon glyphicon glyphicon-apple" style="font-size: 30px;"></i>
-					Commodity Batch Information <input type="button" name="newuser"
-						class="create" id="newuser" value="Add New Commodity Batch"
-						style="left: 50%; min-width: 240px;"> <input type="button" name="edit"
-						id="edit" class="edit" value="Edit Commodity Batch" style="left: 50%;min-width: 220px;">
+					Commodity Batch Information
 				</h2>
 			</section>
-
-			<div class="content">
-        <div class="informationboxsmall">
-            ID:<br>
-                <input type="text" name="id" id="id" class="protected auto" disabled>
-        </div>
-        <div class="informationbox">
-            Commodity:<br>
-            <input type="text" name="commodity" id="commodity" class="protected" disabled>
-            Quantity:<br>
-            <input type="text" id="quantity" name="quantity" class="editable protected" onkeyup="checkState.call(this)" disabled>
-        </div>
-        <div class="informationbox">
-           	<br>
-						<input type="button" name="update" id="update" class="update"
-							value="Update" style="display: none;"> <input
+			<section class="optionlineUser">
+				<input type="button" name="list" id="listbut"
+					value="List all Commodities Batches" style="min-width: 260px;">
+				<input type="button" name="newuser" class="create" id="newuser"
+					value="Add New Commodity Batch" style="min-width: 240px;">
+				<input type="button" name="edit" id="edit" class="edit"
+					value="Edit Commodity Batch" style="min-width: 220px;">
+			</section>
+			<div id="inputfield" style="display: none;">
+				<div class="content">
+					<div class="informationboxsmall">
+						ID:<br> <input type="text" name="id" id="id"
+							class="protected auto" disabled>
+					</div>
+					<div class="informationbox">
+						Commodity:<br> <input type="text" name="commodity"
+							id="commodity" class="protected" disabled> Quantity:<br>
+						<input type="text" id="quantity" name="quantity"
+							class="editable protected" onkeyup="checkState.call(this)"
+							disabled>
+					</div>
+					<div class="informationbox">
+						<br> <input type="button" name="update" id="update"
+							class="update" value="Update" style="display: none;"> <input
 							type="button" name="create" class="create" id="create"
-							value="Create New Commodity Batch" style="display: none;"> <input
-							type="button" name="cancel" id="cancel" class="cancel"
+							value="Create New Commodity Batch" style="display: none;">
+						<input type="button" name="cancel" id="cancel" class="cancel"
 							value="Cancel" style="display: none;">
-            </div>
-        </div>
-    </form>
-    </div>
+					</div>
+				</div>
+			</div>
+			<div id="list">
+				<div style="min-width: 800px; float: left;">
+					<input type="text" id="CBInput" onkeyup="tableSearch()"
+						placeholder="Search..." title="Search by any value"
+						style="float: left;"> <i
+						class="icon glyphicon glyphicon-search"
+						style="font-size: 30px; padding-top: 20px"> </i>
+				</div>
+				<table id="CBTablecss">
+					<tr class="header">
+						<th style="width: 20%;">Commodity batch ID:</th>
+						<th style="width: 40%;">Commodity ID</th>
+						<th style="width: 40%;">Quantity</th>
+					</tr>
+					<tbody id="CBTable">
+
+					</tbody>
+				</table>
+			</div>
+		</form>
+	</div>
 </div>
 </body>
 </html>

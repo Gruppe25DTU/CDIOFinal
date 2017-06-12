@@ -9,13 +9,15 @@
 <script type="text/javascript" src="script/default.js"></script>
 <script type="text/javascript" src="script/commodity.js"></script>
 <link rel="stylesheet" type="text/css" href="css/default.css">
+<link rel="stylesheet" type="text/css" href="css/commodity.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 <div class="informationboxsmall search">
 	<form class="searchForm" id="searchForm" name="searchForm">
-		Search for commodities by ID: <input type="text" name="search"
-			class="search" autofocus> <input type="submit" value="Submit" />
+		Search for commodities by ID:  <input
+			type="text" name="search" class="search" autofocus> <input
+			type="submit" value="Submit" />
 	</form>
 </div>
 <div id="details" class="details">
@@ -24,35 +26,56 @@
 			<section class="optionlineUser">
 				<h2 style="font-family: candara;">
 					<i class="icon glyphicon glyphicon-apple" style="font-size: 30px;"></i>
-					Commodity Information <input type="button" name="newuser"
-						class="create" id="newuser" value="Add New Commodity"
-						style="left: 50%;"> <input type="button" name="edit"
-						id="edit" class="edit" value="Edit Commodity" style="left: 50%;">
-				</h2>
+					Commodity Information </h2>
 			</section>
-
-			<div class="content">
-				<div class="informationboxsmall">
-					ID:<br> <input type="text" name="id" id="id"
-						class="protected auto" disabled>
-				</div>
-				<div class="informationbox">
-					Name:<br> <input type="text" name="name" id="name"
-						class="editable protected" onkeyup="checkState.call(this)"
-						disabled> Supplier:<br> <input type="text"
-						name="supplier" id="supplier" class="protected" disabled>
-				</div>
-				
+			<section class="optionlineUser">
+					<input type="button" name="list" id="listbut" value="List all Commodities"><input type="button" name="newuser"
+						class="create" id="newuser" value="Add New Commodity"
+						> <input type="button" name="edit"
+						id="edit" class="edit" value="Edit Commodity">
+						</section>
+						
+			<div id="inputfield" style="display: none;">
+				<div class="content">
+					<div class="informationboxsmall">
+						ID:<br> <input type="text" name="id" id="id"
+							class="protected auto" disabled>
+					</div>
 					<div class="informationbox">
-					<br>
-						<input type="button" name="update" id="update" class="update"
-							value="Update" style="display: none;"> <input
+						Name:<br> <input type="text" name="name" id="name"
+							class="editable protected" onkeyup="checkState.call(this)"
+							disabled> Supplier:<br> <input type="text"
+							name="supplier" id="supplier" class="protected" disabled>
+					</div>
+
+					<div class="informationbox">
+						<br> <input type="button" name="update" id="update"
+							class="update" value="Update" style="display: none;"> <input
 							type="button" name="create" class="create" id="create"
 							value="Create New Commodity" style="display: none;"> <input
 							type="button" name="cancel" id="cancel" class="cancel"
 							value="Cancel" style="display: none;">
 					</div>
-				
+				</div>
+			</div>
+			<div id="list">
+			<div style="min-width: 800px; float: left;">
+				<input type="text" id="CInput" onkeyup="tableSearch()"
+					placeholder="Search..." title="Search by any value"
+					style="float: left;"> <i
+					class="icon glyphicon glyphicon-search"
+					style="font-size: 30px; padding-top: 20px"> </i>
+					</div>
+				<table id="CTablecss">
+					<tr class="header">
+						<th style="width: 20%;">Commodity ID:</th>
+						<th style="width: 40%;">Commodity Name</th>
+						<th style="width: 40%;">Supplier ID</th>
+					</tr>
+					<tbody id="CTable">
+
+					</tbody>
+				</table>
 			</div>
 		</form>
 	</div>

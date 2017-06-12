@@ -7,16 +7,16 @@
 <script src="script/jquery-3.2.1.js"></script>
 <script src="script/jquery.serialize-object.js"></script>
 <script type="text/javascript" src="script/default.js"></script>
-
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <title>Yanki er et dejligt skæg</title>
+
 </head>
 <body>
 
 	<div class="header">
 		<h1>
-			<b>Welcome Lasse Jensen</b>
+			<b>Welcome (User by ID)</b>
 		</h1>
 	</div>
 
@@ -34,6 +34,10 @@
 		</div>
 	</div>
 
+	<form class="searchForm" id="searchForm" name="searchForm">
+		<input type="text" name="search"
+			class="search" autofocus placeholder="Search by ID... " disabled> <input type="submit" value="Submit" />
+	</form>
 	<div class="dropdown" style="float: right;">
 		<button class="dropbtn glyphicon glyphicon-user"
 			style="font-size: 36px;"></button>

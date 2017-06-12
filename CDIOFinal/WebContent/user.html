@@ -26,13 +26,15 @@
 			<section class="optionlineUser">
 				<h2 style="font-family: candara;">
 					<i class="icon glyphicon glyphicon-user" style="font-size: 30px;"></i>
-					User Information <input type="button" name="list" id="listbut" value="List all Users" style="left: 50%;"> <input type="button" name="newuser" class="create"
+					User Information</h2>
+			</section>
+			<section class="optionlineUser">
+			 <input type="button" name="list" id="listbut" value="List all Users" style="left: 50%;"> <input type="button" name="newuser" class="create"
 						id="newuser" value="Add New User" style="left: 50%;"> <input
 						type="button" name="edit" id="edit" class="edit" value="Edit User"
 						style="left: 50%;">
-				</h2>
-			</section>
-			<div id="inputfield" style="display: none; border: 1px solid black;">
+				</section>
+			<div id="inputfield" style="display: none;">
 				<div class="content">
 					<div class="informationboxsmall">
 						ID:<br> <input type="text" name="id" id="id"
@@ -92,11 +94,13 @@
 			</div>
 
 			<div id="list">
+			<div style="min-width: 800px; float: left;">
 				<input type="text" id="UInput" onkeyup="tableSearch()"
 					placeholder="Search..." title="Search by any value"
 					style="float: left;"> <i
 					class="icon glyphicon glyphicon-search"
 					style="font-size: 30px; padding-top: 20px"> </i>
+					</div>
 				<table id="UTablecss">
 					<tr class="header">
 						<th style="width: 10%;">User ID:</th>
