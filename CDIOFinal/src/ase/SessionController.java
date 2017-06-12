@@ -3,6 +3,7 @@ package ase;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import dao.CommodityBatchDAO;
 import dao.CommodityDAO;
@@ -43,6 +44,8 @@ public class SessionController {
 			// Setting the key controls so we can see key codes when buttons on weight are pressed-
 			//- but their functions aren't run on the weight
 			conn.outputMsg("K 3");
+			conn.outputMsg("DW");
+			conn.outputMsg("P111 \"\"");
 			RM20Expecting = true;
 			conn.outputMsg("RM20 8 \"Enter lab ID\" \"\" \"&3\"");
 
@@ -55,6 +58,7 @@ public class SessionController {
 
 	public void processInput(SocketInMessage msg) throws IOException
 	{
+		System.out.println("Input: "+msg.getMsg() + " type : "+msg.getReplyType() + " at phase: "+phase);
 		try
 		{
 			switch(phase)
@@ -98,7 +102,6 @@ public class SessionController {
 
 	private void loginPhase(SocketInMessage message) throws IOException
 	{
-		System.out.println(message.getMsg() +" type: "+ message.getReplyType());
 		if(RM20Expecting)
 		{
 			switch(message.getReplyType())
@@ -112,7 +115,6 @@ public class SessionController {
 					
 					if(user != null)
 					{
-						System.out.println(user);
 						if((user.getRoles().contains("LaboratoryTechnician") 
 						|| user.getRoles().contains("Pharmacist")
 						|| user.getRoles().contains("Foreman")) && user.getStatus()==1)
@@ -139,6 +141,7 @@ public class SessionController {
 							{
 								
 							}
+							conn.outputMsg("P111 \"\"");
 							conn.outputMsg("RM20 8 \"Enter Lab ID\" \"\" \"&3\"");
 						}
 						
@@ -154,6 +157,7 @@ public class SessionController {
 						{
 							
 						}
+						conn.outputMsg("P111 \"\"");
 						conn.outputMsg("RM20 8 \"Enter Lab ID\" \"\" \"&3\"");
 					}
 				}
@@ -168,6 +172,7 @@ public class SessionController {
 					{
 						
 					}
+					conn.outputMsg("P111 \"\"");
 					conn.outputMsg("RM20 8 \"Enter Lab ID\" \"\" \"&3\"");
 
 				}
@@ -235,7 +240,6 @@ public class SessionController {
 					int pb_id = Integer.parseInt(message.getMsg());
 					ProductBatchDAO pbDAO = new ProductBatchDAO();
 					prod = pbDAO.get(pb_id);
-					System.out.println(prod);
 					if(prod != null)
 					{
 						if(prod.getStatus() < 2)
@@ -258,6 +262,7 @@ public class SessionController {
 							{
 								
 							}
+							conn.outputMsg("P111 \"\"");
 							conn.outputMsg("RM20 8 \"Enter ProductBatch ID\" \"\" \"&3\"");
 						}
 					}
@@ -272,6 +277,7 @@ public class SessionController {
 						{
 							
 						}
+						conn.outputMsg("P111 \"\"");
 						conn.outputMsg("RM20 8 \"Enter ProductBatch ID\" \"\" \"&3\"");
 					}
 				}
@@ -286,6 +292,7 @@ public class SessionController {
 					{
 						
 					}
+					conn.outputMsg("P111 \"\"");
 					conn.outputMsg("RM20 8 \"Enter ProductBatch ID\" \"\" \"&3\"");
 				}
 				break;
@@ -317,7 +324,7 @@ public class SessionController {
 			double t = Double.valueOf(message.getMsg());
 			if(t > 0.002)
 			{
-				conn.outputMsg("Clear the weight [->");
+				conn.outputMsg("P111 \"Clear the weight [->\"");
 			}
 			else
 			{
@@ -380,7 +387,7 @@ public class SessionController {
 			}
 			else
 			{
-				conn.outputMsg("P111 \"Tare can't be negative\"");
+				conn.outputMsg("P111 \"can't be negative or zero\"");
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
@@ -413,17 +420,21 @@ public class SessionController {
 			break;
 		case WEIGHT_REPLY :
 			netto = Double.valueOf(message.getMsg());
-			double lowerBound = currentRecipeComp.getNomNetWeight()*(1-currentRecipeComp.getTolerance());
-			double upperBound = currentRecipeComp.getNomNetWeight()*(1+currentRecipeComp.getTolerance());
+			double lowerBound = currentRecipeComp.getNomNetWeight()*(1-currentRecipeComp.getTolerance()/100.0);
+			double upperBound = currentRecipeComp.getNomNetWeight()*(1+currentRecipeComp.getTolerance()/100.0);
 			//First checks whether netto is lower than lowerbound then if it's higher than upper bound
 			if(netto < lowerBound)
 			{
-				conn.outputMsg("P111 \"Minimum: "+lowerBound+" kg [->\"");
+				String lBS = Double.toString(lowerBound).replaceAll(",", ".");
+				lBS = lBS.length() > 6 ? lBS.substring(0 , 6) : lBS.substring(0 , lBS.length());
+				conn.outputMsg("P111 \"Minimum: "+lBS+" kg [->\"");
 
 			}
 			else if(netto > upperBound)
 			{
-				conn.outputMsg("P111 \"Maximum: "+upperBound+" kg [->\"");
+				String uBS = Double.toString(lowerBound).replaceAll(",", ".");
+				uBS = uBS.length() > 6 ? uBS.substring(0 , 6) : uBS.substring(0 , uBS.length());
+				conn.outputMsg("P111 \"Maximum: "+uBS+" kg [->\"");
 			}
 			else
 			{
@@ -453,9 +464,44 @@ public class SessionController {
 					if(cBatch != null)
 					{
 						//Progress to the next phase -- Perform brutto control (Weight must be equal to -tare)--
-						RM20Expecting = false;
-						phase = PhaseType.BRUTTO_CONTROL;
-						conn.outputMsg("P111 \"Clear the weight [->\"");
+						if(cBatch.getCommodityID() == currentRecipeComp.getCommodityID())
+						{
+							if(cBatch.getQuantity() >= netto)
+							{
+								RM20Expecting = false;
+								phase = PhaseType.BRUTTO_CONTROL;
+								conn.outputMsg("P111 \"Clear the weight [->\"");
+							}
+							else
+							{
+								conn.outputMsg("P111 \"Insufficient quantity!\"");
+								try 
+								{
+									Thread.sleep(2000);
+								} 
+								catch (InterruptedException e) {
+									
+								}
+								conn.outputMsg("P111 \"\"");
+								conn.outputMsg("RM20 8 \"Enter another CommBatch ID\" \"\" \"&3\"");
+							}
+							
+						}
+						else
+						{
+							conn.outputMsg("P111 \"Wrong commodity! try again\"");
+							try 
+							{
+								Thread.sleep(2000);
+							} 
+							catch (InterruptedException e) 
+							{
+								
+							}
+							conn.outputMsg("P111 \"\"");
+							conn.outputMsg("RM20 8 \"Enter CommodityBatch ID\" \"\" \"&3\"");
+						}
+						
 					}
 					else
 					{
@@ -468,6 +514,7 @@ public class SessionController {
 						{
 
 						}
+						conn.outputMsg("P111 \"\"");
 						conn.outputMsg("RM20 8 \"Enter CommodityBatch ID\" \"\" \"&3\"");
 					}
 				}
@@ -482,6 +529,7 @@ public class SessionController {
 					{
 
 					}
+					conn.outputMsg("P111 \"\"");
 					conn.outputMsg("RM20 8 \"Enter CommodityBatch ID\" \"\" \"&3\"");
 				}
 				break;
@@ -559,13 +607,16 @@ public class SessionController {
 		}
 	}
 
-	private void endOfWeighing(SocketInMessage message)
+	private void endOfWeighing(SocketInMessage message) throws IOException
 	{
 		switch(message.getReplyType())
 		{
 		case SEND :
+			conn.outputMsg("P111 \"Clear the weight [->\"");
+			phase = PhaseType.CLEAR_WEIGHT;
 			break;
 		case EXIT :
+			conn.createNewSession();
 			break;
 		default :
 			break;
@@ -577,22 +628,27 @@ public class SessionController {
 		conn.outputMsg("D \"SAVING\"");
 		ProductBatchDAO pbDAO = new ProductBatchDAO();
 		CommodityBatchDAO cbDAO = new CommodityBatchDAO();
+		CommodityDAO cDAO = new CommodityDAO();
 
 		ProductBatchCompDTO component = 
 				new ProductBatchCompDTO(prod.getId() , 
 										cBatch.getId(), 
 										tara, netto , user.getId());
 
-		pbDAO.addComponent(component);
-		cbDAO.changeAmount(cBatch.getId(), cBatch.getQuantity()-netto);
+		System.out.println("Created ProductBatchComponent: "+pbDAO.addComponent(component));
+		System.out.println("Changed CommodityBatch: "+cbDAO.changeAmount(cBatch.getId(), cBatch.getQuantity()-netto));
+		
 
-		try {
+		try 
+		{
 			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
+		} 
+		catch (InterruptedException e1) {
 			
 		}
 		conn.outputMsg("DW");
 		currentRecipeComp = pbDAO.getNonWeighedComp(prod.getId());
+		comm = cDAO.get(currentRecipeComp.getCommodityID());
 		if(currentRecipeComp != null)
 		{
 			//There is more to weigh so we ask if the lab tech wishes to continue
@@ -601,7 +657,7 @@ public class SessionController {
 				prod.setStatus(1);
 				pbDAO.changeStatus(prod.getId(), 1);
 			}
-			phase = PhaseType.CLEAR_WEIGHT;
+			phase = PhaseType.END_OF_WEIGHING;
 			conn.outputMsg("P111 \"Continue? Y:[-> N:Exit\"");
 
 		}
@@ -609,6 +665,8 @@ public class SessionController {
 		{
 			//There is nothing more to weigh on this productbatch so it's finished 
 			prod.setStatus(2);
+			Timestamp ts = new Timestamp(System.currentTimeMillis());
+			prod.setEndDate(ts);
 			pbDAO.changeStatus(prod.getId(), 2);
 			pbDAO.setStopdate(prod);
 			conn.outputMsg("P111 \"ProductBatch finished!\"");
@@ -623,70 +681,84 @@ public class SessionController {
 		}
 	}
 
-
-
-
-
 	public UserDTO getUser() {
 		return user;
-	}
-
-	public ProductBatchDTO getProd() {
-		return prod;
-	}
-
-	public RecipeCompDTO getCurrentRecipeComp() {
-		return currentRecipeComp;
-	}
-
-	public ASEConnection getConn() {
-		return conn;
-	}
-
-
-	public double getTara() {
-		return tara;
-	}
-
-	public double getNetto() {
-		return netto;
-	}
-
-
-
-	public CommodityBatchDTO getcBatch() {
-		return cBatch;
 	}
 
 	public void setUser(UserDTO user) {
 		this.user = user;
 	}
 
+	public ProductBatchDTO getProd() {
+		return prod;
+	}
+
 	public void setProd(ProductBatchDTO prod) {
 		this.prod = prod;
 	}
 
-	public void setCurrentPrBatchComp(RecipeCompDTO currentRecipeComp) {
+	public RecipeCompDTO getCurrentRecipeComp() {
+		return currentRecipeComp;
+	}
+
+	public void setCurrentRecipeComp(RecipeCompDTO currentRecipeComp) {
 		this.currentRecipeComp = currentRecipeComp;
+	}
+
+	public CommodityDTO getComm() {
+		return comm;
+	}
+
+	public void setComm(CommodityDTO comm) {
+		this.comm = comm;
+	}
+
+	public ASEConnection getConn() {
+		return conn;
 	}
 
 	public void setConn(ASEConnection conn) {
 		this.conn = conn;
 	}
 
-
+	public double getTara() {
+		return tara;
+	}
 
 	public void setTara(double tara) {
 		this.tara = tara;
+	}
+
+	public double getNetto() {
+		return netto;
 	}
 
 	public void setNetto(double netto) {
 		this.netto = netto;
 	}
 
+	public PhaseType getPhase() {
+		return phase;
+	}
+
+	public void setPhase(PhaseType phase) {
+		this.phase = phase;
+	}
+
+	public CommodityBatchDTO getcBatch() {
+		return cBatch;
+	}
 
 	public void setcBatch(CommodityBatchDTO cBatch) {
 		this.cBatch = cBatch;
+	}
+
+	public boolean isRM20Expecting() {
+		return RM20Expecting;
+	}
+
+	public void setRM20Expecting(boolean rM20Expecting) {
+		RM20Expecting = rM20Expecting;
 	}
 
 

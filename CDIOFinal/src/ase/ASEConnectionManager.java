@@ -16,8 +16,9 @@ public class ASEConnectionManager {
 	{
 		if(connections.length > connNr && connections[connNr] != null)
 		{
-			connections[connNr].disconnect();
+			ASEConnection temp = connections[connNr];
 			connections[connNr] = null;
+			temp.disconnect();
 		}
 	}
 	

@@ -9,6 +9,8 @@
 <script type="text/javascript" src="script/default.js"></script>
 <script type="text/javascript" src="script/supplier.js"></script>
 <link rel="stylesheet" type="text/css" href="css/default.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 <div class="informationboxsmall search">  
     <form class="searchForm" id="searchForm" name="searchForm">
@@ -18,8 +20,17 @@
 </div>
 <div id="details" class="details">
     <form id="detailsForm" class="detailsForm" name="supplier">
-        <h2 style="font-family: Candara;">
-        <i class="glyphicon glyphicon-user">Supplier Information</i></h2>
+        <section class="optionlineUser">
+		<h2 style="font-family: candara;">
+		<i class="icon glyphicon glyphicon-user" style="font-size: 30px;"></i>	
+		Supplier Information 
+			<input type="button" name="newuser" class="create" id="newuser" value="Add New Supplier"
+				style="left: 50%;"> 
+				
+			<input type="button" name="edit"
+				id="edit" class="edit" value="Edit Supplier" style="left: 50%;">
+			</h2>	
+		</section>
         <br>
         <div class="informationboxsmall">
             ID:<br>
@@ -30,21 +41,12 @@
             <input type="text" name="name" id="name" class="editable protected" onkeyup="checkState.call(this)" disabled>
         </div>
         <div class="informationbox">
-            <table>
-               <tr>
-                   <td>
-                       <input type="button" name="edit" id="edit" class="edit" value="Edit">
-                       <input type="button" name="update" id="update" class="update" value="Update" style="display: none;">
-                       <input type="button" name="cancel" id="cancel" class="cancel" value="Cancel" style="display: none;">
-                   </td>
-               </tr>
-               <tr>
-                   <td>
-                       <input type="button" id="create" value="Create New Supplier">
-                   </td>
-               </tr>
-            </table>
-        </div>
+            <input type="button" name="update"
+							id="update" class="update" value="Update" style="display: none;">
+							<input type="button" name="create" class="create" id="create" value="Create New Supplier" style="display: none;">
+							<input type="button" name="cancel" id="cancel" class="cancel"
+							value="Cancel" style="display: none;">
+    </div>
     </form>
 </div>
 </body>

@@ -242,7 +242,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 				return null;
 			}
 			while(rs.next()) {
-				RecipeCompDTO recipeComp = new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getInt("nom_net_weight"),rs.getInt("tolerance"));
+				RecipeCompDTO recipeComp = new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getDouble("nom_net_weight"),rs.getDouble("tolerance"));
 				return recipeComp;
 			}
 			return null;

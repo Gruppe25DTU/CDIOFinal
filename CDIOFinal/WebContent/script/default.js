@@ -1,18 +1,18 @@
 jQuery(function($){
 	$("form[name=searchForm]").submit(function(event) {
-	    event.preventDefault();
-	    event.stopPropagation();
-	    var form = $(this);
-	    var search = form.find(':text').val();
-	    var isNumber = /^\d+$/.test(search);
-	    if (isNumber) {
-	    	location.replace(location.pathname + "?id=" + search);
-		    focusOnSearch();
-	    	return false;
-	    }
-	    location.replace(location.pathname + "?name=" + search);
-	    focusOnSearch();
-	    return false;
+		event.preventDefault();
+		event.stopPropagation();
+		var form = $(this);
+		var search = form.find(':text').val();
+		var isNumber = /^\d+$/.test(search);
+		if (isNumber) {
+			location.replace(location.pathname + "?id=" + search);
+			focusOnSearch();
+			return false;
+		}
+		location.replace(location.pathname + "?name=" + search);
+		focusOnSearch();
+		return false;
 	});
 });
 
@@ -25,10 +25,36 @@ $(document).ready(function() {
 		};
 		form.find('input[id="edit"]')[0].style="display: none";
 		form.find('input[id="create"]')[0].style="display: none";
+		form.find('input[id="newuser"]')[0].style="display: none";
 		form.find('input[id="update"]')[0].style="display: initial";
 		form.find('input[id="cancel"]')[0].style="display: initial";
 	});
 
+	$('#newuser').click(function() {
+		var form = $(this).closest('form[class="detailsForm"]');
+		form.find('input[id="edit"]')[0].style="display: none";
+		form.find('input[id="update"]')[0].style="display: none";
+		form.find('input[id="newuser"]')[0].style="display: none";
+		form.find('input[id="cancel"]')[0].style="display: initial";
+		form.find('input[id="create"]')[0].style="display: initial";
+		form.find('input[id="create"]')[0].tag="active";
+		var fields = form.find('input[class*="protected"]');
+		for (i = 0; i < fields.length; i++) {
+			var field = fields[i];
+			if (field.classList.contains("auto")) {
+				continue;
+			}
+			switch (field.type) {
+			case "radio" : case "checkbox" :
+				field.checked = false;
+				break;
+			default: 
+				field.value = "";
+			}
+			field.disabled = false;
+		};
+		setAvailableID(form[0].name, form.find('input[id="id"]')[0]);
+	});
 
 	$('#update').click(function() {
 		var form = $(this).closest('form[class="input"]');
@@ -51,7 +77,7 @@ $(document).ready(function() {
 			}
 		});
 	});
-	
+
 	$('#cancel').click(function() {
 		var form = $(this).closest('form[class="detailsForm"]');
 		if (form.find('input[id="create"]')[0].tag == "active") {
@@ -59,11 +85,11 @@ $(document).ready(function() {
 			for (i = 0; i < fields.length; i++) {
 				var field = fields[i];
 				switch (field.type) {
-					case "radio" : case "checkbox" :
-						field.checked = false;
-						break;
-					default: 
-						field.value = "";
+				case "radio" : case "checkbox" :
+					field.checked = false;
+					break;
+				default: 
+					field.value = "";
 				}
 				field.disabled = false;
 			};			
@@ -73,39 +99,22 @@ $(document).ready(function() {
 			fields[i].disabled = true;
 		};
 		form.find('input[id="edit"]')[0].style="display: initial";
-		form.find('input[id="create"]')[0].tag="";
-		form.find('input[id="create"]')[0].style="display: initial";
+		form.find('input[id="newuser"]')[0].style="display: initial";
+		form.find('input[id="create"]')[0].style="display: none";
 		form.find('input[id="update"]')[0].style="display: none";
 		form.find('input[id="cancel"]')[0].style="display: none";
 	});
-	
+
 	$('#create').click(function() {
 		var form = $(this).closest('form[class="detailsForm"]');
 		if(form.find('input[id="create"]')[0].tag == "active") {
 			form.find('input[id="create"]')[0].tag = "";
 			create(form[0].name, form);
-		}
-		else {
-			form.find('input[id="create"]')[0].tag="active";
-			form.find('input[id="edit"]')[0].style="display: none";
+			form.find('input[id="edit"]')[0].style="display: initial";
+			form.find('input[id="newuser"]')[0].style="display: initial";
+			form.find('input[id="create"]')[0].style="display: none";
 			form.find('input[id="update"]')[0].style="display: none";
-			form.find('input[id="cancel"]')[0].style="display: initial";
-			var fields = form.find('input[class*="protected"]');
-			for (i = 0; i < fields.length; i++) {
-				var field = fields[i];
-				if (field.classList.contains("auto")) {
-					continue;
-				}
-				switch (field.type) {
-					case "radio" : case "checkbox" :
-						field.checked = false;
-						break;
-					default: 
-						field.value = "";
-				}
-				field.disabled = false;
-			};
-			setAvailableID(form[0].name, form.find('input[id="id"]')[0]);
+			form.find('input[id="cancel"]')[0].style="display: none";
 		}
 	});
 });
@@ -115,10 +124,10 @@ function setframe(url) {
 }
 
 function getParam(param) {
-    let url = new URL(location.href);
-    let searchParams = new URLSearchParams(url.search);
-    var val = searchParams.get(param);
-    return val;
+	let url = new URL(location.href);
+	let searchParams = new URLSearchParams(url.search);
+	var val = searchParams.get(param);
+	return val;
 }
 
 function focusOnSearch() {
@@ -129,35 +138,35 @@ function checkState() {
 	var form = $(this).closest('form')[0];
 	var field = $(this)[0];
 	$.ajax(
-		{
-			url : "rest/test/" + form.name + "/validity/" + field.name + "/" + field.value,
-			success : function(data) {
-				field.style = "color : black";
-				field.tag = "valid";
-			},
-			error : function(data) {
-				field.style = "color : red";
-				field.tag = "invalid";
+			{
+				url : "rest/test/" + form.name + "/validity/" + field.name + "/" + field.value,
+				success : function(data) {
+					field.style = "color : black";
+					field.tag = "valid";
+				},
+				error : function(data) {
+					field.style = "color : red";
+					field.tag = "invalid";
+				}
 			}
-		}
 	);
 }
 
 function populate(frm, data) {   
-    $.each(data, function(key, value) {  
-        var ctrl = $('[name="'+key+'"]', frm);  
-        switch(ctrl.prop("type")) { 
-            case "radio": case "checkbox":
-            	for(i = 0; i < value.length; i++) {
-	                ctrl.each(function() {
-	                    if($(this).attr('value') == value[i]) $(this).attr("checked","checked");
-	                });
-            	}
-                break;  
-            default:
-                ctrl.val(value); 
-        }  
-    });  
+	$.each(data, function(key, value) {  
+		var ctrl = $('[name="'+key+'"]', frm);  
+		switch(ctrl.prop("type")) { 
+		case "radio": case "checkbox":
+			for(i = 0; i < value.length; i++) {
+				ctrl.each(function() {
+					if($(this).attr('value') == value[i]) $(this).attr("checked","checked");
+				});
+			}
+			break;  
+		default:
+			ctrl.val(value); 
+		}  
+	});  
 }
 
 function getById(path, id){
@@ -189,15 +198,15 @@ function getByName(path, name){
 
 function setAvailableID(path, field) {
 	$.ajax(
-		{
-			url : "rest/test/" + path + "/request/getAvailableID",
-			success : function(data) {
-				field.value = data;
+			{
+				url : "rest/test/" + path + "/request/getAvailableID",
+				success : function(data) {
+					field.value = data;
 				},
-			error : function(data) {
-				field.value = -1
+				error : function(data) {
+					field.value = -1
 				}
-		}
+			}
 	);
 }
 

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 
 public class WeightInput implements Runnable{
@@ -48,7 +49,6 @@ public class WeightInput implements Runnable{
 
 	private void processInput(String input)
 	{
-		System.out.println(input);
 		if(input!=null)
 		{
 			try{
@@ -87,12 +87,12 @@ public class WeightInput implements Runnable{
 					conn.processInput(sInMsg);
 					break;
 				case "S" : 
-					input = input.split(" ")[6];
+					input = input.split(" ")[7];
 					sInMsg = new SocketInMessage(MessageType.WEIGHT_REPLY , input);
 					conn.processInput(sInMsg);
 					break;
 				case "T" :
-					input = input.split(" ")[6];
+					input = input.split(" ")[7];
 					sInMsg = new SocketInMessage(MessageType.TARA_REPLY , input);
 					conn.processInput(sInMsg);
 					break;

@@ -5,11 +5,11 @@ import logic.PasswordGenerator;
 import logic.validation.RuleSetInterface.RuleException;
 
 public class UserDataCheck {
-	private RuleSetInterface rules;
-	private EmailValidator EmailVal;
+	private static RuleSetInterface rules = new RuleSet();
+	private static EmailValidator EmailVal = new EmailValidator();
 
 
-	public void CreateUserDC(UserDTO dto) throws RuleException{
+	public static void CreateUserDC(UserDTO dto) throws RuleException{
 
 		if(rules.getID().test(dto.getId()) == false){
 			throw new RuleException("Invalid ID!");
@@ -39,53 +39,52 @@ public class UserDataCheck {
 
 	}
 	
-	public void UsernameDC(String name) throws RuleException{
+	public static void userName(String name) throws RuleException{
 		if(rules.getName().test(name) == false || name == null){
 			throw new RuleException("Invalid Username!");
 		}
 	}
 	
-	public void FirstNameDC(String name) throws RuleException{
+	public static void firstName(String name) throws RuleException{
 		if(rules.getName().test(name) == false || name == null){
 			throw new RuleException("Invalid Fistname!");
 		}
 	}
 	
-	public void LastNameDC(String name) throws RuleException{
+	public static void lastName(String name) throws RuleException{
 		if(rules.getName().test(name) == false || name == null){
 			throw new RuleException("Invalid Lastname!");
 		}
 	}
 	
-	public void CprDC(String cpr) throws RuleException{
+	public static void cpr(String cpr) throws RuleException{
 		if(rules.getCpr().test(cpr) == false || cpr == null){
 			throw new RuleException("Invalid CPR!");
-		};
+		}
 	}
 
-	public void IniDC(String ini) throws RuleException{
+	public static void ini(String ini) throws RuleException{
 		if(rules.getIni().test(ini) == false || ini == null ){
 			throw new RuleException("Invalid Initiale!");
-		};
+		}
 	}
 	
-	public void passDC(String pwd) throws RuleException{
+	public static void password(String pwd) throws RuleException{
 		if(rules.getPwd().test(pwd) == false || pwd == null){
 			throw new RuleException("Invalid Password");
 		}
 	}
 	
-	public void emailDC(String email) throws RuleException{
+	public static void email(String email) throws RuleException{
 		if(EmailVal.validEmail(email) == false){
 			throw new RuleException("Invalid Email form!");
-			
 		}
 	}
-	public void RoleDC(String role) throws RuleException{
+	
+	public static void roles(String role) throws RuleException{
 		if(role == null ){
 			throw new RuleException("No Role chosen");
-		
+		}
 	}
-	}
-	
+
 }
