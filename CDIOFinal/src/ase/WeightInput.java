@@ -51,6 +51,7 @@ public class WeightInput implements Runnable{
 	{
 		if(input!=null)
 		{
+			System.out.println(Arrays.asList(input.split(" ")));
 			try{
 				SocketInMessage sInMsg;
 				switch(input.split(" ")[0])
@@ -87,12 +88,20 @@ public class WeightInput implements Runnable{
 					conn.processInput(sInMsg);
 					break;
 				case "S" : 
-					input = input.split(" ")[7];
+					System.out.println(input.length() + input.split(" ")[6]);
+					if(input.split(" ").length == 8)
+						input = input.split(" ")[6];
+					else
+						input = input.split(" ")[7];
+					System.out.println(input);
 					sInMsg = new SocketInMessage(MessageType.WEIGHT_REPLY , input);
 					conn.processInput(sInMsg);
 					break;
 				case "T" :
-					input = input.split(" ")[7];
+					if(input.split(" ").length == 8)
+						input = input.split(" ")[6];
+					else
+						input = input.split(" ")[7];
 					sInMsg = new SocketInMessage(MessageType.TARA_REPLY , input);
 					conn.processInput(sInMsg);
 					break;

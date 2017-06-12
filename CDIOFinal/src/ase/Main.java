@@ -84,7 +84,7 @@ public class Main{
 		case "quit" :
 			cM.disconnectAll();
 			running = false;
-			System.exit(1);
+			System.exit(0);
 			break;
 		default : 
 			System.out.println("Invalid command");
