@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dal.Connector;
-import daoInterface.SupplierInterfaceDAO;
 import dto.SupplierDTO;
+import logic.CDIOException.DALException;
 
-public class SupplierDAO implements SupplierInterfaceDAO{
+public class SupplierDAO {
 
 	/**
 	 * Creates a supplier <br>
@@ -16,33 +16,30 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 	 * true if function succeeds <br>
 	 * false if function fails
 	 */
-	@Override
-	public boolean create(SupplierDTO dto){
-		String cmd = "CALL addSupplier('%d','%s');";
+	
+	public static int create(SupplierDTO dto) throws DALException{
+		String cmd = "CALL addSupplier('%s');";
 		cmd = String.format(cmd, dto.getId(),dto.getName());
 
 		try {
-			Connector.doUpdate(cmd);
-			return true;
+			ResultSet rs = Connector.doQuery(cmd);
+			rs.next();
+			return rs.getInt("ID");
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new DALException(e);
 		}
 	}
 
 	/**
 	 * Returns a supplier
 	 */
-	@Override
-	public SupplierDTO getSupplier(int ID){
+	
+	public SupplierDTO getSupplier(int ID) throws DALException{
 		String cmd = "CALL getSupplier('%d');";
 		cmd = String.format(cmd, ID);
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
-			}
 			rs.next();
 
 			int supplier_ID = rs.getInt("supplier_ID");
@@ -50,8 +47,7 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 
 			return new SupplierDTO(supplier_ID,supplier_Name);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -67,15 +63,12 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 	/**
 	 * Returns every existing supplier in the database
 	 */
-	@Override
-	public List<SupplierDTO> getList() {
+	
+	public List<SupplierDTO> getList() throws DALException{
 		String cmd = "CALL getSupplierList();";
 		List<SupplierDTO> list = new ArrayList<SupplierDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
-			}
 			while(rs.next()) {
 				int supplier_ID = rs.getInt("supplier_ID");
 				String supplier_Name = rs.getString("supplier_Name");
@@ -84,8 +77,8 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 
 			return list;
 		} catch (SQLException e) {			
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
+
 		}
 		finally {
 			try {
@@ -93,63 +86,6 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
-
-	}
-
-	
-	/**
-	 * Finds a free supplierID that is not used. <br>
-	 * It's possible to use the ID returned as a new ID.
-	 * @return returns 0 if function fails <br>
-	 * A number in the interval 1-99999999 if functions succeeds
-	 */
-	@Override
-	public int findFreeSupplierID() {
-		String cmd = "CALL findFreeSupplierID();";
-		try {
-			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return 0;
-			}
-			rs.next();
-
-			return rs.getInt("max");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-
-	}
-	/**
-	 * Update supplier name. <br>
-	 * @return Returns true if function succeeds
-	 *<br> Returns false if function exception is thrown
-	*/
-	
-	@Override
-	public boolean update(SupplierDTO dto) {
-		String cmd = "CALL updateSupplier('%d','%s')";
-		cmd = String.format(cmd, dto.getId(),dto.getName());
-		
-		try {
-			int result = Connector.doUpdate(cmd);
-			if(result != 0) {
-				return true;
-			}
-			else 
-				return false;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
 		}
 	}
 }

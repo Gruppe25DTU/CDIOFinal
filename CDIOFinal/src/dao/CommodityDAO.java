@@ -6,28 +6,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dal.Connector;
-import daoInterface.CommodityInterfaceDAO;
 import dto.CommodityDTO;
+import logic.CDIOException.DALException;
 
-public class CommodityDAO implements CommodityInterfaceDAO{
+public class CommodityDAO {
+
+
 
 
 	/**
-	 * Creates a commodity
+	 * 
 	 * @param dto
-	 * @return
-	 *
+	 * @return {@code int commodityID}
+	 * @throws DALException
 	 */
-	@Override
-	public int create(CommodityDTO dto) {
-		String cmd = "CALL addCommodity('%d','%s','%d');";
-		cmd = String.format(cmd, dto.getId(),dto.getName(),dto.getSupplierID());
+	public static int create(CommodityDTO dto) throws DALException{
+		String cmd = "CALL addCommodity('%s','%d');";
+		cmd = String.format(cmd,dto.getName(),dto.getSupplierID());
+		int ID;
 		try {
-			return Connector.doUpdate(cmd);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
 
+			ResultSet rs = Connector.doQuery(cmd);
+			ID = rs.getInt("ID");
+			return ID;
+		} catch (SQLException e) {
+			throw new DALException(e);
 		}
 	}
 
@@ -35,8 +38,8 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 	 * Returns a list of all existing commodities
 	 * @return List< CommodityDTO >
 	 */
-	@Override
-	public List<CommodityDTO> getList() {
+
+	public List<CommodityDTO> getList() throws DALException{
 		String cmd = "CALL getCommodityList();";
 		List<CommodityDTO> list = new ArrayList<CommodityDTO>();
 
@@ -53,7 +56,8 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 			return list;
 		}
 		catch (SQLException e) { 
-			e.printStackTrace();}
+			throw new DALException(e);
+		}
 		finally {
 			try {
 				Connector.close();
@@ -61,9 +65,6 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 				e.printStackTrace();
 			}
 		}
-
-
-		return null;
 	}
 
 	/**
@@ -71,8 +72,8 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 	 * @param commodity_ID
 	 * @return commodityDTO
 	 */
-	@Override
-	public CommodityDTO get(int id) {
+
+	public CommodityDTO get(int id) throws DALException{
 		String cmd = "CALL getCommodity('%d');";
 		cmd = String.format(cmd, id);
 
@@ -85,7 +86,7 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 				return new CommodityDTO(rs.getInt("commodity_ID"), rs.getString("commodity_Name"), rs.getInt("supplier_ID"));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -99,37 +100,5 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 	}
 
 
-	/**
-	 * Finds a free CommodityID that is not used. <br>
-	 * It's possible to use the ID returned as a new ID.
-	 * @return returns 0 if function fails <br>
-	 * A number in the interval 1-99999999 if functions succeeds
-	 */
-	@Override
-	public int findFreeCommodityID() {
-		String cmd = "CALL findFreeCommodityID();";
-		try {
-			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return 0;
-			}
-			while(rs.next()) {
-				return rs.getInt("max");
-
-			}
-			return 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-	}
-
+	
 }

@@ -5,9 +5,9 @@ import logic.validation.RuleSetInterface.RuleException;
 
 public class RecipeCompDataCheck {
 
-	private RuleSet rules;
+  private static RuleSetInterface rules = new RuleSet();
 
-	public void CreateRecipeCompDC(RecipeCompDTO dto) throws RuleException{
+	public static void CreateRecipeCompDC(RecipeCompDTO dto) throws RuleException{
 		if(rules.getID().test(dto.getRecipeID()) == false){
 			throw new RuleException("Invalid RecipeID!");
 		}
@@ -25,20 +25,20 @@ public class RecipeCompDataCheck {
 		}
 	}
 
-	public void RecipeCompCommodityIDDC(int id) throws RuleException{
+	public static void commodityID(int id) throws RuleException{
 		if(rules.getID().test(id) == false ||
 				String.valueOf(id)== null){
 			throw new RuleException("Invalid CommodityID!");
 		}
 	}
 
-	public void RecipeCompNomNettoDC(double NN) throws RuleException{
+	public static void nomNetWeight(double NN) throws RuleException{
 		if(rules.getNomNetto().test(NN) == false ||
 				String.valueOf(NN) == null){
 			throw new RuleException("Invalid Nom Netto Weight!");
 		}
 	}
-	public void RecipeCompTol(double tol) throws RuleException{
+	public static void tolerance(double tol) throws RuleException{
 		if(rules.getTolerance().test(tol) == false ||
 				String.valueOf(tol) == null){
 			throw new RuleException("Invalid Tolerance");

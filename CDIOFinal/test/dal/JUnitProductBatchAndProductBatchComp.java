@@ -216,11 +216,11 @@ public class JUnitProductBatchAndProductBatchComp {
 	}
 	
 	private static void compareProductBatchComp(ProductBatchCompDTO dto1, ProductBatchCompDTO dto2) {
-		assertEquals(dto1.getcommodityBatchID(),dto2.getcommodityBatchID());
+		assertEquals(dto1.getCommodityBatchID(),dto2.getCommodityBatchID());
 		assertEquals(Double.toString(dto1.getNet()),Double.toString(dto2.getNet()));
 		assertEquals(Double.toString(dto1.getTara()),Double.toString(dto2.getTara()));
 		assertEquals(dto1.getProductBatchID(),dto2.getProductBatchID());
-		assertEquals(dto1.getuserID(),dto2.getuserID());
+		assertEquals(dto1.getUserID(),dto2.getUserID());
 
 	}
 	
