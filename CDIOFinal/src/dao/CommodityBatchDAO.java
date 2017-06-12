@@ -128,35 +128,4 @@ public class CommodityBatchDAO {
 		}
 
 	}
-
-
-
-	/**
-	 * Finds a free CommodityBatchID that is not used. <br>
-	 * It's possible to use the ID returned as a new ID.
-	 * @return returns 0 if function fails <br>
-	 * A number in the interval 1-99999999 if functions succeeds
-	 */
-
-	public int findFreeCommodityBatchID() throws DALException{
-		String cmd = "CALL findFreeCommodityBatchID();";
-
-		try {
-			ResultSet rs = Connector.doQuery(cmd);
-			rs.next();
-			return rs.getInt("max");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-	}
-
 }

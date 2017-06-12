@@ -100,36 +100,5 @@ public class CommodityDAO {
 	}
 
 
-	/**
-	 * Finds a free CommodityID that is not used. <br>
-	 * It's possible to use the ID returned as a new ID.
-	 * @return returns 0 if function fails <br>
-	 * A number in the interval 1-99999999 if functions succeeds
-	 */
-
-	public int findFreeCommodityID() throws DALException{
-		String cmd = "CALL findFreeCommodityID();";
-		try {
-			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return 0;
-			}
-			while(rs.next()) {
-				return rs.getInt("max");
-
-			}
-			return 0;
-		} catch (SQLException e) {
-			throw new DALException(e);
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-	}
-
+	
 }

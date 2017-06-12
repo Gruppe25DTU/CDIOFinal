@@ -414,34 +414,5 @@ public class UserDAO {
 	}
 
 
-	/**
-	 * Finds a free userID that is not used. <br>
-	 * It's possible to use the ID returned as a new ID.
-	 * @return returns 0 if function fails <br>
-	 * A number in the interval 1-99999999 if functions succeeds
-	 */
 
-	public int findFreeUserID() throws DALException{
-		String cmd = "CALL findFreeUserID();";
-		try {
-			ResultSet rs = Connector.doQuery(cmd);
-			int result = 0;
-			while(rs.next())  {
-
-				result = Integer.parseInt((rs.getString("max")));
-			}
-			return result;
-		} catch (SQLException e) {
-			throw new DALException(e);
-		}	
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-
-	}
 }
