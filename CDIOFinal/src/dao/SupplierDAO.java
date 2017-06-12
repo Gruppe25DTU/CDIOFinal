@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dal.Connector;
-import daoInterface.SupplierInterfaceDAO;
 import dto.SupplierDTO;
 
-public class SupplierDAO implements SupplierInterfaceDAO{
+public class SupplierDAO {
 
 	/**
 	 * Creates a supplier <br>
@@ -16,8 +15,8 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 	 * true if function succeeds <br>
 	 * false if function fails
 	 */
-	@Override
-	public boolean create(SupplierDTO dto){
+	
+	public static boolean create(SupplierDTO dto){
 		String cmd = "CALL addSupplier('%d','%s');";
 		cmd = String.format(cmd, dto.getId(),dto.getName());
 
@@ -33,7 +32,7 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 	/**
 	 * Returns a supplier
 	 */
-	@Override
+	
 	public SupplierDTO getSupplier(int ID){
 		String cmd = "CALL getSupplier('%d');";
 		cmd = String.format(cmd, ID);
@@ -67,7 +66,7 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 	/**
 	 * Returns every existing supplier in the database
 	 */
-	@Override
+	
 	public List<SupplierDTO> getList() {
 		String cmd = "CALL getSupplierList();";
 		List<SupplierDTO> list = new ArrayList<SupplierDTO>();
@@ -104,7 +103,7 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 	 * @return returns 0 if function fails <br>
 	 * A number in the interval 1-99999999 if functions succeeds
 	 */
-	@Override
+	
 	public int findFreeSupplierID() {
 		String cmd = "CALL findFreeSupplierID();";
 		try {
@@ -135,7 +134,7 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 	 *<br> Returns false if function exception is thrown
 	*/
 	
-	@Override
+	
 	public boolean update(SupplierDTO dto) {
 		String cmd = "CALL updateSupplier('%d','%s')";
 		cmd = String.format(cmd, dto.getId(),dto.getName());

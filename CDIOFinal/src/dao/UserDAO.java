@@ -6,16 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dal.Connector;
-import daoInterface.UserInterfaceDAO;
 import dto.UserDTO;
 
-public class UserDAO implements UserInterfaceDAO{
+public class UserDAO {
 
 	/**
 	 * Returns a user
 	 * @return userDTO 
 	 */
-	@Override
+	
 	public UserDTO getUser(int ID){
 		String cmd = "CALL getUser('%d');";
 		cmd = String.format(cmd, ID);
@@ -96,7 +95,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 * @param roleName
 	 * @return List < UserDTO >
 	 */
-	@Override
+	
 	public List<UserDTO> getUserWithRole(String roleName) {
 		String cmd = "CALL getUserWithRole('%s');";
 		cmd = String.format(cmd, roleName);
@@ -144,7 +143,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 * 
 	 * 
 	 */
-	@Override
+	
 	public boolean changeStatus(int ID, boolean active){
 		String cmd = "CALL setActive('%d','%d');";
 		int status;
@@ -177,8 +176,8 @@ public class UserDAO implements UserInterfaceDAO{
 	 * Creates an user
 	 * User is pr. default active.
 	 */
-	@Override
-	public boolean create(UserDTO dto){
+	
+	public static boolean create(UserDTO dto){
 		String addUser = "CALL addUser('%d','%s','%s','%s','%s');";
 		String addUserInfo = "CALL addUserInfo('%s','%s','%s','%s');";
 		String addUserRoles = "CALL addUserRole('%s','%d');";
@@ -222,7 +221,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 * @param dto
 	 * @return
 	 */
-	@Override
+	
 	public boolean update(UserDTO dto,String old_cpr){
 		String updateUser = "CALL updateUser('%d','%s','%s','%d','%s');";
 		String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
@@ -258,7 +257,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 * returns false if username doesn't exists <br>
 	 * returns true if ResultSet == null
 	 */
-	@Override
+	
 	public boolean userExists(String name){
 		String cmd = "CALL userExists('%s');";
 		cmd = String.format(cmd, name);
@@ -293,7 +292,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 * Returns a list of the deactivated users <br>
 	 * returns null if function failed.
 	 */
-	@Override
+	
 	public List<UserDTO> getDeactiveUsers(){
 		String cmd = "CALL getDeactivatedUserList();";
 		List<UserDTO> list = new ArrayList<UserDTO>();
@@ -337,7 +336,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 * Returns a list of activated users
 	 * @return
 	 */
-	@Override
+	
 	public List<UserDTO> getActivatedUsers() {
 		String cmd = "CALL getActivatedUserList();";
 		List<UserDTO> list = new ArrayList<UserDTO>();
@@ -380,7 +379,7 @@ public class UserDAO implements UserInterfaceDAO{
 	/**
 	 * Returns every user regardless of their status
 	 */
-	@Override
+	
 	public List<UserDTO> getUserList(){
 		String cmd = "CALL getUserList();";
 		List<UserDTO> list = new ArrayList<UserDTO>();
@@ -428,7 +427,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 * @return returns 0 if function fails <br>
 	 * A number in the interval 1-99999999 if functions succeeds
 	 */
-	@Override
+	
 	public int findFreeUserID() {
 		String cmd = "CALL findFreeUserID();";
 		try {

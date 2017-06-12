@@ -6,15 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dal.Connector;
-import daoInterface.CommodityBatchInterfaceDAO;
 import dto.CommodityBatchDTO;
 
-public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
+public class CommodityBatchDAO {
 
 	/**
 	 *Changes the quantity
 	 */
-	@Override
+	
 	public boolean changeAmount(int id, double amount) {
 		String cmd = "CALL changeQuantity('%d','%s');";
 		String quantity = Double.toString(amount);
@@ -41,8 +40,7 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 	/**
 	 * Creates a commodityBatch
 	 */
-	@Override
-	public int create(CommodityBatchDTO dto) {
+	public static int create(CommodityBatchDTO dto) {
 		String cmd = "CALL addCommodityBatch('%d','%d','%s');";
 		int commodityBatchID = dto.getId();
 		int commodityID = dto.getCommodityID();
@@ -71,7 +69,7 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 	/**
 	 * Returns a commodityBatchDTO
 	 */
-	@Override
+	
 	public CommodityBatchDTO get(int id) {
 		String cmd = "CALL getCommodityBatch('%d');";
 		cmd = String.format(cmd, id);
@@ -104,7 +102,7 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 	 * Returns a list over all existing CommodityBatches
 	 * @return list < commodityBatchDTO >
 	 */
-	@Override
+	
 	public List<CommodityBatchDTO> getList() {
 		String cmd = "call getCommodityBatchList();";
 		List<CommodityBatchDTO> list = new ArrayList<CommodityBatchDTO>();
@@ -143,7 +141,7 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 	 * @return returns 0 if function fails <br>
 	 * A number in the interval 1-99999999 if functions succeeds
 	 */
-	@Override
+	
 	public int findFreeCommodityBatchID() {
 		String cmd = "CALL findFreeCommodityBatchID();";
 		

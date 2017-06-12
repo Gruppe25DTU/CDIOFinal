@@ -7,12 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dal.Connector;
-import daoInterface.ProductBatchInterfaceDAO;
 import dto.ProductBatchCompDTO;
 import dto.ProductBatchDTO;
 import dto.RecipeCompDTO;
 
-public class ProductBatchDAO implements ProductBatchInterfaceDAO{
+public class ProductBatchDAO {
 
 
 	/**
@@ -22,8 +21,8 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 * @return 
 	 * 
 	 */
-	@Override
-	public int create(ProductBatchDTO dto) {
+	
+	public static int create(ProductBatchDTO dto) {
 		String cmd = "CALL addProductBatch('%d','%d');";
 
 		cmd = String.format(cmd, dto.getId(),dto.getRecipeID());
@@ -51,8 +50,8 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 * @param dto
 	 * @return true if functions succeeds. false if not
 	 */
-	@Override
-	public boolean setStartdate(ProductBatchDTO dto) {
+	
+	public static boolean setStartdate(ProductBatchDTO dto) {
 		String cmd = "CALL setProductBatchStartDate('%s','%d');";
 		cmd = String.format(cmd, dto.getStartDate().toString(),dto.getId());
 
@@ -69,8 +68,8 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 * @param dto
 	 * @return true if functions succeeds. false if not
 	 */
-	@Override
-	public boolean setStopdate(ProductBatchDTO dto) {
+	
+	public static boolean setStopdate(ProductBatchDTO dto) {
 		String cmd = "CALL setProductBatchStopDate('%s','%d');";
 		cmd = String.format(cmd, dto.getEndDate().toString(),dto.getId());
 
@@ -92,7 +91,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 * false if function fails
 	 *  
 	 */
-	@Override
+	
 	public boolean changeStatus(int id, int status) {
 		String cmd = "CALL updateProductBatchStatus('%d','%d');";
 		cmd = String.format(cmd, status,id);
@@ -108,7 +107,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	/**
 	 * Return format for pdf print
 	 */
-	@Override
+	
 	public void print(int id) {
 		// TODO create function
 
@@ -120,7 +119,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 * @return productBatchDTO
 	 * @throws SQLException
 	 */
-	@Override
+	
 	public ProductBatchDTO get(int id) {
 		String cmd = "CALL getProductBatch('%d');";
 		cmd = String.format(cmd, id);
@@ -160,7 +159,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 * Returns a list over all existing productbatches
 	 * @return List< ProductBatchDTO >
 	 */
-	@Override
+	
 	public List<ProductBatchDTO> getList() {
 		String cmd = "CALL getProductBatchList();";
 		List<ProductBatchDTO> list = new ArrayList<ProductBatchDTO>();
@@ -201,7 +200,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 * true if function succeeds <br>
 	 * false if function fails
 	 */
-	@Override
+	
 	public boolean addComponent(ProductBatchCompDTO component) {
 		String cmd = "CALL addProductBatchComponent('%d','%d','%s','%s','%d');";
 		String tare = Double.toString(component.getTara());
@@ -231,7 +230,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 * @param pbid
 	 * @return
 	 */
-	@Override
+	
 	public RecipeCompDTO getNonWeighedComp(int pbid) {
 		String cmd = "CALL getProductBatchComponentNotWeighed('%d');";
 		cmd  = String.format(cmd, pbid);
@@ -261,7 +260,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 
 	}
 	
-	@Override
+	
 	public List<ProductBatchCompDTO> getProductBatchComponents(int productBatchID) {
 		String cmd = "CALL getProductBatchComponent('%d')";
 		cmd = String.format(cmd, productBatchID);
@@ -303,7 +302,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 	 * A number in the interval 1-99999999 if functions succeeds
 	 */
 
-	@Override
+	
 	public int findFreeProductBatchID() {
 		String cmd = "CALL findFreeProductBatchID();";
 		try {
