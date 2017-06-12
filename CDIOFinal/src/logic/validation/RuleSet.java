@@ -22,7 +22,7 @@ public class RuleSet implements RuleSetInterface {
 	Map<String, Rule> ruleList = new HashMap<>();
 
 
-	public RuleSet() throws RuleException{
+	public RuleSet() {
 
 		//Rules for all ID's
 		Rule<Integer> idRule = new Rule<>
