@@ -144,6 +144,7 @@ table thead {
 
 .rolebox {
 	min-width: 280px;
+	float: left;
 }
     
 .informationbox {
@@ -239,13 +240,22 @@ input[type=checkbox] {
   font-family: Candara;
 }
 
-#UTable {
+#UTablecss {
   border-collapse: collapse;
   width: 100%;
   border: 1px solid #ddd;
   font-size: 18px;
   font-family: Candara;
 }
+
+.UTable {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+  font-family: Candara;
+}
+
 
 #UTable th, #UTable td {
   text-align: left;

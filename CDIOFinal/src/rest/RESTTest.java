@@ -159,6 +159,13 @@ public class RESTTest {
   }
   
   @GET
+  @Path("/user/list")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Object[] listUsers() {
+	  return users.toArray();
+  }
+  
+  @GET
   @Path("/CU/validity/userName/{name : [a-zA-Z0-9]+}")
   public Response checkName(@PathParam("name") String name) {
     if (name.length() > 5) {

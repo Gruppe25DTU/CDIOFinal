@@ -23,46 +23,92 @@
 		<form id="detailsForm" class="detailsForm" name="user">
 			<section class="optionlineUser">
 				<h2 style="font-family: candara;">
-					<i class="icon glyphicon glyphicon-pencil"
-						style="font-size: 30px;"></i> Recipe Information <input
+					<i class="icon glyphicon glyphicon-pencil" style="font-size: 30px;"></i>
+					Recipe Information <input type="button" name="list" id="listbut"
+						value="List all Recipes" style="left: 50%;"> <input
 						type="button" name="newuser" class="create" id="newuser"
 						value="Add New Recipe" style="left: 50%; min-width: 280px;">
 					<input type="button" name="edit" id="edit" class="edit"
 						value="Edit Recipe" style="left: 50%;">
 				</h2>
 			</section>
-
-			<div class="content">
-				<div class="informationboxsmall">
-					ID:<br> <input type="text" name="id" id="id"
-						class="protected auto" onkeyup="checkState.call(this)" disabled>
-				</div>
-				<div class="informationbox">
-					Name:<br> <input type="text" name="name" id="name"
-						class="editable protected" onkeyup="checkState.call(this)"
-						disabled>
-				</div>
-				<div class="components">
-					<table>
-						<tbody id="componentTable" align="right">
-							<tr>
-								<td>Commodity</td>
-								<td>Non Net Weight</td>
-								<td>Tolerance</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="informationbox">
-					<input type="button" name="update"
-							id="update" class="update" value="Update" style="display: none;">
-							<input type="button" name="create" class="create" id="create" value="Create New Recipe" style="display: none;">
-							<input type="button" name="cancel" id="cancel" class="cancel"
+			<div id="inputfield" style="display: none; border: 1px solid black;">
+				<div class="content">
+					<div class="informationboxsmall">
+						ID:<br> <input type="text" name="id" id="id"
+							class="protected auto" onkeyup="checkState.call(this)" disabled>
+					</div>
+					<div class="informationbox">
+						Name:<br> <input type="text" name="name" id="name"
+							class="editable protected" onkeyup="checkState.call(this)"
+							disabled>
+					</div>
+					<div class="components">
+						<input type="text" id="UInput" onkeyup="tableSearch()"
+					placeholder="Search..." title="Search by any value"
+					style="float: left;"> <i
+					class="icon glyphicon glyphicon-search"
+					style="font-size: 30px; padding-top: 20px"> </i>
+				<table class="UTable">
+					<tr class="header">
+					<th style="width: 5%;">Select:</th>
+						<th style="width: 15%;">Commodity ID:</th>
+						<th style="width: 30%;">Nom Netto Weight (0-99.9kg)</th>
+						<th style="width: 30%;">Tolerance (0.1-10%)</th>
+						<th style="width: 20%;">Add to Recipe</th>
+					</tr>
+					
+					
+					<tbody id="UTable" class="UTable">
+<tr>
+					<td><input type="checkbox" />    &nbsp;   </td>
+					<td>3333</td>
+					<td><input type="text" value="add Nom Netto Weight"/></td>
+					<td><input type="text" value="add Nom Netto Weight"/></td>
+					<td><button class="editbtn">edit</button>
+					</tr>
+					</tbody>
+				</table>
+					</div>
+					<div class="informationbox">
+						<input type="button" name="update" id="update" class="update"
+							value="Update" style="display: none;"> <input
+							type="button" name="create" class="create" id="create"
+							value="Create New Recipe" style="display: none;"> <input
+							type="button" name="cancel" id="cancel" class="cancel"
 							value="Cancel" style="display: none;">
+					</div>
 				</div>
 			</div>
+			<div id="list">
+				<input type="text" id="UInput" onkeyup="tableSearch()"
+					placeholder="Search..." title="Search by any value"
+					style="float: left;"> <i
+					class="icon glyphicon glyphicon-search"
+					style="font-size: 30px; padding-top: 20px"> </i>
+				<table id="UTablecss">
+					<tr class="header">
+						<th style="width: 20%;">Recipe ID:</th>
+						<th style="width: 40%;">Recipe Name</th>
+						<th style="width: 40%;">Number of Commodities</th>
+					</tr>
+					<tr>
+					<td>323232</td>
+					<td>32323244</td>
+					<td>43434334091</td>
+					</tr>
+					<tr><td><input type="checkbox" />    &nbsp;   </td>
+<td><input type="checkbox" />    &nbsp;   </td>
+<td><input type="checkbox" />    &nbsp;   </td></tr>
+					
+				
+					<tbody id="UTable">
+
+					</tbody>
+				</table>
+			</div>
 		</form>
-		</div>
 	</div>
-	</body>
+</div>
+</body>
 </html>
