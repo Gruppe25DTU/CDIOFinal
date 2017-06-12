@@ -3,6 +3,7 @@ package daoInterface;
 import java.util.List;
 
 import dto.UserDTO;
+import logic.CDIOException.DALException;
 
 public interface UserInterfaceDAO {
 	UserDTO getUser(int ID);
@@ -10,7 +11,7 @@ public interface UserInterfaceDAO {
 	List<UserDTO> getDeactiveUsers();
 	List<UserDTO> getActivatedUsers();
 	boolean changeStatus(int ID, boolean active);
-	boolean create(UserDTO dto);
+	int create(UserDTO dto) throws DALException;
 	boolean update(UserDTO dto, String old_cpr);
 	boolean userExists(String name);
 	List<UserDTO> getUserWithRole(String roleName);

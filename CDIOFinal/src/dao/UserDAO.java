@@ -8,6 +8,7 @@ import java.util.List;
 import dal.Connector;
 import daoInterface.UserInterfaceDAO;
 import dto.UserDTO;
+import logic.CDIOException.DALException;
 
 public class UserDAO implements UserInterfaceDAO{
 
@@ -174,44 +175,50 @@ public class UserDAO implements UserInterfaceDAO{
 	}
 
 	/**
-	 * Creates an user
+	 * Creates an user. <br>
+	 * Database selects ID. <br>
 	 * User is pr. default active.
+	 * @return Function returns userID if successful<br>
+	 * Function returns -1 if not
+	 * 
 	 */
 	@Override
-	public boolean create(UserDTO dto){
-		String addUser = "CALL addUser('%d','%s','%s','%s','%s');";
+	public int create(UserDTO dto) throws DALException{
+		String addUser = "CALL addUser('%s','%s','%s','%s');";
 		String addUserInfo = "CALL addUserInfo('%s','%s','%s','%s');";
 		String addUserRoles = "CALL addUserRole('%s','%d');";
 		List<String> roles = dto.getRoles();
 
-		addUser = String.format(addUser, dto.getId(),dto.getCpr(),dto.getPassword(),dto.getUserName(),dto.getEmail());
+		addUser = String.format(addUser,dto.getCpr(),dto.getPassword(),dto.getUserName(),dto.getEmail());
 		addUserInfo = String.format(addUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr());
 
 
 		try {
-			int result1 = Connector.doUpdate(addUserInfo);
-			int result2 = Connector.doUpdate(addUser);
+			Connector.doUpdate(addUserInfo);
+			ResultSet rs = Connector.doQuery(addUser);
+			int ID = rs.getInt("ID");
 			for(int i = 0;i<roles.size();i++) {
-				addUserRoles = String.format(addUserRoles, roles.get(i),dto.getId());
+				addUserRoles = String.format(addUserRoles, roles.get(i),ID);
 				try {
 					Connector.doUpdate(addUserRoles);
 				} catch (SQLException e) {
 					e.printStackTrace();
+					throw new DALException(e);
+
 				}
 			}
-			if(result1 == 0 && result2 == 0) {
-				return false;
-			}
-			return true;
+	
+			return ID;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			throw new DALException(e);
 		}
 		finally {
 			try {
 				Connector.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				throw new DALException(e);
 			}
 		}
 
@@ -223,7 +230,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 * @return
 	 */
 	@Override
-	public boolean update(UserDTO dto,String old_cpr){
+	public boolean update(UserDTO dto,String old_cpr) throws DALException{
 		String updateUser = "CALL updateUser('%d','%s','%s','%d','%s');";
 		String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
 		String deleteExistingRoles = "CALL deleteUserRoles('%d');";
@@ -243,12 +250,13 @@ public class UserDAO implements UserInterfaceDAO{
 					Connector.doUpdate(addUserRoles);
 				} catch (SQLException e) {
 					e.printStackTrace();
+					throw new DALException();
 				}
 			}
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			throw new DALException(e);
 		}	}
 
 	/**
@@ -259,14 +267,11 @@ public class UserDAO implements UserInterfaceDAO{
 	 * returns true if ResultSet == null
 	 */
 	@Override
-	public boolean userExists(String name){
+	public boolean userExists(String name) throws DALException{
 		String cmd = "CALL userExists('%s');";
 		cmd = String.format(cmd, name);
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return true;
-			}
 			rs.next();
 
 			int result = rs.getInt("result");
@@ -277,13 +282,14 @@ public class UserDAO implements UserInterfaceDAO{
 				return false;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return true;
+			throw new DALException(e);
 		}
 		finally {
 			try {
 				Connector.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				throw new DALException(e);
 			}
 		}
 
@@ -294,14 +300,11 @@ public class UserDAO implements UserInterfaceDAO{
 	 * returns null if function failed.
 	 */
 	@Override
-	public List<UserDTO> getDeactiveUsers(){
+	public List<UserDTO> getDeactiveUsers() throws DALException {
 		String cmd = "CALL getDeactivatedUserList();";
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
-			}
 			while (rs.next()) 
 			{
 				String cpr = rs.getString("cpr");
@@ -321,7 +324,7 @@ public class UserDAO implements UserInterfaceDAO{
 			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
+			throw new DALException(e);
 		}
 		finally {
 			try {
