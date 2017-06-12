@@ -26,19 +26,20 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 			int result = Connector.doUpdate(cmd);
 			createRecipeComponent(dto.getComponents());
 			return result;
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;
-			}
+		}
+		
 	}
-	
+
 	/**
 	 * Adds list of recipeComponents
 	 */
 	@Override
 	public int createRecipeComponent(List<RecipeCompDTO> components) {
-		
+
 		for(RecipeCompDTO dto : components) {
 			String cmd = "CALL addRecipeComponent('%d','%d','%s','%s');";
 
@@ -54,13 +55,21 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 				e.printStackTrace();
 				return 0;
 
-			}			
+			}		
+			finally {
+				try {
+					Connector.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
 		}
 		return 1;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Returns a recipe with parameter ID:
 	 * @param id
@@ -70,7 +79,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	public RecipeDTO getRecipe(int id) {
 		String cmd = "CALL getRecipe('%d');";
 		cmd = String.format(cmd, id);
-		
+
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			if(rs == null) {
@@ -85,8 +94,16 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
-	
+
 	/**
 	 * Returns a list of recipecomponents
 	 */
@@ -95,7 +112,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 		String cmd = "CALL getRecipeComponent('%d');";
 		List<RecipeCompDTO> list = new ArrayList<>();
 		cmd = String.format(cmd, ID);
-		
+
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			if(rs == null) {
@@ -109,6 +126,14 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 	/**
 	 * Returns a list over every existing recipes
@@ -117,7 +142,7 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 	public List<RecipeDTO> getRecipeList() {
 		String cmd = "CALL getRecipeList();";
 		List<RecipeDTO> list = new ArrayList<RecipeDTO>();
-		
+
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			if(rs == null) {
@@ -134,10 +159,18 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}
-		
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+
 	}
 
-	
+
 	/**
 	 * Finds a free recipeID that is not used. <br>
 	 * It's possible to use the ID returned as a new ID.
@@ -159,9 +192,17 @@ public class RecipeDAO implements RecipeInterfaceDAO{
 			return 0;
 
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 
 	}
-	
-	
+
+
 
 }

@@ -114,7 +114,7 @@ public class JUnitProductBatchAndProductBatchComp {
 		RecipeCompDTO recipeCompDTO24 = new RecipeCompDTO(2,4,4,1.0);
 		RecipeCompDTO recipeCompDTO25 = new RecipeCompDTO(2,7,5,1.0);
 		RecipeCompDTO recipeCompDTO26 = new RecipeCompDTO(2,8,6,1.0);
-		RecipeCompDTO recipeCompDTO27 = new RecipeCompDTO(2,9,0.1,1.0);
+		RecipeCompDTO recipeCompDTO27 = new RecipeCompDTO(2,9,7,1.0);
 
 		list2.add(recipeCompDTO21);
 		list2.add(recipeCompDTO22);
@@ -145,11 +145,26 @@ public class JUnitProductBatchAndProductBatchComp {
 		RecipeDTO recipe2 = new RecipeDTO(2,"Salat Pizza",list2);
 		RecipeDTO recipe3 = new RecipeDTO(3,"Skinke Pizza",list3);
 
+		
+		List<RecipeCompDTO> recipeCompList = new ArrayList<>();
+		RecipeCompDTO recipeCompDTO1 = new RecipeCompDTO(4, 1, 0.5, 0.1);
+		RecipeCompDTO recipeCompDTO2 = new RecipeCompDTO(4, 2, 0.5, 0.1);
+		RecipeCompDTO recipeCompDTO3 = new RecipeCompDTO(4, 3, 0.5, 0.1);
+		RecipeCompDTO recipeCompDTO4 = new RecipeCompDTO(4, 4, 0.5, 0.1);
+
+
+		recipeCompList.add(recipeCompDTO1);
+		recipeCompList.add(recipeCompDTO2);
+		recipeCompList.add(recipeCompDTO3);
+		recipeCompList.add(recipeCompDTO4);
+		RecipeDTO recipeDTO = new RecipeDTO(4,"Dej",recipeCompList);
+
+		
 		List<RecipeDTO> expectedRecipeList = new ArrayList<>();
 		expectedRecipeList.add(recipe1);
 		expectedRecipeList.add(recipe2);
 		expectedRecipeList.add(recipe3);
-
+		expectedRecipeList.add(recipeDTO);
 		List<RecipeDTO> actualRecipeList = recipe.getRecipeList();
 		
 		for(int i = 0;i<actualRecipeList.size();i++) {
@@ -161,7 +176,7 @@ public class JUnitProductBatchAndProductBatchComp {
 	}
 	
 	private static void compareRecipe(RecipeDTO dto1,RecipeDTO dto2) {
-		assertEquals(dto1.getRecipeID(),dto2.getRecipeID());
+		assertEquals(dto1.getId(),dto2.getId());
 		assertEquals(dto1.getName(),dto2.getName());
 		
 		for(int i = 0;i<dto1.getComponents().size();i++) {
@@ -173,6 +188,7 @@ public class JUnitProductBatchAndProductBatchComp {
 	private static void compareRecipeComp(RecipeCompDTO dto1, RecipeCompDTO dto2) {
 		assertEquals(dto1.getCommodityID(),dto2.getCommodityID());
 		assertEquals(Double.toString(dto1.getNomNetWeight()),Double.toString(dto2.getNomNetWeight()));
+		System.out.println(Double.toString(dto1.getNomNetWeight()) + " " + Double.toString(dto2.getNomNetWeight()));
 		assertEquals(Double.toString(dto1.getTolerance()),Double.toString(dto2.getTolerance()));
 		assertEquals(dto1.getRecipeID(),dto2.getRecipeID());
 
@@ -180,7 +196,7 @@ public class JUnitProductBatchAndProductBatchComp {
 	
 	private static void compareProductBatch(ProductBatchDTO dto1, ProductBatchDTO dto2) {
 		assertEquals(dto1.getRecipeID(),dto2.getRecipeID());
-		assertEquals(dto1.getProductBatchID(),dto2.getProductBatchID());
+		assertEquals(dto1.getId(),dto2.getId());
 		assertEquals(dto1.getStatus(),dto2.getStatus());
 		if(dto1.getStartDate() == null && dto2.getStartDate() == null) {
 			assertEquals(1,1);

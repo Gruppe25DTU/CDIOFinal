@@ -27,7 +27,15 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 			returnvalue = false;
 			e.printStackTrace();
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return returnvalue;
+		
 	}
 
 	/**
@@ -49,6 +57,14 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 			returnValue = 0;
 			e1.printStackTrace();
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 		return returnValue;
 	}
 	
@@ -73,6 +89,14 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 		return null;
 	}
 
@@ -101,6 +125,14 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 			e.printStackTrace();
 			return null;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 
@@ -126,6 +158,14 @@ public class CommodityBatchDAO implements CommodityBatchInterfaceDAO {
 			e.printStackTrace();
 			return 0;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 }

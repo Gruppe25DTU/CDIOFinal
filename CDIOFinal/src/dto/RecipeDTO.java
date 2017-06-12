@@ -2,7 +2,7 @@ package dto;
 
 import java.util.List;
 
-public class RecipeDTO implements IDTO {
+public class RecipeDTO {
 	private  int recipeID =-1;
 	private String name = "";
 	List<RecipeCompDTO> components;
@@ -18,13 +18,11 @@ public class RecipeDTO implements IDTO {
 		this.name = recipe.getName();
 	}
 
-	public RecipeDTO() {}
-	
 	public int getId() {
 		return this.recipeID;
 	}
 
-	public void setId(int recipeID) {
+	public void setRecipeID(int recipeID) {
 		this.recipeID = recipeID;
 	}
 

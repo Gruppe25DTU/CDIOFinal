@@ -31,10 +31,17 @@ public class SessionDAO implements SessionInterfaceDAO{
 			else
 				return false;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 	
 	

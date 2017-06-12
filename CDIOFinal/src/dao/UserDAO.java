@@ -44,7 +44,17 @@ public class UserDAO implements UserInterfaceDAO{
 		} catch (SQLException e) {	
 			e.printStackTrace();
 			return null;
-		}	}
+		}	
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+
+	}
 
 	/**
 	 * Returns a list over a users roles
@@ -70,6 +80,14 @@ public class UserDAO implements UserInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 
 	}
 
@@ -109,6 +127,14 @@ public class UserDAO implements UserInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}	
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**
@@ -136,6 +162,14 @@ public class UserDAO implements UserInterfaceDAO{
 			e.printStackTrace();
 			return false;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 
 	}
 
@@ -173,6 +207,14 @@ public class UserDAO implements UserInterfaceDAO{
 			e.printStackTrace();
 			return false;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**
@@ -237,6 +279,14 @@ public class UserDAO implements UserInterfaceDAO{
 			e.printStackTrace();
 			return true;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**
@@ -273,6 +323,14 @@ public class UserDAO implements UserInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**
@@ -309,6 +367,14 @@ public class UserDAO implements UserInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**
@@ -344,6 +410,14 @@ public class UserDAO implements UserInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}	
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 
 	}
 
@@ -364,12 +438,22 @@ public class UserDAO implements UserInterfaceDAO{
 			}
 			int result = 0;
 			while(rs.next())  {
-				
+
 				result = Integer.parseInt((rs.getString("max")));
+			}
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}	
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		return result;
-	} catch (SQLException e) {
-		e.printStackTrace();
-		return 0;
-	}	}
+
+
+	}
 }

@@ -54,6 +54,14 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 		}
 		catch (SQLException e) { 
 			e.printStackTrace();}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 
 		return null;
 	}
@@ -79,6 +87,14 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 		return null;
 	}
 
@@ -106,6 +122,14 @@ public class CommodityDAO implements CommodityInterfaceDAO{
 			e.printStackTrace();
 			return 0;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 }

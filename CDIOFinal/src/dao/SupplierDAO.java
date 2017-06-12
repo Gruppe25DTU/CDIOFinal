@@ -53,6 +53,14 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 
@@ -79,6 +87,14 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	
@@ -103,6 +119,37 @@ public class SupplierDAO implements SupplierInterfaceDAO{
 			e.printStackTrace();
 			return 0;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
+
+	}
+	/**
+	 * Update supplier name. <br>
+	 * @return Returns true if function succeeds
+	 *<br> Returns false if function exception is thrown
+	*/
+	
+	@Override
+	public boolean update(SupplierDTO dto) {
+		String cmd = "CALL updateSupplier('%d','%s')";
+		cmd = String.format(cmd, dto.getId(),dto.getName());
+		
+		try {
+			int result = Connector.doUpdate(cmd);
+			if(result != 0) {
+				return true;
+			}
+			else 
+				return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

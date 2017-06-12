@@ -41,6 +41,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			result = 0;
 			e.printStackTrace();
 		}
+		
 
 		return result;
 	}
@@ -144,6 +145,14 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 
 	}
 
@@ -176,6 +185,14 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**
@@ -199,6 +216,14 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			e.printStackTrace();
 			return false;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**
@@ -226,6 +251,14 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			return null;
 
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 	
 	@Override
@@ -252,6 +285,14 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			e.printStackTrace();
 			return null;
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 
 	}
 
@@ -279,6 +320,14 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 			return 0;
 
 		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 
 	}
 }

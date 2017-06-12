@@ -9,4 +9,5 @@ public interface SupplierInterfaceDAO {
 	SupplierDTO getSupplier(int ID);
 	List<SupplierDTO> getList();
 	int findFreeSupplierID();
+	boolean update(SupplierDTO dto);
 }
