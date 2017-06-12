@@ -7,26 +7,30 @@ import java.util.List;
 
 import dal.Connector;
 import dto.CommodityDTO;
+import logic.CDIOException.DALException;
 
 public class CommodityDAO {
 
 
-	/**
-	 * Creates a commodity
-	 * @param dto
-	 * @return
-	 *
-	 */
-	
-	public static int create(CommodityDTO dto) {
-		String cmd = "CALL addCommodity('%d','%s','%d');";
-		cmd = String.format(cmd, dto.getId(),dto.getName(),dto.getSupplierID());
-		try {
-			return Connector.doUpdate(cmd);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
 
+
+	/**
+	 * 
+	 * @param dto
+	 * @return {@code int commodityID}
+	 * @throws DALException
+	 */
+	public static int create(CommodityDTO dto) throws DALException{
+		String cmd = "CALL addCommodity('%s','%d');";
+		cmd = String.format(cmd,dto.getName(),dto.getSupplierID());
+		int ID;
+		try {
+
+			ResultSet rs = Connector.doQuery(cmd);
+			ID = rs.getInt("ID");
+			return ID;
+		} catch (SQLException e) {
+			throw new DALException(e);
 		}
 	}
 
@@ -34,8 +38,8 @@ public class CommodityDAO {
 	 * Returns a list of all existing commodities
 	 * @return List< CommodityDTO >
 	 */
-	
-	public List<CommodityDTO> getList() {
+
+	public List<CommodityDTO> getList() throws DALException{
 		String cmd = "CALL getCommodityList();";
 		List<CommodityDTO> list = new ArrayList<CommodityDTO>();
 
@@ -52,7 +56,8 @@ public class CommodityDAO {
 			return list;
 		}
 		catch (SQLException e) { 
-			e.printStackTrace();}
+			throw new DALException(e);
+		}
 		finally {
 			try {
 				Connector.close();
@@ -60,9 +65,6 @@ public class CommodityDAO {
 				e.printStackTrace();
 			}
 		}
-
-
-		return null;
 	}
 
 	/**
@@ -70,8 +72,8 @@ public class CommodityDAO {
 	 * @param commodity_ID
 	 * @return commodityDTO
 	 */
-	
-	public CommodityDTO get(int id) {
+
+	public CommodityDTO get(int id) throws DALException{
 		String cmd = "CALL getCommodity('%d');";
 		cmd = String.format(cmd, id);
 
@@ -84,7 +86,7 @@ public class CommodityDAO {
 				return new CommodityDTO(rs.getInt("commodity_ID"), rs.getString("commodity_Name"), rs.getInt("supplier_ID"));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -104,8 +106,8 @@ public class CommodityDAO {
 	 * @return returns 0 if function fails <br>
 	 * A number in the interval 1-99999999 if functions succeeds
 	 */
-	
-	public int findFreeCommodityID() {
+
+	public int findFreeCommodityID() throws DALException{
 		String cmd = "CALL findFreeCommodityID();";
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
@@ -118,8 +120,7 @@ public class CommodityDAO {
 			}
 			return 0;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
+			throw new DALException(e);
 		}
 		finally {
 			try {

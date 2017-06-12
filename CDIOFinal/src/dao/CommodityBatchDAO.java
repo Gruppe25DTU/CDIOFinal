@@ -7,24 +7,24 @@ import java.util.List;
 
 import dal.Connector;
 import dto.CommodityBatchDTO;
+import logic.CDIOException.DALException;
 
 public class CommodityBatchDAO {
 
 	/**
-	 *Changes the quantity
+	 * Changes the quantity of a commodityBatchDAO
+	 * @param id
+	 * @param amount
+	 * @return
 	 */
-	
-	public boolean changeAmount(int id, double amount) {
+	public static void changeAmount(int id, double amount) throws DALException{
 		String cmd = "CALL changeQuantity('%d','%s');";
 		String quantity = Double.toString(amount);
 		cmd = String.format(cmd, id,quantity);
-		boolean returnvalue;
 		try {
 			Connector.doUpdate(cmd);
-			returnvalue = true;
 		} catch (SQLException e) {
-			returnvalue = false;
-			e.printStackTrace();
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -33,27 +33,30 @@ public class CommodityBatchDAO {
 				e.printStackTrace();
 			}
 		}
-		return returnvalue;
-		
 	}
 
 	/**
-	 * Creates a commodityBatch
+	 * Creates a commodityBatch. <br>
+	 * Returns ID generated
+	 * @param dto
+	 * @return {@code int ID}
+	 * @throws DALException
 	 */
-	public static int create(CommodityBatchDTO dto) {
-		String cmd = "CALL addCommodityBatch('%d','%d','%s');";
-		int commodityBatchID = dto.getId();
+
+	public static int create(CommodityBatchDTO dto) throws DALException{
+		String cmd = "CALL addCommodityBatch('%d','%s');";
 		int commodityID = dto.getCommodityID();
 		double quantity = dto.getQuantity();
 		String sQuantity = Double.toString(quantity);
-		cmd = String.format(cmd,commodityBatchID,commodityID,sQuantity);
-		
-		int returnValue;
+		cmd = String.format(cmd,commodityID,sQuantity);
+
+		int ID;
 		try {
-			returnValue = Connector.doUpdate(cmd);
-		} catch (SQLException e1) {
-			returnValue = 0;
-			e1.printStackTrace();
+			ResultSet rs = Connector.doQuery(cmd);
+			rs.next();
+			ID = rs.getInt("ID");
+		} catch (SQLException e) {
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -63,29 +66,26 @@ public class CommodityBatchDAO {
 			}
 		}
 
-		return returnValue;
+		return ID;
 	}
-	
+
 	/**
 	 * Returns a commodityBatchDTO
 	 */
-	
-	public CommodityBatchDTO get(int id) {
+
+	public CommodityBatchDTO get(int id) throws DALException{
 		String cmd = "CALL getCommodityBatch('%d');";
 		cmd = String.format(cmd, id);
-		
+
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
-			}
 			rs.next();
 			int ID = rs.getInt("commodityBatch_ID");
 			int commodity_ID = rs.getInt("commodity_ID");
 			double quantity = rs.getDouble("quantity");
 			return new CommodityBatchDTO(ID,commodity_ID,quantity);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -95,33 +95,29 @@ public class CommodityBatchDAO {
 			}
 		}
 
-		return null;
 	}
 
 	/**
-	 * Returns a list over all existing CommodityBatches
-	 * @return list < commodityBatchDTO >
+	 * Returns every commodity batch in the database.
+	 * @return {@code List<CommodityBatchDTO>}
+	 * @throws DALException
 	 */
-	
-	public List<CommodityBatchDTO> getList() {
+
+	public List<CommodityBatchDTO> getList() throws DALException{
 		String cmd = "call getCommodityBatchList();";
 		List<CommodityBatchDTO> list = new ArrayList<CommodityBatchDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
-			}
 			while(rs.next()) {
 				int ID = rs.getInt("commodityBatch_ID");
 				int commodity_ID = rs.getInt("commodity_ID");
 				Double quantity = rs.getDouble("quantity");
 				list.add(new CommodityBatchDTO(ID,commodity_ID,quantity));
-				
+
 			}
 			return list;
 		} catch (SQLException e) {			
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -134,22 +130,19 @@ public class CommodityBatchDAO {
 	}
 
 
-	
+
 	/**
 	 * Finds a free CommodityBatchID that is not used. <br>
 	 * It's possible to use the ID returned as a new ID.
 	 * @return returns 0 if function fails <br>
 	 * A number in the interval 1-99999999 if functions succeeds
 	 */
-	
-	public int findFreeCommodityBatchID() {
+
+	public int findFreeCommodityBatchID() throws DALException{
 		String cmd = "CALL findFreeCommodityBatchID();";
-		
+
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return 0;
-			}
 			rs.next();
 			return rs.getInt("max");
 		} catch (SQLException e) {

@@ -8,6 +8,7 @@ import java.util.List;
 import dal.Connector;
 import dto.RecipeCompDTO;
 import dto.RecipeDTO;
+import logic.CDIOException.DALException;
 
 public class RecipeDAO {
 
@@ -17,28 +18,33 @@ public class RecipeDAO {
 	 * @param dto
 	 * @return
 	 */
-	
-	public static int create(RecipeDTO dto) {
+
+	public static int create(RecipeDTO dto) throws DALException{
 		String cmd = "CALL addRecipe('%d','%s')";
 		cmd = String.format(cmd, dto.getId(),dto.getName());
+		int ID;
 		try {
-			int result = Connector.doUpdate(cmd);
+			ResultSet rs  = Connector.doQuery(cmd);
+			ID = rs.getInt("ID");
+			if(dto.getComponents() != null) {
+				for(RecipeCompDTO component : dto.getComponents()) {
+					component.setRecipeID(ID);
+				}
+			}
 			createRecipeComponent(dto.getComponents());
-			return result;
-
+			return ID;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
+			throw new DALException(e);
+
 		}
-		
+
 	}
 
 	/**
 	 * Adds list of recipeComponents
 	 */
-	
-	public static int createRecipeComponent(List<RecipeCompDTO> components) {
 
+	public static void createRecipeComponent(List<RecipeCompDTO> components) throws DALException{
 		for(RecipeCompDTO dto : components) {
 			String cmd = "CALL addRecipeComponent('%d','%d','%s','%s');";
 
@@ -51,9 +57,7 @@ public class RecipeDAO {
 			try {
 				Connector.doUpdate(cmd);
 			} catch (SQLException e) {
-				e.printStackTrace();
-				return 0;
-
+				throw new DALException(e);
 			}		
 			finally {
 				try {
@@ -64,7 +68,6 @@ public class RecipeDAO {
 			}
 
 		}
-		return 1;
 	}
 
 
@@ -74,24 +77,20 @@ public class RecipeDAO {
 	 * @param id
 	 * @return
 	 */
-	
-	public RecipeDTO getRecipe(int id) {
+
+	public RecipeDTO getRecipe(int id) throws DALException{
 		String cmd = "CALL getRecipe('%d');";
 		cmd = String.format(cmd, id);
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
-			}
 			rs.next();
 			int recipe_ID = rs.getInt("recipe_ID");
 			String recipe_Name = rs.getString("recipe_Name");
 			List<RecipeCompDTO> components = getRecipeComponent(recipe_ID);
 			return new RecipeDTO(recipe_ID,recipe_Name,components);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -106,24 +105,20 @@ public class RecipeDAO {
 	/**
 	 * Returns a list of recipecomponents
 	 */
-	
-	public List<RecipeCompDTO> getRecipeComponent(int ID) {
+
+	public List<RecipeCompDTO> getRecipeComponent(int ID) throws DALException{
 		String cmd = "CALL getRecipeComponent('%d');";
 		List<RecipeCompDTO> list = new ArrayList<>();
 		cmd = String.format(cmd, ID);
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
-			}
 			while(rs.next()) {
 				list.add(new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getDouble("nom_net_weight"),rs.getDouble("tolerance")));
 			}
 			return list;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -137,16 +132,13 @@ public class RecipeDAO {
 	/**
 	 * Returns a list over every existing recipes
 	 */
-	
-	public List<RecipeDTO> getRecipeList() {
+
+	public List<RecipeDTO> getRecipeList() throws DALException{
 		String cmd = "CALL getRecipeList();";
 		List<RecipeDTO> list = new ArrayList<RecipeDTO>();
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
-			}
 			while (rs.next()) {
 				int recipe_ID = rs.getInt("recipe_ID");
 				String recipe_Name = rs.getString("recipe_Name");
@@ -155,40 +147,7 @@ public class RecipeDAO {
 			}
 			return list;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-
-	}
-
-
-	/**
-	 * Finds a free recipeID that is not used. <br>
-	 * It's possible to use the ID returned as a new ID.
-	 * @return returns 0 if function fails <br>
-	 * A number in the interval 1-99999999 if functions succeeds
-	 */
-	
-	public int findFreeRecipeID() {
-		String cmd = "CALL findFreeRecipeID();";
-		try {
-			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return 0;
-			}
-			rs.next();
-			return rs.getInt("max");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
+			throw new DALException(e);
 
 		}
 		finally {
@@ -198,10 +157,5 @@ public class RecipeDAO {
 				e.printStackTrace();
 			}
 		}
-
-
 	}
-
-
-
 }

@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import dal.Connector;
+import logic.CDIOException.DALException;
 
 public class SessionDAO {
 
@@ -13,15 +14,12 @@ public class SessionDAO {
 	 * true if username and password exists for an user <br>
 	 * false if username and password doesn't exists for an user
 	 */
-	
-	public boolean login(String name, String pwd) {
+
+	public boolean login(String name, String pwd) throws DALException{
 		String cmd = "CALL confirmLogin('%s','%s');";
 		cmd = String.format(cmd, name,pwd);
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return false;
-			}
 			rs.next();
 
 			if(rs.getInt("result") == 1) {
@@ -30,8 +28,7 @@ public class SessionDAO {
 			else
 				return false;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -42,17 +39,17 @@ public class SessionDAO {
 		}
 
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * @param ID
 	 */
-	
+
 	public void logout(int ID) {
 
 	}
 
-	
+
 
 }

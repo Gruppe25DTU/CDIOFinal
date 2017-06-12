@@ -34,6 +34,7 @@ public interface CDIOException {
     public DALException(Throwable e) {super(e);}
     public DALException(String e) {super(e);}
   }
+    
   public class IDTakenException extends DALException {
     public IDTakenException() {super();}
     public IDTakenException(Exception e) {super(e);}

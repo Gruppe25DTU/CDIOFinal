@@ -10,6 +10,7 @@ import dal.Connector;
 import dto.ProductBatchCompDTO;
 import dto.ProductBatchDTO;
 import dto.RecipeCompDTO;
+import logic.CDIOException.DALException;
 
 public class ProductBatchDAO {
 
@@ -21,28 +22,27 @@ public class ProductBatchDAO {
 	 * @return 
 	 * 
 	 */
-	
-	public static int create(ProductBatchDTO dto) {
+
+	public static int create(ProductBatchDTO dto) throws DALException{
 		String cmd = "CALL addProductBatch('%d','%d');";
 
 		cmd = String.format(cmd, dto.getId(),dto.getRecipeID());
 
 		int result;
 		try {
-			result = Connector.doUpdate(cmd);
+			ResultSet rs = Connector.doQuery(cmd);
+			rs.next();
+			result = rs.getInt("ID");
 			if(dto.getStartDate() != null) {
 				setStartdate(dto);
 			}
 			if(dto.getEndDate() != null) {
 				setStopdate(dto);
 			}
+			return result;
 		} catch (SQLException e) {
-			result = 0;
-			e.printStackTrace();
+			throw new DALException(e);
 		}
-		
-
-		return result;
 	}
 
 	/**
@@ -50,35 +50,32 @@ public class ProductBatchDAO {
 	 * @param dto
 	 * @return true if functions succeeds. false if not
 	 */
-	
-	public static boolean setStartdate(ProductBatchDTO dto) {
+
+	public static void setStartdate(ProductBatchDTO dto) throws DALException{
 		String cmd = "CALL setProductBatchStartDate('%s','%d');";
 		cmd = String.format(cmd, dto.getStartDate().toString(),dto.getId());
 
 		try {
 			Connector.doUpdate(cmd);
-			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new DALException(e);
 		}
 	}
 	/**
 	 * Updates the stopdate of a productbatch. <br>
 	 * @param dto
+	 * @return 
 	 * @return true if functions succeeds. false if not
 	 */
-	
-	public static boolean setStopdate(ProductBatchDTO dto) {
+
+	public static void setStopdate(ProductBatchDTO dto) throws DALException{
 		String cmd = "CALL setProductBatchStopDate('%s','%d');";
 		cmd = String.format(cmd, dto.getEndDate().toString(),dto.getId());
 
 		try {
 			Connector.doUpdate(cmd);
-			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new DALException(e);
 		}
 	}
 
@@ -91,27 +88,17 @@ public class ProductBatchDAO {
 	 * false if function fails
 	 *  
 	 */
-	
-	public boolean changeStatus(int id, int status) {
+
+	public void changeStatus(int id, int status) throws DALException{
 		String cmd = "CALL updateProductBatchStatus('%d','%d');";
 		cmd = String.format(cmd, status,id);
 		try {
 			Connector.doUpdate(cmd);
-			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new DALException(e);
 		}
 	}
 
-	/**
-	 * Return format for pdf print
-	 */
-	
-	public void print(int id) {
-		// TODO create function
-
-	}
 
 	/**
 	 * returns a productBatchDTO
@@ -119,8 +106,8 @@ public class ProductBatchDAO {
 	 * @return productBatchDTO
 	 * @throws SQLException
 	 */
-	
-	public ProductBatchDTO get(int id) {
+
+	public ProductBatchDTO get(int id) throws DALException{
 		String cmd = "CALL getProductBatch('%d');";
 		cmd = String.format(cmd, id);
 
@@ -141,8 +128,7 @@ public class ProductBatchDAO {
 			return pbDTO;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -159,8 +145,8 @@ public class ProductBatchDAO {
 	 * Returns a list over all existing productbatches
 	 * @return List< ProductBatchDTO >
 	 */
-	
-	public List<ProductBatchDTO> getList() {
+
+	public List<ProductBatchDTO> getList() throws DALException{
 		String cmd = "CALL getProductBatchList();";
 		List<ProductBatchDTO> list = new ArrayList<ProductBatchDTO>();
 
@@ -181,8 +167,8 @@ public class ProductBatchDAO {
 			return list;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
+
 		}
 		finally {
 			try {
@@ -200,8 +186,8 @@ public class ProductBatchDAO {
 	 * true if function succeeds <br>
 	 * false if function fails
 	 */
-	
-	public boolean addComponent(ProductBatchCompDTO component) {
+
+	public void addComponent(ProductBatchCompDTO component) throws DALException{
 		String cmd = "CALL addProductBatchComponent('%d','%d','%s','%s','%d');";
 		String tare = Double.toString(component.getTara());
 		String net = Double.toString(component.getNet());
@@ -210,10 +196,9 @@ public class ProductBatchDAO {
 		cmd = String.format(cmd, component.getProductBatchID(),component.getCommodityBatchID(),tare,net,component.getUserID());
 		try {
 			Connector.doUpdate(cmd);
-			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new DALException(e);
+
 		}
 		finally {
 			try {
@@ -230,25 +215,20 @@ public class ProductBatchDAO {
 	 * @param pbid
 	 * @return
 	 */
-	
-	public RecipeCompDTO getNonWeighedComp(int pbid) {
+
+	public RecipeCompDTO getNonWeighedComp(int pbid) throws DALException{
 		String cmd = "CALL getProductBatchComponentNotWeighed('%d');";
 		cmd  = String.format(cmd, pbid);
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
-			}
 			while(rs.next()) {
 				RecipeCompDTO recipeComp = new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getDouble("nom_net_weight"),rs.getDouble("tolerance"));
 				return recipeComp;
 			}
 			return null;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -259,9 +239,9 @@ public class ProductBatchDAO {
 		}
 
 	}
-	
-	
-	public List<ProductBatchCompDTO> getProductBatchComponents(int productBatchID) {
+
+
+	public List<ProductBatchCompDTO> getProductBatchComponents(int productBatchID) throws DALException{
 		String cmd = "CALL getProductBatchComponent('%d')";
 		cmd = String.format(cmd, productBatchID);
 		List<ProductBatchCompDTO> list = new ArrayList<>();
@@ -281,8 +261,7 @@ public class ProductBatchDAO {
 			}
 			return list;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -291,42 +270,5 @@ public class ProductBatchDAO {
 				e.printStackTrace();
 			}
 		}
-
-
-	}
-
-	/**
-	 * Finds a free ProductBatchID that is not used. <br>
-	 * It's possible to use the ID returned as a new ID.
-	 * @return returns 0 if function fails <br>
-	 * A number in the interval 1-99999999 if functions succeeds
-	 */
-
-	
-	public int findFreeProductBatchID() {
-		String cmd = "CALL findFreeProductBatchID();";
-		try {
-			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return 0;
-			}
-			while(rs.next()) {
-				return rs.getInt("max");
-			}
-			return 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
-
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-
 	}
 }
