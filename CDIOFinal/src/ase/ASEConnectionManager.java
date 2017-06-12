@@ -49,14 +49,38 @@ public class ASEConnectionManager {
 		}
 	}
 	
+	public void switchBroadCastingState(int connNr)
+	{
+		if(connections[connNr] != null)
+			connections[connNr].setBroadcasting(!connections[connNr].isBroadcasting());
+	}
+	
 	public String toString()
 	{
 		String result = "";
-		result += "#__|__IP_______________|__PortNr__|\n";
+		result += "#|__IP____________|__PortNr__|Broadcasting|\n";
 		for( int i = 0 ; i < connections.length ; i++ )
 		{
+			
 			if(connections[i] != null)
-				result += i +"  |  "+ connections[i].getSocket().getInetAddress()+ " |"+connections[i].getSocket().getPort()+ "\n";
+			{
+				String line = "";
+				int whitespace = 0;
+				line += i;
+				line += "|"+connections[i].getSocket().getInetAddress();
+				whitespace = 18-line.length();
+				for(int w = 0 ; w < whitespace ; w++){line += " ";}
+				line += "|" + connections[i].getSocket().getPort();
+				whitespace = 29-line.length();
+				for(int w = 0 ; w < whitespace ; w++){line += " ";}
+				line += "|"+connections[i].isBroadcasting();
+				whitespace = 42 - line.length();
+				for(int w = 0 ; w < whitespace ; w++){line += " ";}
+				line += "|";
+				result += line;
+				
+			}
+				         
 		}
 		return result;
 	}

@@ -3,7 +3,6 @@ package ase;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.Scanner;
 
 import dal.Connector;
@@ -54,7 +53,7 @@ public class Main{
 		
 		while(running)
 		{
-			System.out.println("Options: disconnect | connect | list | quit");
+			System.out.println("Options: disconnect | connect | list | quit | listen");
 			String in = keyb.nextLine();
 			try 
 			{
@@ -84,7 +83,10 @@ public class Main{
 		case "quit" :
 			cM.disconnectAll();
 			running = false;
-			System.exit(0);
+			System.exit(1);
+			break;
+		case "listen":
+			listen();
 			break;
 		default : 
 			System.out.println("Invalid command");
@@ -129,5 +131,21 @@ public class Main{
 		}
 	}
 	
+	
+	public void listen()
+	{
+		System.out.println("\n "+cM);
+		System.out.println("Which connection do you wish to switch the broadcasting state on?");
+		try
+		{
+			int connNr = Integer.parseInt(keyb.nextLine());
+			cM.switchBroadCastingState(connNr);
+			
+		}
+		catch(NumberFormatException e)
+		{
+			System.out.println("Please enter a number");
+		}
+	}
 
 }
