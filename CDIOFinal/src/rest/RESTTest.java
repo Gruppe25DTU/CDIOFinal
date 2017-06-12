@@ -90,6 +90,11 @@ public class RESTTest {
     this.add(new RecipeDTO(2, "Melon Salt", recipeList2));
   }};
 
+  @GET
+  @Path("/tester")
+  public String test() {
+    return "WOP";
+  }
   
   @GET
   @Path("/commodity/id/{id : \\d+}")

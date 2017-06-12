@@ -17,10 +17,10 @@ public class ProductBatchCompDTO implements IDTO {
 
 	public ProductBatchCompDTO(ProductBatchCompDTO productBatchComp){
 		this.productBatchID = productBatchComp.getProductBatchID();
-		this.commodityBatchID = productBatchComp.getcommodityBatchID();
+		this.commodityBatchID = productBatchComp.getCommodityBatchID();
 		this.tara = productBatchComp.getTara();
 		this.net = productBatchComp.getNet();
-		this.userID = productBatchComp.getuserID();
+		this.userID = productBatchComp.getUserID();
 	}
 	
 	public ProductBatchCompDTO() {}
@@ -33,15 +33,15 @@ public class ProductBatchCompDTO implements IDTO {
     return getProductBatchID();
   }
 
-	public void setproductBatchID(int productBatchID) {
+	public void setProductBatchID(int productBatchID) {
 		this.productBatchID = productBatchID;
 	}
 
-	public int getcommodityBatchID() {
+	public int getCommodityBatchID() {
 		return commodityBatchID;
 	}
 
-	public void setcommodityBatchID(int commodityBatchID) {
+	public void setCommodityBatchID(int commodityBatchID) {
 		this.commodityBatchID = commodityBatchID;
 	}
 
@@ -61,11 +61,11 @@ public class ProductBatchCompDTO implements IDTO {
 		this.net = net;
 	}
 
-	public int getuserID() {
+	public int getUserID() {
 		return userID;
 	}
 
-	public void setuserID(int userID) {
+	public void setUserID(int userID) {
 		this.userID = userID;
 	}
 

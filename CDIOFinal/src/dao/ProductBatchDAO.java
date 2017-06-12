@@ -208,7 +208,7 @@ public class ProductBatchDAO implements ProductBatchInterfaceDAO{
 		String net = Double.toString(component.getNet());
 
 
-		cmd = String.format(cmd, component.getProductBatchID(),component.getcommodityBatchID(),tare,net,component.getuserID());
+		cmd = String.format(cmd, component.getProductBatchID(),component.getCommodityBatchID(),tare,net,component.getUserID());
 		try {
 			Connector.doUpdate(cmd);
 			return true;
