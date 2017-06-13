@@ -46,7 +46,7 @@ public class REST {
 	}
 
 	@GET
-	@Path("/{type : [a-zA-Z0-9]+}")
+	@Path("/{type : [a-zA-Z0-9]+}/list")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getListDTO(@PathParam("type") String dtoType) {
 		try {
