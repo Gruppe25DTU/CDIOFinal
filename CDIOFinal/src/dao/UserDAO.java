@@ -223,7 +223,7 @@ public class UserDAO {
 	 * @return
 	 */
 
-	public boolean update(UserDTO dto,String old_cpr) throws DALException{
+	public static boolean update(UserDTO dto,String old_cpr) throws DALException{
 		String updateUser = "CALL updateUser('%d','%s','%s','%d','%s');";
 		String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
 		String deleteExistingRoles = "CALL deleteUserRoles('%d');";
