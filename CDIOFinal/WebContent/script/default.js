@@ -13,11 +13,12 @@ jQuery(function($){
 		location.replace(location.pathname + "?name=" + search);
 		focusOnSearch();
 		return false;
+		
 	});
 });
 
 $(document).ready(function(){
-	$("#newuser").click(function(){
+	$("#new").click(function(){
 		$("#list").hide();
 		$("#inputfield").show();
 	});
@@ -42,7 +43,7 @@ $(document).ready(function() {
 		};
 		form.find('input[id="edit"]')[0].style="display: none";
 		form.find('input[id="create"]')[0].style="display: none";
-		form.find('input[id="newuser"]')[0].style="display: none";
+		form.find('input[id="new"]')[0].style="display: none";
 		form.find('input[id="update"]')[0].style="display: initial";
 		form.find('input[id="cancel"]')[0].style="display: initial";
 	});
@@ -68,7 +69,7 @@ $(document).ready(function() {
 			fields[i].disabled = true;
 		};
 		form.find('input[id="edit"]')[0].style="display: initial";
-		form.find('input[id="newuser"]')[0].style="display: initial";
+		form.find('input[id="new"]')[0].style="display: initial";
 		form.find('input[id="create"]')[0].style="display: none";
 		form.find('input[id="update"]')[0].style="display: none";
 		form.find('input[id="cancel"]')[0].style="display: none";
@@ -128,11 +129,11 @@ $(document).ready(function() {
 		});
 	});
 
-	$('#newuser').click(function() {
+	$('#new').click(function() {
 		var form = $(this).closest('form[class="detailsForm"]');
 		form.find('input[id="edit"]')[0].style="display: none";
 		form.find('input[id="update"]')[0].style="display: none";
-		form.find('input[id="newuser"]')[0].style="display: none";
+		form.find('input[id="new"]')[0].style="display: none";
 		form.find('input[id="cancel"]')[0].style="display: initial";
 		form.find('input[id="create"]')[0].style="display: initial";
 		form.find('input[id="create"]')[0].tag="active";
@@ -197,7 +198,7 @@ $(document).ready(function() {
 			fields[i].disabled = true;
 		};
 		form.find('input[id="edit"]')[0].style="display: initial";
-		form.find('input[id="newuser"]')[0].style="display: initial";
+		form.find('input[id="new"]')[0].style="display: initial";
 		form.find('input[id="create"]')[0].style="display: none";
 		form.find('input[id="update"]')[0].style="display: none";
 		form.find('input[id="cancel"]')[0].style="display: none";
@@ -209,7 +210,7 @@ $(document).ready(function() {
 			form.find('input[id="create"]')[0].tag = "";
 			create(form[0].name, form);
 			form.find('input[id="edit"]')[0].style="display: initial";
-			form.find('input[id="newuser"]')[0].style="display: initial";
+			form.find('input[id="new"]')[0].style="display: initial";
 			form.find('input[id="create"]')[0].style="display: none";
 			form.find('input[id="update"]')[0].style="display: none";
 			form.find('input[id="cancel"]')[0].style="display: none";
@@ -345,6 +346,7 @@ function populateRecipelist(data) {
 		});
 	}
 }
+
 
 
 

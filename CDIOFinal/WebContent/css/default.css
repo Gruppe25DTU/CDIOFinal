@@ -47,14 +47,14 @@
     padding: 5px;
 }
 
-.optionlineUser {
+.optionline {
 	position: relative;
     width: 100%;
     padding: 5px;
     justify-content: center;
 }
 
-.optionlineUser input[type=button]{
+.optionline input[type=button]{
 	width: 200px;
     margin-right:10px;
  
@@ -62,7 +62,7 @@
 }
 
 
-.optionlineUser input[type=button]:hover {
+.optionline input[type=button]:hover {
 opacity: 0.8;
 }
 
@@ -292,13 +292,4 @@ color:black;
     padding: 10px;
 }
 
-.labelCheckbox {
-    font-family: Candar;
-    font-size: 18px;
-    
-}
-
-.labelCheckbox input[type=checkbox] {
-    margin-right: 25px;
-}
 

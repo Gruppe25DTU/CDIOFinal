@@ -4,18 +4,14 @@
 
 .header>* {
 width: 100%;
-padding: 10px;
+min-height: 70px;
+margin-top: 0px;
+padding: 12px;
 font-family: Candara;
+position: fixed;
+background-color: white;
 }
 
-.contentfield {
-	position: static;
-	width: 100%;
-	hight: 100%;
-	border: 10px solid #e7ebe8;
-	padding: 8%;
-		 clear: left;
-}
 
 .section {
 	position: static;
@@ -33,8 +29,11 @@ font-family: Candara;
 .optionline {
 	background-color: #e7ebe8; 
 	width: 100%;
-	position: absolute;
+	position: fixed;
 	padding: 5px;
+	margin-top: 65px;
+
+	
 }
 
  /* dropdown */
@@ -99,13 +98,6 @@ width: 30%;
 min-width: 200px;
 }
 
-.users {
-    text-align: left;
-}
- 
-.blockbox {
-display: block;
-}
 
 input[type=text]{
     font-family: Candara;
@@ -127,68 +119,8 @@ input[type=text]{
     float: left;
 }
     
-#IDField
-{
-	font-family: Candara;
-	width : 20px;
-}
 
-#CPR
-{
-	font-family: Candara;
-	width : 90px;
-}
 
-#CPR2
-{
-	font-family: Candara;
-	width : 75px;
-}
-
-input[type=checkbox] {
-font-family: Candara;
-height: 25px;
-width: 25px;
-vertical-align: bottom;
-}
-
-/* table css */
-
-#UInput {
-  width: 30%;
-  font-size: 16px;
-  padding: 15px 10px;
-  border: 1px solid #ddd;
-  margin-bottom: 5px;
-  font-family: Candara;
-}
-
-#UTable {
-  border-collapse: collapse;
-  width: 100%;
-  border: 1px solid #ddd;
-  font-size: 18px;
-  font-family: Candara;
-}
-
-#UTable th, #UTable td {
-  text-align: left;
-  padding: 12px;
-}
-
-#UTable tr {
-  border-bottom: 1px solid #ddd;
-}
-
-#UTable tr:hover {
-color: #ff8000;
- background-color: #e7ebe8;
-}
-
-#UTable tr.header, #UTable tr.header:hover {
-background-color: #e7ebe8;
-color:black;
-}
 
 .icon {
 	padding: 10px;

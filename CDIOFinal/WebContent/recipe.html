@@ -23,16 +23,16 @@
 <div id="details" class="details">
 	<div id="contentfield">
 		<form id="detailsForm" class="detailsForm" name="user">
-			<section class="optionlineUser">
+			<section class="optionline">
 				<h2 style="font-family: candara;">
 					<i class="icon glyphicon glyphicon-pencil" style="font-size: 30px;"></i>
 					Recipe Information 
 					</h2>
 			</section>
-			<section class="optionlineUser">
+			<section class="optionline">
 			<input type="button" name="list" id="listbut"
 						value="List all Recipes" style="left: 50%;"> <input
-						type="button" name="newuser" class="create" id="newuser"
+						type="button" name="new" class="create" id="new"
 						value="Add New Recipe" style="left: 50%; min-width: 280px;">
 					<input type="button" name="edit" id="edit" class="edit"
 						value="Edit Recipe" style="left: 50%;">
@@ -59,7 +59,7 @@
 <tr>
 									
 									<td>1</td>
-									<td>55</button>
+									<td>55</td>
 								</tr>
 			</tbody>
 		</table>
@@ -68,7 +68,7 @@
 					<div class="informationboxRecipe" style="width: 70%;">
 					<br>
 					<div style="min-width: 800px; float: left;">
-						<input type="text" class="RInput" onkeyup="tableSearch()"
+						<input type="text" class="RInput" onkeyup="RtableSearch()"
 							placeholder="Search..." title="Search by any value"
 							style="float: left; width: 40%;"> <i
 							class="icon glyphicon glyphicon-search"
