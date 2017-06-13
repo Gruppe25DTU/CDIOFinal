@@ -178,7 +178,6 @@ public class UserDAO {
 	 */
 	public static int create(UserDTO dto, String password) throws DALException{
 		String addUser = "CALL addUser('%s','%s','%s');";
-
 		String addUserInfo = "CALL addUserInfo('%s','%s','%s','%s');";
 		String addUserRoles = "CALL addUserRole('%s','%d');";
 		List<String> roles = dto.getRoles();

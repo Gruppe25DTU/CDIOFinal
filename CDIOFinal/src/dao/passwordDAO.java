@@ -16,7 +16,7 @@ public class passwordDAO {
 		String cmd = "CALL createPassword('%d','%s');";
 		cmd = String.format(cmd, ID,pwd);
 		try {
-			Connector.doUpdate(cmd);
+			Connector.doUpdate(cmd);	
 		} catch (SQLException e) {
 			throw new DALException(e);
 		}

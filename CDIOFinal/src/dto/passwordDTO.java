@@ -4,6 +4,7 @@ public class passwordDTO {
 
 	private String pwd;
 	
+	
 	public passwordDTO(String pwd) {
 		this.pwd = pwd;
 	}
