@@ -17,96 +17,53 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import dao.UserDAO;
+import dto.IDTO;
 import dto.UserDTO;
+import logic.BLL;
+import logic.CDIOException.DALException;
+import logic.CDIOException.DTOException;
+import logic.CDIOException.UnauthorizedException;
 import logic.validation.RuleSet;
 import logic.validation.RuleSetInterface;
 
 @Path("/user")
 public class RESTUser {
 
-	static final UserDAO dao = new UserDAO();
-
-
-	@GET
-	@Path("/view/id={id : [0-9]+}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUser(@PathParam("id") int ID) {
-		try {	
-			dao.getUser(ID);
-			return Response.status(Status.OK).entity(dao.getUser(ID)).build();
-
-		} catch (Exception e) {
-			return Response.status(Status.NOT_FOUND).build();
-
-		} 
-
-	}
-
 	@POST
-	@Path("/update/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response changeStatus(boolean active, @PathParam("id") int id) {
-		try {
-			dao.changeStatus(id, active);
-			return Response.status(Status.ACCEPTED).build();
-		} 	
-		catch (Exception e) {
-			return Response.status(Status.NOT_FOUND).build();
-		}
-
-	}
-
-	@GET
-	@Path("/list/deactivatedUsers")
+	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getDeactivatedUsers() {
-		try {
-			dao.getDeactiveUsers();
-			return Response.status(Status.OK).entity(dao.getDeactiveUsers()).build();
+	public Response createDTO(@PathParam("type") String type, IDTO dto) {
 
-		} catch (Exception e) {
-			return Response.status(Status.NOT_FOUND).build();
+		try {
+			BLL.createDTO(dto);
+		} catch (DALException | DTOException e) {
+
+			return Response.status(Status.NOT_ACCEPTABLE).build();
+
+		} catch (UnauthorizedException e) {
+			return Response.status(Status.UNAUTHORIZED).build();  
 		}
+
+		return Response.status(Status.CREATED).build();
 	}
 
 	@PUT
-	@Path("/user/create")
+	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createUser(UserDTO dto) {
-		try {
-			dao.create(dto); 
-			return Response.status(Status.CREATED).build();
+	public Response updateDTO(@PathParam("type") String type, IDTO dto) {
 
-		} catch (Exception e) {
-			return Response.status(Status.UNAUTHORIZED).build();
+		try {
+			BLL.updateDTO(dto);
+		} catch (DALException | DTOException e) {
+
+			return Response.status(Status.NOT_ACCEPTABLE).build();
+
+		} catch (UnauthorizedException e) {
+			return Response.status(Status.UNAUTHORIZED).build();  
 		}
 
-	}
+		return Response.status(Status.CREATED).build();
 
-	@POST
-	@Path("/update/{old_cpr}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateUser(UserDTO dto, @PathParam("old_cpr") String old_cpr) {
-		try {
-			dao.update(dto, old_cpr);
-			return Response.status(Status.ACCEPTED).build();
-
-		} catch (Exception e) {
-			return Response.status(Status.NOT_FOUND).build();
-		}
-	}
-
-	@GET
-	@Path("/view/name={name : [a-zA-Z]+}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response UserExists(@PathParam("name") String name) {
-		try {
-			dao.userExists(name);
-			return Response.status(Status.OK).entity(dao.userExists(name)).build();
-
-		} catch (Exception e) {
-			return Response.status(Status.NOT_FOUND).build();
-		}
 	}
 
 }

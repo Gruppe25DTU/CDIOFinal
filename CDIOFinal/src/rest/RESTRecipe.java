@@ -17,26 +17,52 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import dao.RecipeDAO;
+import dto.IDTO;
 import dto.RecipeDTO;
+import logic.BLL;
+import logic.CDIOException.DALException;
+import logic.CDIOException.DTOException;
+import logic.CDIOException.UnauthorizedException;
 import logic.validation.RuleSet;
 import logic.validation.RuleSetInterface;
 
 @Path("/recipe")
 public class RESTRecipe {
 
-	static final RecipeDAO dao = new RecipeDAO();
+	@POST
+	@Path("/{type : [a-zA-Z0-9]+}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response createDTO(@PathParam("type") String type, IDTO dto) {
+
+		try {
+			BLL.createDTO(dto);
+		} catch (DALException | DTOException e) {
+
+			return Response.status(Status.NOT_ACCEPTABLE).build();
+
+		} catch (UnauthorizedException e) {
+			return Response.status(Status.UNAUTHORIZED).build();  
+		}
+
+		return Response.status(Status.CREATED).build();
+	}
 
 	@PUT
-	@Path("/recipe/create}")
+	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createRecipe(RecipeDTO dto) {
-		try{
-			dao.create(dto);
-			return Response.status(Status.CREATED).build();
+	public Response updateDTO(@PathParam("type") String type, IDTO dto) {
 
-		} catch (Exception e) {
-			return Response.status(Status.UNAUTHORIZED).build();
-		} 
+		try {
+			BLL.updateDTO(dto);
+		} catch (DALException | DTOException e) {
+
+			return Response.status(Status.NOT_ACCEPTABLE).build();
+
+		} catch (UnauthorizedException e) {
+			return Response.status(Status.UNAUTHORIZED).build();  
+		}
+
+		return Response.status(Status.CREATED).build();
 
 	}
 }
