@@ -20,7 +20,7 @@ public class Main{
 	}
 
 	public static void main(String[] args) {
-		Connector.changeTestMode(true);
+		Connector.changeTestMode(false);
 			Connection dbConn = Connector.connectToDatabase();
 		try
 			{
