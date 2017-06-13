@@ -26,6 +26,7 @@ import logic.CDIOException.UnauthorizedException;
 import logic.validation.RuleSet;
 import logic.validation.RuleSetInterface;
 
+@Path("")
 public class RESTCommodity {
 
 	@POST
