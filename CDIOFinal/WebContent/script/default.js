@@ -304,6 +304,9 @@ function populateUserlist(data) {
 			if ($("#UTable" + key + i)[0] != null) {
 				$("#UTable" + key + i)[0].append(value);
 			}
+			if ($("#UTable" + key + i)[0] == roles){
+				$.each("#UTable" + key + i)[0].append('<table><tr><td>'+value+'</td></tr></table>');
+			}
 		});
 	}
 }
