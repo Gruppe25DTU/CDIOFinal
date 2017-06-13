@@ -39,7 +39,7 @@ public class CommodityDAO {
 	 * @return List< CommodityDTO >
 	 */
 
-	public List<CommodityDTO> getList() throws DALException{
+	public static List<CommodityDTO> getList() throws DALException{
 		String cmd = "CALL getCommodityList();";
 		List<CommodityDTO> list = new ArrayList<CommodityDTO>();
 
@@ -73,7 +73,7 @@ public class CommodityDAO {
 	 * @return commodityDTO
 	 */
 
-	public CommodityDTO get(int id) throws DALException{
+	public static CommodityDTO get(Integer id) throws DALException{
 		String cmd = "CALL getCommodity('%d');";
 		cmd = String.format(cmd, id);
 

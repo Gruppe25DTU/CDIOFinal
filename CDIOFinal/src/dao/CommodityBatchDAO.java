@@ -73,7 +73,7 @@ public class CommodityBatchDAO {
 	 * Returns a commodityBatchDTO
 	 */
 
-	public CommodityBatchDTO get(int id) throws DALException{
+	public static CommodityBatchDTO get(Integer id) throws DALException{
 		String cmd = "CALL getCommodityBatch('%d');";
 		cmd = String.format(cmd, id);
 
@@ -103,7 +103,7 @@ public class CommodityBatchDAO {
 	 * @throws DALException
 	 */
 
-	public List<CommodityBatchDTO> getList() throws DALException{
+	public static List<CommodityBatchDTO> getList() throws DALException{
 		String cmd = "call getCommodityBatchList();";
 		List<CommodityBatchDTO> list = new ArrayList<CommodityBatchDTO>();
 		try {

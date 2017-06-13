@@ -8,7 +8,7 @@ import logic.validation.RuleSetInterface.RuleException;
 public class ProductBatchDataCheck {
   private static RuleSetInterface rules = new RuleSet();
 
-	public static void CreateProductBatchDC(ProductBatchDTO dto) throws RuleException{
+	public static void create(ProductBatchDTO dto) throws RuleException{
 		if(rules.getID().test(dto.getId()) == false ||
 				String.valueOf(dto.getId()) == null){
 			throw new RuleException("Invalid ProductBatch ID!");

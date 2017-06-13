@@ -7,7 +7,7 @@ public class SupplierDataCheck {
 
   private static RuleSetInterface rules = new RuleSet();
 
-	public static void CreateSupplierDC(SupplierDTO dto) throws RuleException{
+	public static void create(SupplierDTO dto) throws RuleException{
 
 		if(rules.getID().test(dto.getId()) == false){
 			throw new RuleException("Invalid ID!");

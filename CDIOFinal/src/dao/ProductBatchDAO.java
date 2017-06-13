@@ -107,7 +107,7 @@ public class ProductBatchDAO {
 	 * @throws SQLException
 	 */
 
-	public ProductBatchDTO get(int id) throws DALException{
+	public static ProductBatchDTO get(Integer id) throws DALException{
 		String cmd = "CALL getProductBatch('%d');";
 		cmd = String.format(cmd, id);
 
@@ -146,7 +146,7 @@ public class ProductBatchDAO {
 	 * @return List< ProductBatchDTO >
 	 */
 
-	public List<ProductBatchDTO> getList() throws DALException{
+	public static List<ProductBatchDTO> getList() throws DALException{
 		String cmd = "CALL getProductBatchList();";
 		List<ProductBatchDTO> list = new ArrayList<ProductBatchDTO>();
 
@@ -241,7 +241,7 @@ public class ProductBatchDAO {
 	}
 
 
-	public List<ProductBatchCompDTO> getProductBatchComponents(int productBatchID) throws DALException{
+	public static List<ProductBatchCompDTO> getProductBatchComponents(Integer productBatchID) throws DALException{
 		String cmd = "CALL getProductBatchComponent('%d')";
 		cmd = String.format(cmd, productBatchID);
 		List<ProductBatchCompDTO> list = new ArrayList<>();
