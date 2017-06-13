@@ -112,13 +112,13 @@ public class UserDAO {
 			while (rs.next()) 
 			{
 				String cpr = rs.getString("cpr");
-				int opr_ID = rs.getInt("opr_ID");
+				int opr_ID = rs.getInt("user_ID");
 				String username = rs.getString("username");
 				String password = rs.getString("password");
 				int active = rs.getInt("active");
 				String email = rs.getString("email");
-				String firstname = rs.getString("opr_firstname");
-				String lastname = rs.getString("opr_lastname");
+				String firstname = rs.getString("user_firstname");
+				String lastname = rs.getString("user_lastname");
 				String ini = rs.getString("ini");
 
 				List<String> roles = getRoles(opr_ID);
@@ -303,13 +303,13 @@ public class UserDAO {
 			while (rs.next()) 
 			{
 				String cpr = rs.getString("cpr");
-				int opr_ID = rs.getInt("opr_ID");
+				int opr_ID = rs.getInt("user_ID");
 				String username = rs.getString("username");
 				String password = rs.getString("password");
 				int active = rs.getInt("active");
 				String email = rs.getString("email");
-				String firstname = rs.getString("opr_firstname");
-				String lastname = rs.getString("opr_lastname");
+				String firstname = rs.getString("user_firstname");
+				String lastname = rs.getString("user_lastname");
 				String ini = rs.getString("ini");
 
 				List<String> roles = getRoles(opr_ID);
@@ -347,13 +347,13 @@ public class UserDAO {
 			while (rs.next()) 
 			{
 				String cpr = rs.getString("cpr");
-				int opr_ID = rs.getInt("opr_ID");
+				int opr_ID = rs.getInt("user_ID");
 				String username = rs.getString("username");
 				String password = rs.getString("password");
 				int active = rs.getInt("active");
 				String email = rs.getString("email");
-				String firstname = rs.getString("opr_firstname");
-				String lastname = rs.getString("opr_lastname");
+				String firstname = rs.getString("user_firstname");
+				String lastname = rs.getString("user_lastname");
 				String ini = rs.getString("ini");
 
 				List<String> roles = getRoles(opr_ID);
@@ -395,13 +395,13 @@ public class UserDAO {
 			while (rs.next()) 
 			{
 				String cpr = rs.getString("cpr");
-				int opr_ID = rs.getInt("opr_ID");
+				int opr_ID = rs.getInt("user_ID");
 				String username = rs.getString("username");
 				String password = rs.getString("password");
 				int active = rs.getInt("active");
 				String email = rs.getString("email");
-				String firstname = rs.getString("opr_firstname");
-				String lastname = rs.getString("opr_lastname");
+				String firstname = rs.getString("user_firstname");
+				String lastname = rs.getString("user_lastname");
 				String ini = rs.getString("ini");
 
 				List<String> roles = getRoles(opr_ID);
