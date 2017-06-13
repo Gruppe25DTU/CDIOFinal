@@ -31,12 +31,11 @@ import logic.validation.RuleSetInterface;
 public class RESTRecipe {
 
 	@POST
-	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response recipeDTO(@PathParam("type") String dtoType, UserDTO dto) {
+	public Response recipeDTO(RecipeDTO dto) {
 		int id;
 		try {
-			id = BLL.createDTO(dto, dtoType);
+			id = BLL.createDTO(dto, "recipe");
 		} catch (DALException | DTOException e) {
 
 			return Response.status(Status.NOT_ACCEPTABLE).build();

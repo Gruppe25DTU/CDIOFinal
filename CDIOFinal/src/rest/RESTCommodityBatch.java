@@ -26,12 +26,11 @@ import logic.validation.RuleSetInterface;
 public class RESTCommodityBatch {
 
 	@POST
-	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response commoditybatchDTO(@PathParam("type") String dtoType, IDTO dto) {
+	public Response commoditybatchDTO(CommodityBatchDTO dto) {
 
 		try {
-			BLL.createDTO(dto, dtoType);
+			BLL.createDTO(dto, "commodityBatch");
 		} catch (DALException | DTOException e) {
 
 			return Response.status(Status.NOT_ACCEPTABLE).build();

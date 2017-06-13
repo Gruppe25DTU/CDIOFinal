@@ -30,12 +30,11 @@ import logic.validation.RuleSetInterface;
 public class RESTUser {
 
 	@POST
-	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createDTO(@PathParam("type") String dtoType, UserDTO dto) {
+	public Response createDTO(UserDTO dto) {
 		int id;
 		try {
-			id = BLL.createDTO(dto, dtoType);
+			id = BLL.createDTO(dto, "user");
 		} catch (DALException | DTOException e) {
 
 			return Response.status(Status.NOT_ACCEPTABLE).build();
@@ -48,9 +47,9 @@ public class RESTUser {
 	}
 
 	@PUT
-	@Path("/{type : [a-zA-Z0-9]+}/cpr={old_cpr : [0-9]+}")
+	@Path("/cpr={old_cpr : [0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateDTO(@PathParam("type") String dtoType, @PathParam("old_cpr") String old_cpr, UserDTO dto) {
+	public Response updateDTO(@PathParam("old_cpr") String old_cpr, UserDTO dto) {
 		boolean updated;
 		try {
 			updated = BLL.updateUser(dto, old_cpr);
