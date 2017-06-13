@@ -22,10 +22,10 @@ import logic.CDIOException.UnauthorizedException;
 import logic.validation.RuleSet;
 import logic.validation.RuleSetInterface;
 
-@Path("/commoditybatch")
 public class RESTCommodityBatch {
 
 	@POST
+	@Path("/commoditybatch")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response commoditybatchDTO(CommodityBatchDTO dto) {
 

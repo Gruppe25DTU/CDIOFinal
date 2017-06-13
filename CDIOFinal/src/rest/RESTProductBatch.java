@@ -26,10 +26,10 @@ import logic.CDIOException.UnauthorizedException;
 import logic.validation.RuleSet;
 import logic.validation.RuleSetInterface;
 
-@Path("/productbatch")
 public class RESTProductBatch {
 
 	@POST
+	@Path("/productbatch")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response productbatchDTO(ProductBatchDTO dto) {
 

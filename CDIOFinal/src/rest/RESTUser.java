@@ -26,10 +26,10 @@ import logic.CDIOException.UnauthorizedException;
 import logic.validation.RuleSet;
 import logic.validation.RuleSetInterface;
 
-@Path("/user")
 public class RESTUser {
 
 	@POST
+	@Path("/user")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createDTO(UserDTO dto) {
 		int id;
@@ -47,7 +47,7 @@ public class RESTUser {
 	}
 
 	@PUT
-	@Path("/cpr={old_cpr : [0-9]+}")
+	@Path("/user/cpr={old_cpr : [0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateDTO(@PathParam("old_cpr") String old_cpr, UserDTO dto) {
 		boolean updated;

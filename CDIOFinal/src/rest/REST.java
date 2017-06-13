@@ -63,7 +63,7 @@ public class REST {
 	}
 
 	@GET
-	@Path("/{type : [a-zA-Z0-9]+}/{id : \\d+}")
+	@Path("/{type : [a-zA-Z0-9]+}/id={id : \\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDTO(@PathParam("type") String dtoType, @PathParam("id") int id) {
 

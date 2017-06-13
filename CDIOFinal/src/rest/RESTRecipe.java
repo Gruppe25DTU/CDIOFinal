@@ -27,10 +27,10 @@ import logic.CDIOException.UnauthorizedException;
 import logic.validation.RuleSet;
 import logic.validation.RuleSetInterface;
 
-@Path("/recipe")
 public class RESTRecipe {
 
 	@POST
+	@Path("/recipe")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response recipeDTO(RecipeDTO dto) {
 		int id;

@@ -26,10 +26,10 @@ import logic.CDIOException.UnauthorizedException;
 import logic.validation.RuleSet;
 import logic.validation.RuleSetInterface;
 
-@Path("/commodity")
 public class RESTCommodity {
 
 	@POST
+	@Path("/commodity")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response commodityDTO(CommodityDTO dto) {
 
