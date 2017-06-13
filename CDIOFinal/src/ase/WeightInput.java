@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 
 public class WeightInput implements Runnable{
@@ -69,7 +68,7 @@ public class WeightInput implements Runnable{
 					}
 					else if(rm == 'A')
 					{
-						input = input.substring(input.indexOf("\""),input.length()-1);
+						input = input.substring(input.indexOf("\"")+1,input.length()-1);
 						sInMsg = new SocketInMessage(MessageType.RM20_A , input);
 						conn.processInput(sInMsg);
 					}

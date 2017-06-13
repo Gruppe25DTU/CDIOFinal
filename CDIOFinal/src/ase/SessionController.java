@@ -95,6 +95,13 @@ public class SessionController {
 		}
 		catch(SQLException e)
 		{
+			try 
+			{
+				conn.outputMsg("P111 \"*DATABASE ERROR*\"");
+			} 
+			catch (IOException e1) {
+				
+			}
 			System.err.println(e.getMessage());
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
@@ -103,7 +110,7 @@ public class SessionController {
 	}
 
 
-	private void loginPhase(SocketInMessage message) throws IOException
+	private void loginPhase(SocketInMessage message) throws IOException, SQLException
 	{
 		if(RM20Expecting)
 		{
@@ -112,12 +119,13 @@ public class SessionController {
 			case RM20_A:
 				if(message.getMsg().length()>0)
 				{
+					conn.outputMsg("P111 \"...\"");
 					int labId = Integer.parseInt(message.getMsg());
 					UserDAO uDAO = new UserDAO();
 					try {
 						user = uDAO.getUser(labId);
 					} catch (DALException e1) {
-						throw new IOException("Problem occured trying to retrieve User");
+						throw new SQLException("Problem occured trying to retrieve User");
 					}
 
 					if(user != null)
@@ -247,10 +255,11 @@ public class SessionController {
 				{
 					int pb_id = Integer.parseInt(message.getMsg());
 					ProductBatchDAO pbDAO = new ProductBatchDAO();
+					conn.outputMsg("P111 \"...\"");
 					try {
 						prod = pbDAO.get(pb_id);
 					} catch (DALException e2) {
-						throw new IOException("Problem occured trying to retrieve Product batch");
+						throw new SQLException("Problem occured trying to retrieve Product batch");
 					}
 					if(prod != null)
 					{
@@ -260,13 +269,13 @@ public class SessionController {
 							try {
 								currentRecipeComp = pbDAO.getNonWeighedComp(pb_id);
 							} catch (DALException e1) {
-								throw new IOException("Problem occured trying to retrieve Recipe component");
+								throw new SQLException("Problem occured trying to retrieve Recipe component");
 							}
 							CommodityDAO cDAO = new CommodityDAO();
 							try {
 								comm = cDAO.get(currentRecipeComp.getCommodityID());
 							} catch (DALException e) {
-								throw new IOException("Problem occured trying to retrieve Commodity");
+								throw new SQLException("Problem occured trying to retrieve Commodity");
 							}
 							phase = PhaseType.CLEAR_WEIGHT;
 							conn.outputMsg("P111 \"Clear the weight [->\"");
@@ -375,7 +384,6 @@ public class SessionController {
 		case ZERO :
 			break;
 		case TARA_REPLY :
-			double t = Double.valueOf(message.getMsg());
 			//Progress to the next phase --Weighing the commodity--
 			String name = comm.getName().length() > 17 ? comm.getName().substring(0 , 17) : comm.getName();
 			String nom_netto = Double.toString(currentRecipeComp.getNomNetWeight()).replace(",", ".");
@@ -453,7 +461,7 @@ public class SessionController {
 		}
 	}
 
-	private void chooseCommBatchPhase(SocketInMessage message) throws IOException
+	private void chooseCommBatchPhase(SocketInMessage message) throws IOException, SQLException
 	{
 		if(RM20Expecting)
 		{
@@ -464,12 +472,13 @@ public class SessionController {
 				{
 					int cb_id = Integer.parseInt(message.getMsg());
 					CommodityBatchDAO cbDAO = new CommodityBatchDAO();
+					conn.outputMsg("P111 \"...\"");
 					try 
 					{
 						cBatch = cbDAO.get(cb_id);
 					} 
 					catch (DALException e1) {
-						throw new IOException("Problem occured trying to retrieve Commodity batch");
+						throw new SQLException("Problem occured trying to retrieve Commodity batch");
 					}
 					if(cBatch != null)
 					{
@@ -573,7 +582,7 @@ public class SessionController {
 		}
 	}
 
-	private void bruttoControlPhase(SocketInMessage message) throws IOException
+	private void bruttoControlPhase(SocketInMessage message) throws IOException, SQLException
 	{
 		switch(message.getReplyType())
 		{
@@ -633,11 +642,11 @@ public class SessionController {
 		}
 	}
 
-	private void acceptResult() throws IOException
+	private void acceptResult() throws IOException, SQLException
 	{
 		conn.outputMsg("D \"SAVING\"");
+		conn.outputMsg("P111 \"...\"");
 		ProductBatchDAO pbDAO = new ProductBatchDAO();
-		CommodityBatchDAO cbDAO = new CommodityBatchDAO();
 		CommodityDAO cDAO = new CommodityDAO();
 
 		ProductBatchCompDTO component = 
@@ -648,7 +657,7 @@ public class SessionController {
 		try 
 		{
 			pbDAO.addComponent(component);
-			cbDAO.changeAmount(cBatch.getId(), cBatch.getQuantity()-netto);
+			CommodityBatchDAO.changeAmount(cBatch.getId(), cBatch.getQuantity()-netto);
 			try 
 			{
 				Thread.sleep(1000);
@@ -678,7 +687,7 @@ public class SessionController {
 				Timestamp ts = new Timestamp(System.currentTimeMillis());
 				prod.setEndDate(ts);
 				pbDAO.changeStatus(prod.getId(), 2);
-				pbDAO.setStopdate(prod);
+				ProductBatchDAO.setStopdate(prod);
 				conn.outputMsg("P111 \"ProductBatch finished!\"");
 				try 
 				{
@@ -692,7 +701,7 @@ public class SessionController {
 		} 
 		catch (DALException e2) 
 		{
-			throw new IOException("Problem occured when saving to database");
+			throw new SQLException("Problem occured when saving to database");
 		}
 
 
