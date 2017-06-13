@@ -71,7 +71,7 @@ public class RecipeDAO {
 	}
 
 
-	public RecipeDTO get(int id) throws DALException {
+	public static RecipeDTO get(Integer id) throws DALException {
 	  return getRecipe(id);
 	}
 
@@ -81,7 +81,7 @@ public class RecipeDAO {
 	 * @return
 	 */
 	
-	public RecipeDTO getRecipe(int id) throws DALException{
+	public static RecipeDTO getRecipe(int id) throws DALException{
 		String cmd = "CALL getRecipe('%d');";
 		cmd = String.format(cmd, id);
 
@@ -109,13 +109,16 @@ public class RecipeDAO {
 	 * Returns a list of recipecomponents
 	 */
 
-	public List<RecipeCompDTO> getRecipeComponent(int ID) throws DALException{
+	public static List<RecipeCompDTO> getRecipeComponent(Integer ID) throws DALException{
 		String cmd = "CALL getRecipeComponent('%d');";
 		List<RecipeCompDTO> list = new ArrayList<>();
 		cmd = String.format(cmd, ID);
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if (rs == null) {
+			  return list;
+			}
 			while(rs.next()) {
 				list.add(new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getDouble("nom_net_weight"),rs.getDouble("tolerance")));
 			}
@@ -133,7 +136,7 @@ public class RecipeDAO {
 
 	}
 	
-	public List<RecipeDTO> getList() throws DALException {
+	public static List<RecipeDTO> getList() throws DALException {
 	  return getRecipeList();
 	}
 	
@@ -141,7 +144,7 @@ public class RecipeDAO {
 	 * Returns a list over every existing recipes
 	 */
 
-	public List<RecipeDTO> getRecipeList() throws DALException{
+	public static List<RecipeDTO> getRecipeList() throws DALException{
 		String cmd = "CALL getRecipeList();";
 		List<RecipeDTO> list = new ArrayList<RecipeDTO>();
 

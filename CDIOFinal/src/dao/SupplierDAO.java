@@ -34,11 +34,11 @@ public class SupplierDAO {
 	 * Returns a supplier
 	 */
 	
-	public SupplierDTO get(int id) throws DALException {
+	public static SupplierDTO get(Integer id) throws DALException {
 	  return getSupplier(id);
 	}
 	
-	public SupplierDTO getSupplier(int ID) throws DALException{
+	public static SupplierDTO getSupplier(int ID) throws DALException{
 		String cmd = "CALL getSupplier('%d');";
 		cmd = String.format(cmd, ID);
 
@@ -68,7 +68,7 @@ public class SupplierDAO {
 	 * Returns every existing supplier in the database
 	 */
 	
-	public List<SupplierDTO> getList() throws DALException{
+	public static List<SupplierDTO> getList() throws DALException{
 		String cmd = "CALL getSupplierList();";
 		List<SupplierDTO> list = new ArrayList<SupplierDTO>();
 		try {

@@ -17,10 +17,10 @@ public class UserDAO {
 	 * @throws DALException 
 	 */
   
-  public UserDTO get(int id) throws DALException {
+  public static UserDTO get(Integer id) throws DALException {
     return getUser(id);
   }
-	public UserDTO getUser(int ID) throws DALException{
+	public static UserDTO getUser(int ID) throws DALException{
 		String cmd = "CALL getUser('%d');";
 		cmd = String.format(cmd, ID);
 		UserDTO dto;
@@ -378,11 +378,11 @@ public class UserDAO {
 	 * @throws DALException 
 	 */
 	
-	public List<UserDTO> getList() throws DALException {
+	public static List<UserDTO> getList() throws DALException {
 	  return getUserList();
 	}
 
-	public List<UserDTO> getUserList() throws DALException{
+	public static List<UserDTO> getUserList() throws DALException{
 		String cmd = "CALL getUserList();";
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {

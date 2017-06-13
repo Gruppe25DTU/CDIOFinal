@@ -13,37 +13,6 @@ import logic.CDIOException.*;
 
 public class DataCheckerInterface {
   
-  //TEST MAIN
-  public static void main(String[] args) {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    String line = "";
-    while(!line.equals("quit")) {
-      try {
-        line = br.readLine();
-      } catch (IOException e1) {
-        e1.printStackTrace();
-      }
-      if (line == null) {
-        continue;
-      }
-      String[] lines = line.split(" ");
-      if (lines.length != 3) {
-        System.out.println("Enter 3 strings\n");
-        continue;
-      }
-      String type = lines[0];
-      String field = lines[1];
-      String value = lines[2];
-      try {
-        DataCheckerInterface.checkField(type, field, value);
-        System.out.println("No errors");
-      } catch (Exception e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
-  }
-  
   private static final HashMap<String, HashMap<String, Method>> checklist = new HashMap<String, HashMap<String, Method>>() {{
     this.put("commodityBatch", mapMaker("CommodityBatchDataCheck"));
     this.put("commodity", mapMaker("CommodityDataCheck"));
