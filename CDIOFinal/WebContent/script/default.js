@@ -77,7 +77,7 @@ $(document).ready(function() {
 		
 		if(listname == 'Ulist'){
 			$.ajax({
-				url : 'rest/user/',
+				url : 'rest/user/list',
 				dataType : 'json',
 				success : function(data) {
 					populateUserlist(data);
@@ -91,7 +91,7 @@ $(document).ready(function() {
 		if(listname == 'Slist'){
 		$.ajax({
 
-			url : 'rest/supplier/',
+			url : 'rest/supplier/list',
 			dataType : 'json',
 			success : function(data) {
 				populateSupplierlist(data);
@@ -104,7 +104,7 @@ $(document).ready(function() {
 		
 		if(listname == 'Plist'){
 		$.ajax({
-			url : 'rest/productbatch/',
+			url : 'rest/productbatch/list',
 			dataType : 'json',
 			success : function(data) {
 				populateProductBatchlist(data);
@@ -118,7 +118,7 @@ $(document).ready(function() {
 		if(listname == 'Clist'){
 		$.ajax({
 
-			url : 'rest/commodity/',
+			url : 'rest/commodity/list',
 			dataType : 'json',
 			success : function(data) {
 				populateCommoditylist(data);
@@ -131,7 +131,7 @@ $(document).ready(function() {
 		
 		if(listname == 'CBlist'){
 		$.ajax({
-			url : 'rest/commoditybatch/',
+			url : 'rest/commoditybatch/list',
 			dataType : 'json',
 			success : function(data) {
 				populateCommodityBatchlist(data);
@@ -144,7 +144,7 @@ $(document).ready(function() {
 		
 		if(listname == 'Rlist'){
 		$.ajax({
-			url : 'rest/recipe/',
+			url : 'rest/recipe/list',
 			dataType : 'json',
 			success : function(data) {
 				populateRecipelist(data);
@@ -265,7 +265,7 @@ function checkState() {
 	var field = $(this)[0];
 	$.ajax(
 			{
-				url : "rest/" + form.name + "/validity/" + field.name + "/" + field.value,
+				url : "rest/" + form.name + "/validate/" + field.name + "/" + field.value,
 				success : function(data) {
 					field.style = "color : black";
 					field.tag = "valid";
@@ -280,6 +280,7 @@ function checkState() {
 
 function populate(frm, data) {   
 	$.each(data, function(key, value) {  
+		if (key == "roles") key = "roles[]";
 		var ctrl = $('[name="'+key+'"]', frm);  
 		switch(ctrl.prop("type")) { 
 		case "radio": case "checkbox":
@@ -304,7 +305,7 @@ function populateUserlist(data) {
 			if ($("#UTable" + key + i)[0] != null) {
 				$("#UTable" + key + i)[0].append(value);
 			}
-			if ($("#UTable" + key + i)[0] == roles){
+			if ($("#UTable" + key + i)[0] == "roles"){
 				$.each("#UTable" + key + i)[0].append('<table><tr><td>'+value+'</td></tr></table>');
 			}
 		});
@@ -376,8 +377,8 @@ function populateRecipelist(data) {
 			if ($("#RLTable" + key + i)[0] != null) {
 				$("#RLTable" + key + i)[0].append(value);
 			}
-			if ($("#RTable" + key + i)[0] == components){
-				$.each("#RTable" + key + i)[0].append('<table><tr><td>'+value+'</td></tr></table>');
+			if ($("#RLable" + key + i)[0] == components){
+				$.each("#RLable" + key + i)[0].append('<table><tr><td>'+value+'</td></tr></table>');
 			}
 		});
 	}
@@ -389,7 +390,7 @@ function populateRecipelist(data) {
 function getById(path, id){
 	return Promise.resolve($.ajax(
 			{
-				url : "rest/" + path + "/"+id,
+				url : "rest/" + path + "/id="+id,
 				dataType : 'json',
 				error : function(jqXHR, text, error){
 					console.log(jqXHR.status + text + error);
@@ -421,7 +422,7 @@ function create(path, form) {
 		url : "rest/" + path + "/",
 		data : JSON.stringify(formData),
 		contentType : "application/json",
-		method : "PUT",
+		method : "POST",
 		success : function(data){
 			alert(data);
 		},
