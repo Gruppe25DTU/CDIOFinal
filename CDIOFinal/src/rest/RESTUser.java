@@ -32,10 +32,10 @@ public class RESTUser {
 	@POST
 	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createDTO(@PathParam("type") String dtoType, IDTO dto) {
-
+	public Response createDTO(@PathParam("type") String dtoType, UserDTO dto) {
+		int id;
 		try {
-			BLL.createDTO(dto, dtoType);
+			id = BLL.createDTO(dto, dtoType);
 		} catch (DALException | DTOException e) {
 
 			return Response.status(Status.NOT_ACCEPTABLE).build();
@@ -44,16 +44,16 @@ public class RESTUser {
 			return Response.status(Status.UNAUTHORIZED).build();  
 		}
 
-		return Response.status(Status.CREATED).build();
+		return Response.status(Status.CREATED).entity(id).build();
 	}
 
 	@PUT
-	@Path("/{type : [a-zA-Z0-9]+}")
+	@Path("/{type : [a-zA-Z0-9]+}/cpr={old_cpr : [0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateDTO(@PathParam("type") String old_cpr, UserDTO dto) {
-
+	public Response updateDTO(@PathParam("type") String dtoType, @PathParam("old_cpr") String old_cpr, UserDTO dto) {
+		boolean updated;
 		try {
-			BLL.updateUser(dto, old_cpr);
+			updated = BLL.updateUser(dto, old_cpr);
 		} catch (DALException | DTOException e) {
 
 			return Response.status(Status.NOT_ACCEPTABLE).build();
@@ -62,8 +62,6 @@ public class RESTUser {
 			return Response.status(Status.UNAUTHORIZED).build();  
 		}
 
-		return Response.status(Status.CREATED).build();
-
+		return Response.status(Status.CREATED).entity(updated).build();
 	}
-
 }
