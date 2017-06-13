@@ -7,7 +7,7 @@ public class ProductBatchCompDataCheck {
 
   private static RuleSetInterface rules = new RuleSet();
 
-	public static void ProductBatchCompDC(ProductBatchCompDTO dto) throws RuleException{
+	public static void create(ProductBatchCompDTO dto) throws RuleException{
 		if(rules.getID().test(dto.getProductBatchID()) == false ||
 				String.valueOf(dto.getProductBatchID()) == null){
 			throw new RuleException("Invalid ProductBatchComp ID!");

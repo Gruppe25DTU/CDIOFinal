@@ -14,7 +14,7 @@ public class UserDataCheck {
 	private static EmailValidator EmailVal = new EmailValidator();
 
 
-	public static void CreateUserDC(UserDTO dto) throws RuleException{
+	public static void create(UserDTO dto) throws RuleException{
 
 		if(rules.getID().test(dto.getId()) == false){
 			throw new RuleException("Invalid ID!");

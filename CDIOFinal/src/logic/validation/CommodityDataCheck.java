@@ -7,7 +7,7 @@ public class CommodityDataCheck {
 
   private static RuleSetInterface rules = new RuleSet();
   
-	public static void CreateCommodityDC(CommodityDTO dto) throws RuleException{
+	public static void create(CommodityDTO dto) throws RuleException{
 		if(rules.getID().test(dto.getId())== false ||
 				String.valueOf(dto.getId()) == null){
 			throw new RuleException("Invalid Commodity ID");

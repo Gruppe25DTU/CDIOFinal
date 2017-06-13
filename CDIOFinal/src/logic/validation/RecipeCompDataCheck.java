@@ -7,7 +7,7 @@ public class RecipeCompDataCheck {
 
   private static RuleSetInterface rules = new RuleSet();
 
-	public static void CreateRecipeCompDC(RecipeCompDTO dto) throws RuleException{
+	public static void create(RecipeCompDTO dto) throws RuleException{
 		if(rules.getID().test(dto.getRecipeID()) == false){
 			throw new RuleException("Invalid RecipeID!");
 		}

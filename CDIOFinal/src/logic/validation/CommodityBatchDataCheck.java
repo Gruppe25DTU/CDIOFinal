@@ -7,7 +7,7 @@ public class CommodityBatchDataCheck {
   
   private static RuleSetInterface rules = new RuleSet();
 
-public static void CommodityBatchDC(CommodityBatchDTO dto) throws RuleException{
+public static void create(CommodityBatchDTO dto) throws RuleException{
 	if(rules.getID().test(dto.getId())== false ||
 			String.valueOf(dto.getId()) == null){
 		throw new RuleException("Invalid CommodityBatch ID");
