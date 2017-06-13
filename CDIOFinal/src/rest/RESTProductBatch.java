@@ -32,7 +32,7 @@ public class RESTProductBatch {
 	@POST
 	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createDTO(@PathParam("type") String dtoType, IDTO dto) {
+	public Response productbatchDTO(@PathParam("type") String dtoType, IDTO dto) {
 
 		try {
 			BLL.createDTO(dto, dtoType);

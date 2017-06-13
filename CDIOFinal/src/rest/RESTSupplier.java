@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response.Status;
 import dao.SupplierDAO;
 import dto.IDTO;
 import dto.SupplierDTO;
+import dto.UserDTO;
 import logic.BLL;
 import logic.CDIOException.DALException;
 import logic.CDIOException.DTOException;
@@ -32,10 +33,10 @@ public class RESTSupplier {
 	@POST
 	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createDTO(@PathParam("type") String dtoType, IDTO dto) {
-
+	public Response supplierDTO(@PathParam("type") String dtoType, UserDTO dto) {
+		int id;
 		try {
-			BLL.createDTO(dto, dtoType);
+			id = BLL.createDTO(dto, dtoType);
 		} catch (DALException | DTOException e) {
 
 			return Response.status(Status.NOT_ACCEPTABLE).build();
@@ -44,6 +45,6 @@ public class RESTSupplier {
 			return Response.status(Status.UNAUTHORIZED).build();  
 		}
 
-		return Response.status(Status.CREATED).build();
+		return Response.status(Status.CREATED).entity(id).build();
 	}
 }
