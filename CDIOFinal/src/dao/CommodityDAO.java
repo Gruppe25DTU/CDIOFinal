@@ -7,11 +7,9 @@ import java.util.List;
 
 import dal.Connector;
 import dto.CommodityDTO;
-import logic.CDIOException.DALException;
+import logic.CDIOException.*;
 
 public class CommodityDAO {
-
-
 
 
 	/**
@@ -36,24 +34,24 @@ public class CommodityDAO {
 
 	/**
 	 * Returns a list of all existing commodities
-	 * @return List< CommodityDTO >
+	 * @return CommodityDTO []
 	 */
 
-	public static List<CommodityDTO> getList() throws DALException{
+	public static CommodityDTO[] getList() throws DALException{
 		String cmd = "CALL getCommodityList();";
 		List<CommodityDTO> list = new ArrayList<CommodityDTO>();
 
 		try
 		{
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
-			}
 			while (rs.next()) 
 			{
 				list.add(new CommodityDTO(rs.getInt("commodity_ID"), rs.getString("commodity_Name"), rs.getInt("supplier_ID")));
 			}
-			return list;
+			if (list.isEmpty()) {
+			  throw new EmptyResultSetException();
+			}
+			return (CommodityDTO[]) list.toArray(new CommodityDTO[list.size()]);
 		}
 		catch (SQLException e) { 
 			throw new DALException(e);
@@ -79,12 +77,10 @@ public class CommodityDAO {
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
+			if(!rs.next()) {
+			  throw new EmptyResultSetException();
 			}
-			while(rs.next()) {
-				return new CommodityDTO(rs.getInt("commodity_ID"), rs.getString("commodity_Name"), rs.getInt("supplier_ID"));
-			}
+			return new CommodityDTO(rs.getInt("commodity_ID"), rs.getString("commodity_Name"), rs.getInt("supplier_ID"));
 		} catch (SQLException e) {
 			throw new DALException(e);
 		}
@@ -95,8 +91,6 @@ public class CommodityDAO {
 				e.printStackTrace();
 			}
 		}
-
-		return null;
 	}
 
 

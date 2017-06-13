@@ -28,6 +28,7 @@ public interface CDIOException {
   }
 
   
+  
   public class DALException extends Exception {
     public DALException() {super();}
     public DALException(Exception e) {super(e);}
@@ -48,11 +49,34 @@ public interface CDIOException {
     public UsernameTakenException(String e) {super(e);}
   }
   
-  public class UnauthorizedException extends Exception {
+  public class EmptyResultSetException extends DALException {
+    public EmptyResultSetException() {super();}
+    public EmptyResultSetException(Exception e) {super(e);}
+    public EmptyResultSetException(Throwable e) {super(e);}
+    public EmptyResultSetException(String e) {super(e);}
+  }
+  
+  
+  
+  public class SessionException extends Exception {
+    public SessionException() {super();}
+    public SessionException(Exception e) {super(e);}
+    public SessionException(Throwable e) {super(e);}
+    public SessionException(String e) {super(e);}
+  }
+  
+  public class UnauthorizedException extends SessionException {
     public UnauthorizedException() {super();}
     public UnauthorizedException(Exception e) {super(e);}
     public UnauthorizedException(Throwable e) {super(e);}
     public UnauthorizedException(String e) {super(e);}
+  }
+  
+  public class InvalidLoginException extends SessionException {
+    public InvalidLoginException() {super();}
+    public InvalidLoginException(Exception e) {super(e);}
+    public InvalidLoginException(Throwable e) {super(e);}
+    public InvalidLoginException(String e) {super(e);}
   }
 
 }

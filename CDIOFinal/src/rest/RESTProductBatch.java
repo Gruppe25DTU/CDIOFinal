@@ -17,33 +17,73 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import dao.ProductBatchDAO;
+import dto.CommodityDTO;
 import dto.IDTO;
+import dto.ProductBatchCompDTO;
 import dto.ProductBatchDTO;
 import logic.BLL;
 import logic.CDIOException.DALException;
 import logic.CDIOException.DTOException;
+import logic.CDIOException.SessionException;
 import logic.CDIOException.UnauthorizedException;
 import logic.validation.RuleSet;
 import logic.validation.RuleSetInterface;
 
-@Path("")
+@Path("productBatch")
 public class RESTProductBatch {
 
+  @GET
+  @Path("/list")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getListDTO() {
+    try {
+      ProductBatchDTO[] dto = BLL.getProductBatch();
+      return Response.status(Status.OK).entity(dto).build();
+    } catch (DALException e) {
+      return Response.status(Status.NOT_ACCEPTABLE).build();
+    } catch (SessionException e) {
+      return Response.status(Status.UNAUTHORIZED).build();  
+    }
+  }
+
+  @GET
+  @Path("/id={id : \\d+}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getDTO(@PathParam("id") int id) {
+    try {
+      ProductBatchDTO dto = BLL.getProductBatch(id);
+      return Response.status(Status.OK).entity(dto).build();
+    } catch (DALException e) {
+      return Response.status(Status.NOT_ACCEPTABLE).build();
+    } catch (SessionException e) {
+      return Response.status(Status.UNAUTHORIZED).build();  
+    }
+  }
+
+  @GET
+  @Path("/components/id={id : \\d+}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getDTOComponents(@PathParam("id") int id) {
+    try {
+      ProductBatchCompDTO[] dto = BLL.getProductBatchComponents(id);
+      return Response.status(Status.OK).entity(dto).build();
+    } catch (DALException e) {
+      return Response.status(Status.NOT_ACCEPTABLE).build();
+    } catch (SessionException e) {
+      return Response.status(Status.UNAUTHORIZED).build();  
+    }
+  }
+
 	@POST
-	@Path("/productbatch")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response productbatchDTO(ProductBatchDTO dto) {
-
 		try {
-			BLL.createDTO(dto, "productBatch");
+			int dtoID = BLL.createDTO(dto, "productBatch");
+			return Response.status(Status.CREATED).entity(dtoID).build();
 		} catch (DALException | DTOException e) {
-
 			return Response.status(Status.NOT_ACCEPTABLE).build();
-
 		} catch (UnauthorizedException e) {
 			return Response.status(Status.UNAUTHORIZED).build();  
 		}
-
-		return Response.status(Status.CREATED).build();
 	}
 }

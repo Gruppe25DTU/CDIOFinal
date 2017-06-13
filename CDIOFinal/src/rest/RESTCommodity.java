@@ -22,28 +22,52 @@ import dto.IDTO;
 import logic.BLL;
 import logic.CDIOException.DALException;
 import logic.CDIOException.DTOException;
+import logic.CDIOException.SessionException;
 import logic.CDIOException.UnauthorizedException;
 import logic.validation.RuleSet;
 import logic.validation.RuleSetInterface;
 
-@Path("")
+@Path("/commodity")
 public class RESTCommodity {
 
+  @GET
+  @Path("/list")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getListDTO() {
+    try {
+      CommodityDTO[] dto = BLL.getCommodity();
+      return Response.status(Status.OK).entity(dto).build();
+    } catch (DALException e) {
+      return Response.status(Status.NOT_ACCEPTABLE).build();
+    } catch (SessionException e) {
+      return Response.status(Status.UNAUTHORIZED).build();  
+    }
+  }
+
+  @GET
+  @Path("/id={id : \\d+}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getDTO(@PathParam("id") int id) {
+    try {
+      CommodityDTO dto = BLL.getCommodity(id);
+      return Response.status(Status.OK).entity(dto).build();
+    } catch (DALException e) {
+      return Response.status(Status.NOT_ACCEPTABLE).build();
+    } catch (SessionException e) {
+      return Response.status(Status.UNAUTHORIZED).build();  
+    }
+  }
+
 	@POST
-	@Path("/commodity")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response commodityDTO(CommodityDTO dto) {
-
 		try {
-			BLL.createDTO(dto, "commodity");
+			int id = BLL.createDTO(dto, "commodity");
+			return Response.status(Status.CREATED).entity(id).build();
 		} catch (DALException | DTOException e) {
-
 			return Response.status(Status.NOT_ACCEPTABLE).build();
-
 		} catch (UnauthorizedException e) {
 			return Response.status(Status.UNAUTHORIZED).build();  
 		}
-
-		return Response.status(Status.CREATED).build();
 	}
 }

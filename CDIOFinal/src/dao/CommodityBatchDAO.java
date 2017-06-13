@@ -7,7 +7,7 @@ import java.util.List;
 
 import dal.Connector;
 import dto.CommodityBatchDTO;
-import logic.CDIOException.DALException;
+import logic.CDIOException.*;
 
 public class CommodityBatchDAO {
 
@@ -79,7 +79,9 @@ public class CommodityBatchDAO {
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			rs.next();
+			if(!rs.next()) {
+			  throw new EmptyResultSetException();
+			}
 			int ID = rs.getInt("commodityBatch_ID");
 			int commodity_ID = rs.getInt("commodity_ID");
 			double quantity = rs.getDouble("quantity");
@@ -99,11 +101,11 @@ public class CommodityBatchDAO {
 
 	/**
 	 * Returns every commodity batch in the database.
-	 * @return {@code List<CommodityBatchDTO>}
+	 * @return {@code CommodityBatchDTO[]}
 	 * @throws DALException
 	 */
 
-	public static List<CommodityBatchDTO> getList() throws DALException{
+	public static CommodityBatchDTO[] getList() throws DALException{
 		String cmd = "call getCommodityBatchList();";
 		List<CommodityBatchDTO> list = new ArrayList<CommodityBatchDTO>();
 		try {
@@ -115,7 +117,10 @@ public class CommodityBatchDAO {
 				list.add(new CommodityBatchDTO(ID,commodity_ID,quantity));
 
 			}
-			return list;
+			if (list.isEmpty()) {
+			  throw new EmptyResultSetException();
+			}
+			return (CommodityBatchDTO[]) list.toArray(new CommodityBatchDTO[list.size()]);
 		} catch (SQLException e) {			
 			throw new DALException(e);
 		}

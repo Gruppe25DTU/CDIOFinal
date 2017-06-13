@@ -44,40 +44,5 @@ public class REST {
 
 		return Response.status(Status.OK).build();
 	}
-
-	@GET
-	@Path("/{type : [a-zA-Z0-9]+}/list")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getListDTO(@PathParam("type") String dtoType) {
-		try {
-			BLL.getList(dtoType);
-		} catch (DALException | DTOException e) {
-
-			return Response.status(Status.NOT_ACCEPTABLE).build();
-		}
-		try {
-			return Response.status(Status.OK).entity(BLL.getList(dtoType)).build();
-		} catch (DTOException | DALException e) {
-			return Response.status(Status.NOT_ACCEPTABLE).build();
-		}
-	}
-
-	@GET
-	@Path("/{type : [a-zA-Z0-9]+}/id={id : \\d+}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getDTO(@PathParam("type") String dtoType, @PathParam("id") int id) {
-
-		try {
-			BLL.get(dtoType, id);
-		} catch (DALException | DTOException e) {
-
-			return Response.status(Status.NOT_ACCEPTABLE).build();
-		}
-		try {
-			return Response.status(Status.OK).entity(BLL.get(dtoType, id)).build();
-		} catch (DTOException | DALException e) {
-			return Response.status(Status.NOT_ACCEPTABLE).build();
-		}
-	}
 }
 

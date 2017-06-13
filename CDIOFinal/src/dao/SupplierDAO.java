@@ -68,7 +68,7 @@ public class SupplierDAO {
 	 * Returns every existing supplier in the database
 	 */
 	
-	public static List<SupplierDTO> getList() throws DALException{
+	public static SupplierDTO[] getList() throws DALException{
 		String cmd = "CALL getSupplierList();";
 		List<SupplierDTO> list = new ArrayList<SupplierDTO>();
 		try {
@@ -79,10 +79,9 @@ public class SupplierDAO {
 				list.add(new SupplierDTO(supplier_ID,supplier_Name));			
 			}
 
-			return list;
+			return (SupplierDTO[]) list.toArray(new SupplierDTO[list.size()]);
 		} catch (SQLException e) {			
 			throw new DALException(e);
-
 		}
 		finally {
 			try {

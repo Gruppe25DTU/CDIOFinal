@@ -4,6 +4,8 @@ package ase;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import dao.CommodityBatchDAO;
 import dao.CommodityDAO;
@@ -132,9 +134,10 @@ public class SessionController {
 
 					if(user != null)
 					{
-						if((user.getRoles().contains("LaboratoryTechnician") 
-								|| user.getRoles().contains("Pharmacist")
-								|| user.getRoles().contains("Foreman")) && user.getStatus()==1)
+					  ArrayList<String> roles = (ArrayList<String>) Arrays.asList(user.getRoles());
+						if((roles.contains("LaboratoryTechnician") 
+								|| roles.contains("Pharmacist")
+								|| roles.contains("Foreman")) && user.getStatus()==1)
 						{
 							//Progress to next phase --Confirm the user name--
 							String name = user.getFirstName().charAt(0)+" "+user.getLastName();

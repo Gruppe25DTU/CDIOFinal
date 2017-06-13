@@ -9,11 +9,11 @@ public class ProductBatchDTO implements IDTO {
 	private int recipeID =-1;
 	private Timestamp startDate;
 	private Timestamp endDate;
-	private List<ProductBatchCompDTO> components;
+	private ProductBatchCompDTO[] components;
 	
 	
 	
-	public ProductBatchDTO(int productBatchID, int status, int recipeID, Timestamp startDate, Timestamp endDate, List<ProductBatchCompDTO> components) {
+	public ProductBatchDTO(int productBatchID, int status, int recipeID, Timestamp startDate, Timestamp endDate, ProductBatchCompDTO[] components) {
 		this.productBatchID = productBatchID;
 		this.status = status;
 		this.recipeID = recipeID; 
@@ -89,11 +89,11 @@ public ProductBatchDTO(ProductBatchDTO productBatch){
 		this.endDate = endDate;
 	}
 
-	public List<ProductBatchCompDTO> getComponents() {
+	public ProductBatchCompDTO[] getComponents() {
 		return components;
 	}
 
-	public void setComponents(List<ProductBatchCompDTO> components) {
+	public void setComponents(ProductBatchCompDTO[] components) {
 		this.components = components;
 	}
 	

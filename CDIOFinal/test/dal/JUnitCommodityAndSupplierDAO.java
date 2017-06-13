@@ -73,19 +73,19 @@ public class JUnitCommodityAndSupplierDAO {
 		commodity.create(commodityDTO2);
 		commoditybatch.create(commodityBatchDTO2);
 		
-		List<CommodityDTO> expectedCommodityList = commodity.getList();
-		List<SupplierDTO> expectedSupplierList = supplier.getList();
-		List<CommodityBatchDTO> expectedCommodityBatchList = commoditybatch.getList();
+		CommodityDTO[] expectedCommodityList = commodity.getList();
+		SupplierDTO[] expectedSupplierList = supplier.getList();
+		CommodityBatchDTO[] expectedCommodityBatchList = commoditybatch.getList();
 		
-		for(int i = 0; i<expectedCommodityList.size();i++) {
-			compareCommodityDTO(actualCommodityList.get(i), expectedCommodityList.get(i));
+		for(int i = 0; i<expectedCommodityList.length;i++) {
+			compareCommodityDTO(actualCommodityList.get(i), expectedCommodityList[i]);
 		}
-		for(int i = 0;i<expectedSupplierList.size();i++) {
-			compareSupplierDTO(actualSupplierList.get(i),expectedSupplierList.get(i));
+		for(int i = 0;i<expectedSupplierList.length;i++) {
+			compareSupplierDTO(actualSupplierList.get(i),expectedSupplierList[i]);
 
 		}
-		for(int i = 0;i<expectedCommodityBatchList.size();i++) {
-			compareCommodityBatchDTO(actualCommodityBatchList.get(i),expectedCommodityBatchList.get(i));
+		for(int i = 0;i<expectedCommodityBatchList.length;i++) {
+			compareCommodityBatchDTO(actualCommodityBatchList.get(i),expectedCommodityBatchList[i]);
 
 		}
 		

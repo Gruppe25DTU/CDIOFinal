@@ -11,13 +11,13 @@ public class UserDTO implements IDTO  {
 	private String userName = "";
 	private String ini = "";
 	private String cpr = "";
-	private ArrayList<String> roles;
+	private String[] roles;
 	
 
 	private String email = "";
 	private int status = -1;
 
-	public UserDTO(int userID, String userName, String firstName, String lastName, String ini, String cpr, String email, List<String> roles, int status) {
+	public UserDTO(int userID, String userName, String firstName, String lastName, String ini, String cpr, String email, String[] roles, int status) {
 		this.userID = userID;
 		this.userName = userName;
 		this.firstName = firstName;
@@ -26,9 +26,9 @@ public class UserDTO implements IDTO  {
 		this.cpr = cpr;
 		this.email = email;
 		if(roles == null)
-			this.roles = new ArrayList<String>();
+			this.roles = new String[0];
 		else
-			this.roles = new ArrayList<>(roles);
+			this.roles = roles;
 		this.status = status;
 	}
 
@@ -97,11 +97,11 @@ public class UserDTO implements IDTO  {
 	}
 
 
-	public ArrayList<String> getRoles() {
+	public String[] getRoles() {
 		return roles;
 	}
 
-	public void setRoles(ArrayList<String> roles) {
+	public void setRoles(String[] roles) {
 		this.roles = roles;
 	}
 
