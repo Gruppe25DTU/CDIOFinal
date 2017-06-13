@@ -10,8 +10,8 @@ public class Constant {
 	password				= "cdio", 					// 	password til at logge på databasen med.
 	testserver				= "localhost",			//	Addresse på testdatabase
 	testdatabase			= "testcdiofinal",		//	Navnet på test databasen.
-	testusername 			= "root",				//  Username brugt i testdatabasen
-	testpassword			= "";					//	Password brugt i testdatabasen	
+	testusername 			= "cdio",				//  Username brugt i testdatabasen
+	testpassword			= "cdio";					//	Password brugt i testdatabasen	
 
 
 
