@@ -14,7 +14,6 @@ public class Constant {
 	//	testpassword			= "cdio";					//	Password brugt i testdatabasen	
 
 
-
 	testserver				= "88.99.32.10",			//	Addresse på testdatabase
 	testdatabase			= "testcdiofinal",		//	Navnet på test databasen.
 	testusername 			= "cdio",				//  Username brugt i testdatabasen
