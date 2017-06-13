@@ -44,7 +44,7 @@ public class RESTUser {
 			return Response.status(Status.UNAUTHORIZED).build();  
 		}
 
-		return Response.status(Status.CREATED).entity(id).build();
+		return Response.status(Status.CREATED).entity("Id =" + id).build();
 	}
 
 	@PUT
