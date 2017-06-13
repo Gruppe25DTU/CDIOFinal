@@ -17,10 +17,10 @@ public class UserDAO {
 	 * @throws DALException 
 	 */
   
-  public static UserDTO get(Integer id) throws DALException {
+  public UserDTO get(int id) throws DALException {
     return getUser(id);
   }
-	public static UserDTO getUser(int ID) throws DALException{
+	public UserDTO getUser(int ID) throws DALException{
 		String cmd = "CALL getUser('%d');";
 		cmd = String.format(cmd, ID);
 		UserDTO dto;
@@ -298,6 +298,8 @@ public class UserDAO {
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if(rs == null)
+				return list;
 			while (rs.next()) 
 			{
 				String cpr = rs.getString("cpr");
@@ -340,7 +342,7 @@ public class UserDAO {
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			if(rs == null) {
-				return null;
+				return list;
 			}
 			while (rs.next()) 
 			{
@@ -378,17 +380,17 @@ public class UserDAO {
 	 * @throws DALException 
 	 */
 	
-	public static List<UserDTO> getList() throws DALException {
+	public List<UserDTO> getList() throws DALException {
 	  return getUserList();
 	}
 
-	public static List<UserDTO> getUserList() throws DALException{
+	public List<UserDTO> getUserList() throws DALException{
 		String cmd = "CALL getUserList();";
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			if(rs == null) {
-				return null;
+				return list;
 			}
 			while (rs.next()) 
 			{
