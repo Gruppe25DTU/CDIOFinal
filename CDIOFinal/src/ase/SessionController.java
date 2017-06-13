@@ -124,7 +124,7 @@ public class SessionController {
 					UserDAO uDAO = new UserDAO();
 					try 
 					{
-						user = uDAO.getUser(labId);
+						user = uDAO.get(labId);
 					} 
 					catch (DALException e1) {
 						throw new SQLException("Problem occured trying to retrieve User");

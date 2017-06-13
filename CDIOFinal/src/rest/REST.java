@@ -42,8 +42,8 @@ public class REST {
    return Response.status(Status.CREATED).entity(id).build();
   }
   
-  @POST
-  @Path("/{type : [a-zA-Z0-9]+}/cpr/{old_cpr : [0-9]+}")
+  @PUT
+  @Path("/{type : [a-zA-Z0-9]+}/cpr={old_cpr : [0-9]+}")
   @Consumes(MediaType.APPLICATION_JSON)
   public Response updateDTO(@PathParam("type") String dtoType, @PathParam("old_cpr") String old_cpr, UserDTO dto) {
    boolean updated;

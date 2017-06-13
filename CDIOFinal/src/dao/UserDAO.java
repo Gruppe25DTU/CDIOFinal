@@ -17,7 +17,7 @@ public class UserDAO {
 	 * @throws DALException 
 	 */
 
-	public static UserDTO getUser(Integer ID) throws DALException{
+	public static UserDTO get(Integer ID) throws DALException{
 		String cmd = "CALL getUser('%d');";
 		cmd = String.format(cmd, ID);
 		UserDTO dto = null;
