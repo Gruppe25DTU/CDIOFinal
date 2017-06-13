@@ -10,21 +10,19 @@ import org.junit.Test;
 import dao.CommodityBatchDAO;
 import dao.CommodityDAO;
 import dao.SupplierDAO;
-import daoInterface.CommodityBatchInterfaceDAO;
-import daoInterface.CommodityInterfaceDAO;
-import daoInterface.SupplierInterfaceDAO;
 import dto.CommodityBatchDTO;
 import dto.CommodityDTO;
 import dto.SupplierDTO;
+import logic.CDIOException.DALException;
 
 public class JUnitCommodityAndSupplierDAO {
 
 	@Test
-	public void testCreate() {
+	public void testCreate() throws DALException{
 		Connector.changeTestMode(true);
-		CommodityInterfaceDAO commodity = new CommodityDAO();
-		SupplierInterfaceDAO supplier = new SupplierDAO();
-		CommodityBatchInterfaceDAO commoditybatch = new CommodityBatchDAO();
+		CommodityDAO commodity = new CommodityDAO();
+		SupplierDAO supplier = new SupplierDAO();
+		CommodityBatchDAO commoditybatch = new CommodityBatchDAO();
 		
 		CommodityDTO commodityDTO = new CommodityDTO(1, "navn", 1);
 		SupplierDTO supplierDTO = new SupplierDTO(1,"supplier");	
@@ -46,12 +44,12 @@ public class JUnitCommodityAndSupplierDAO {
 		
 	
 	@Test
-	public void testGetCommodityList() {
+	public void testGetCommodityList() throws DALException{
 		Connector.changeTestMode(true);
-		CommodityInterfaceDAO commodity = new CommodityDAO();
-		SupplierInterfaceDAO supplier = new SupplierDAO();
-		CommodityBatchInterfaceDAO commoditybatch = new CommodityBatchDAO();
-
+		CommodityDAO commodity = new CommodityDAO();
+		SupplierDAO supplier = new SupplierDAO();
+		CommodityBatchDAO commoditybatch = new CommodityBatchDAO();
+	
 		CommodityDTO commodityDTO1 = new CommodityDTO(1, "navn", 1);
 		SupplierDTO supplierDTO1 = new SupplierDTO(1,"supplier");
 		CommodityDTO commodityDTO2 = new CommodityDTO(2, "navn2", 2);
@@ -94,20 +92,7 @@ public class JUnitCommodityAndSupplierDAO {
 	}
 
 	
-	@Test
-	public void findFreeCommodityId() {
-		Connector.changeTestMode(true);
-		CommodityInterfaceDAO commodity = new CommodityDAO();
-		SupplierInterfaceDAO supplier = new SupplierDAO();
-		CommodityBatchInterfaceDAO commoditybatch = new CommodityBatchDAO();
-
-		int freeCommodityID = commodity.findFreeCommodityID();
-		int freeSupplierID = supplier.findFreeSupplierID();
-		int freeCommodityBatchID = commoditybatch.findFreeCommodityBatchID();
-		assertEquals(freeCommodityID,3);
-		assertEquals(freeSupplierID,3);
-		assertEquals(freeCommodityBatchID,3);
-	}
+	
 	
 	private static void compareSupplierDTO(SupplierDTO dto1, SupplierDTO dto2) {
 		assertEquals(dto1.getId(),dto2.getId()); 

@@ -221,14 +221,10 @@ opacity: 0.8;
 #CPR
 {
 	font-family: Candara;
-	width : 90px;
+	width : 160px;
 }
 
-#CPR2
-{
-	font-family: Candara;
-	width : 75px;
-}
+
 #CPRTOTAL
 {
 	min-width:170px;

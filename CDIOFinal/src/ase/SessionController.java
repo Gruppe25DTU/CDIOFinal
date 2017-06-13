@@ -122,9 +122,11 @@ public class SessionController {
 					conn.outputMsg("P111 \"...\"");
 					int labId = Integer.parseInt(message.getMsg());
 					UserDAO uDAO = new UserDAO();
-					try {
+					try 
+					{
 						user = uDAO.getUser(labId);
-					} catch (DALException e1) {
+					} 
+					catch (DALException e1) {
 						throw new SQLException("Problem occured trying to retrieve User");
 					}
 

@@ -30,10 +30,9 @@
 					User Information</h2>
 			</section>
 			<section class="optionline">
-			 <input type="button" name="list" id="listbut" value="List all Users" style="left: 50%;"> <input type="button" name="new" class="create"
-						id="new" value="Add New User" style="left: 50%;"> <input
-						type="button" name="edit" id="edit" class="edit" value="Edit User"
-						style="left: 50%;">
+			 <input type="button" class="Ulist" name="list" id="listbut" value="List all Users"> <input type="button" name="new" class="create"
+						id="new" value="Add New User"> <input
+						type="button" name="edit" id="edit" class="edit" value="Edit User">
 				</section>
 			<div id="inputfield" style="display: none;">
 				<div class="content">
@@ -43,26 +42,24 @@
 					</div>
 					<div class="informationbox">
 						Username:<br> <input type="text" oninput="checkUsername()"
-							name="userName" id="userName" class="editable protected"
+							name="userName" id="userName" maxlength="20" class="editable protected"
 							onkeyup="checkState.call(this)" disabled> CPR:<br>
 						<div id="CPRTOTAL">
-							<input type="text" id="CPR" name="cpr" maxlength="6"
-								onkeyup="checkState.call(this)" class="protected" disabled>-<input
-								type="text" id="CPR2" maxlength="4"
-								onkeyup="checkState.call(this)" disabled class="protected">
+							<input type="text" id="CPR" name="cpr" maxlength="10"
+								onkeyup="checkState.call(this)" class="protected" disabled>
 						</div>
 						Email:<br> <input type="email" name="email" id="EmailField"
 							class="editable protected" onkeyup="checkState.call(this)"
 							disabled>
 					</div>
 					<div class="informationbox">
-						First Name:<br> <input type="text" name="firstName"
+						First Name:<br> <input type="text" name="firstName" maxlength="20"
 							id="FirstnField" class="editable protected"
 							onkeyup="checkState.call(this)" disabled><br>
-						Surname:<br> <input type="text" name="lastName"
+						Surname:<br> <input type="text" name="lastName" maxlength="20"
 							id="SurnameField" class="editable protected"
 							onkeyup="checkState.call(this)" disabled><br>
-						Initials:<br> <input type="text" id="initialsField"
+						Initials:<br> <input type="text" id="initialsField" maxlength="4"
 							name="ini" maxlength="4" class="protected"
 							onkeyup="checkState.call(this)" disabled><br>
 					</div>
