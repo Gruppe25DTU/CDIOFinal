@@ -11,21 +11,19 @@ public class UserDTO implements IDTO  {
 	private String userName = "";
 	private String ini = "";
 	private String cpr = "";
-	private String password = "";
 	private ArrayList<String> roles;
 	
 
 	private String email = "";
 	private int status = -1;
 
-	public UserDTO(int userID, String userName, String firstName, String lastName, String ini, String cpr, String password, String email, List<String> roles, int status) {
+	public UserDTO(int userID, String userName, String firstName, String lastName, String ini, String cpr, String email, List<String> roles, int status) {
 		this.userID = userID;
 		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.ini = ini;
 		this.cpr = cpr;
-		this.password = password;
 		this.email = email;
 		if(roles == null)
 			this.roles = new ArrayList<String>();
@@ -42,7 +40,6 @@ public class UserDTO implements IDTO  {
 		this.lastName = user.getLastName();
 		this.ini = user.getIni();
 		this.cpr = user.getCpr();
-		this.password = user.getPassword();
 		this.email = user.getEmail();
 		this.roles = user.getRoles();
 		this.status = user.getStatus();
@@ -99,13 +96,6 @@ public class UserDTO implements IDTO  {
 		this.cpr = cpr;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
 	public ArrayList<String> getRoles() {
 		return roles;
@@ -134,7 +124,7 @@ public class UserDTO implements IDTO  {
 	@Override
 	public String toString() {
 		return "UserDTO [firstName=" + firstName + ", lastName=" + lastName + ", userID=" + userID + ", userName="
-				+ userName + ", ini=" + ini + ", cpr=" + cpr + ", password=" + password + ", roles=" + roles
+				+ userName + ", ini=" + ini + ", cpr=" + cpr + ", roles=" + roles
 				+ ", email=" + email + ", status=" + status + "]";
 	}
 

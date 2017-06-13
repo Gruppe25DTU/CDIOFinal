@@ -17,7 +17,7 @@ public class UserDAO {
 	 * @throws DALException 
 	 */
 
-	public static UserDTO getUser(Integer ID) throws DALException{
+	public static UserDTO get(Integer ID) throws DALException{
 		String cmd = "CALL getUser('%d');";
 		cmd = String.format(cmd, ID);
 		UserDTO dto;
@@ -30,7 +30,6 @@ public class UserDAO {
 				String cpr = rs.getString("cpr");
 				int opr_ID = rs.getInt("user_ID");
 				String username = rs.getString("username");
-				String password = rs.getString("password");
 				int active = rs.getInt("active");
 				String email = rs.getString("email");
 				String firstname = rs.getString("user_firstname");
@@ -38,7 +37,7 @@ public class UserDAO {
 				String ini = rs.getString("ini");
 				rs.close();
 				List<String> roles = getRoles(opr_ID);
-				dto = new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,password,email,roles,active);
+				dto = new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,email,roles,active);
 				return dto;
 			}
 			return null;
@@ -110,7 +109,6 @@ public class UserDAO {
 				String cpr = rs.getString("cpr");
 				int opr_ID = rs.getInt("user_ID");
 				String username = rs.getString("username");
-				String password = rs.getString("password");
 				int active = rs.getInt("active");
 				String email = rs.getString("email");
 				String firstname = rs.getString("user_firstname");
@@ -118,7 +116,7 @@ public class UserDAO {
 				String ini = rs.getString("ini");
 
 				List<String> roles = getRoles(opr_ID);
-				list.add(new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,password,email,roles,active));
+				list.add(new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,email,roles,active));
 
 			}
 			return list;
@@ -179,12 +177,12 @@ public class UserDAO {
 	 * 
 	 */
 	public int create(UserDTO dto) throws DALException{
-		String addUser = "CALL addUser('%s','%s','%s','%s');";
+		String addUser = "CALL addUser('%s','%s','%s');";
 		String addUserInfo = "CALL addUserInfo('%s','%s','%s','%s');";
 		String addUserRoles = "CALL addUserRole('%s','%d');";
 		List<String> roles = dto.getRoles();
 
-		addUser = String.format(addUser,dto.getCpr(),dto.getPassword(),dto.getUserName(),dto.getEmail());
+		addUser = String.format(addUser,dto.getCpr(),dto.getUserName(),dto.getEmail());
 		addUserInfo = String.format(addUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr());
 
 
@@ -224,11 +222,11 @@ public class UserDAO {
 	 */
 
 	public static boolean update(UserDTO dto,String old_cpr) throws DALException{
-		String updateUser = "CALL updateUser('%d','%s','%s','%d','%s');";
+		String updateUser = "CALL updateUser('%d','%s','%d','%s');";
 		String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
 		String deleteExistingRoles = "CALL deleteUserRoles('%d');";
 		String addUserRoles = "CALL addUserRole('%s','%d');";
-		updateUser = String.format(updateUser, dto.getId(),dto.getUserName(),dto.getPassword(),dto.getStatus(),dto.getEmail());
+		updateUser = String.format(updateUser, dto.getId(),dto.getUserName(),dto.getStatus(),dto.getEmail());
 		updateUserInfo = String.format(updateUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr(),old_cpr);
 		deleteExistingRoles = String.format(deleteExistingRoles, dto.getId());
 
@@ -301,7 +299,6 @@ public class UserDAO {
 				String cpr = rs.getString("cpr");
 				int opr_ID = rs.getInt("user_ID");
 				String username = rs.getString("username");
-				String password = rs.getString("password");
 				int active = rs.getInt("active");
 				String email = rs.getString("email");
 				String firstname = rs.getString("user_firstname");
@@ -309,7 +306,7 @@ public class UserDAO {
 				String ini = rs.getString("ini");
 
 				List<String> roles = getRoles(opr_ID);
-				list.add(new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,password,email,roles,active));
+				list.add(new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,email,roles,active));
 
 			}
 			return list;
@@ -345,7 +342,6 @@ public class UserDAO {
 				String cpr = rs.getString("cpr");
 				int opr_ID = rs.getInt("user_ID");
 				String username = rs.getString("username");
-				String password = rs.getString("password");
 				int active = rs.getInt("active");
 				String email = rs.getString("email");
 				String firstname = rs.getString("user_firstname");
@@ -353,7 +349,7 @@ public class UserDAO {
 				String ini = rs.getString("ini");
 
 				List<String> roles = getRoles(opr_ID);
-				list.add(new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,password,email,roles,active));
+				list.add(new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,email,roles,active));
 
 			}
 			return list;
@@ -389,7 +385,6 @@ public class UserDAO {
 				String cpr = rs.getString("cpr");
 				int opr_ID = rs.getInt("user_ID");
 				String username = rs.getString("username");
-				String password = rs.getString("password");
 				int active = rs.getInt("active");
 				String email = rs.getString("email");
 				String firstname = rs.getString("user_firstname");
@@ -397,7 +392,7 @@ public class UserDAO {
 				String ini = rs.getString("ini");
 
 				List<String> roles = getRoles(opr_ID);
-				list.add(new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,password,email,roles,active));
+				list.add(new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,email,roles,active));
 
 			}
 			return list;
@@ -425,7 +420,6 @@ public class UserDAO {
 				String cpr = rs.getString("cpr");
 				int opr_ID = rs.getInt("user_ID");
 				String username = rs.getString("username");
-				String password = rs.getString("password");
 				int active = rs.getInt("active");
 				String email = rs.getString("email");
 				String firstname = rs.getString("user_firstname");
@@ -433,7 +427,7 @@ public class UserDAO {
 				String ini = rs.getString("ini");
 				rs.close();
 				List<String> roles = getRoles(opr_ID);
-				return new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,password,email,roles,active);
+				return new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,email,roles,active);
 			}
 		} catch (SQLException e) {
 			throw new DALException(e);
