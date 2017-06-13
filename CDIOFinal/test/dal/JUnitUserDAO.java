@@ -12,15 +12,16 @@ import org.junit.runners.MethodSorters;
 import dao.UserDAO;
 import daoInterface.UserInterfaceDAO;
 import dto.UserDTO;
+import logic.CDIOException.DALException;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class JUnitUserDAO {
 
 	
 	@Test
-	public void t2CreateUserAndGetUser() {
+	public void t2CreateUserAndGetUser() throws DALException{
 		Connector.changeTestMode(true);
-		UserInterfaceDAO userDAO = new UserDAO();
+		UserDAO userDAO = new UserDAO();
 		List<String> roles = new ArrayList<String>();
 		roles.add("Administrator");
 		UserDTO actualUser = new UserDTO(1,"Username1","firstname1","lastname1","ini1","0000000001","password1","email1",roles,1);
@@ -33,12 +34,12 @@ public class JUnitUserDAO {
 
 	
 	@Test
-	public void t3UpdateUser() {
+	public void t3UpdateUser() throws DALException{
 		List<String> roles = new ArrayList<String>();
 		roles.add("Foreman");
 		UserDTO actualUser = new UserDTO(1,"Username2","firstname2","lastname2","ini2","1111111111","password2","email2",roles,1);
 		Connector.changeTestMode(true);
-		UserInterfaceDAO userDAO = new UserDAO();
+		UserDAO userDAO = new UserDAO();
 		userDAO.update(actualUser,"0000000001");
 		UserDTO expectedUser = userDAO.getUser(1);
 
@@ -48,8 +49,8 @@ public class JUnitUserDAO {
 
 
 	@Test
-	public void t4setStatus() {
-		UserInterfaceDAO userDAO = new UserDAO();
+	public void t4setStatus() throws DALException{
+		UserDAO userDAO = new UserDAO();
 		List<String> roles = new ArrayList<String>();
 		roles.add("Foreman");
 		UserDTO actualUser = new UserDTO(1,"Username2","firstname2","lastname2","ini2","1111111111","password2","email2",roles,1);
@@ -64,21 +65,11 @@ public class JUnitUserDAO {
 		
 		assertEquals(dto2.getStatus(),1);
 	}
-	/**
-	 * After a user have been created
-	 */
-	@Test
-	public void t5FindFreeUserIDAfter() {
-		UserInterfaceDAO userDAO = new UserDAO();
-		int freeID = userDAO.findFreeUserID();
-		int expectedID = 2;
-		assertEquals(freeID,expectedID);
-		
-	}
+	
 	
 	@Test
-	public void t6GetActivatedUsersList() {
-		UserInterfaceDAO userDAO = new UserDAO();
+	public void t6GetActivatedUsersList() throws DALException {
+		UserDAO userDAO = new UserDAO();
 		
 		List<String> roles = new ArrayList<String>();
 		roles.add("Foreman");

@@ -17,7 +17,7 @@ public class UserDAO {
 	 * @throws DALException 
 	 */
 
-	public static UserDTO get(Integer ID) throws DALException{
+	public static UserDTO getUser(Integer ID) throws DALException{
 		String cmd = "CALL getUser('%d');";
 		cmd = String.format(cmd, ID);
 		UserDTO dto;
@@ -43,8 +43,7 @@ public class UserDAO {
 			}
 			return null;
 		} catch (SQLException e) {	
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
 		}	
 		finally {
 			try {
@@ -413,6 +412,42 @@ public class UserDAO {
 			}
 		}
 
+
+	}
+
+	public static UserDTO getUserFromUserName(String uName) throws DALException{
+		String cmd = "CALL getUserFromUserName('%s');";
+		cmd = String.format(cmd,uName);
+
+		try {
+			ResultSet rs = Connector.doQuery(cmd);
+			while(rs.next()) {
+				String cpr = rs.getString("cpr");
+				int opr_ID = rs.getInt("user_ID");
+				String username = rs.getString("username");
+				String password = rs.getString("password");
+				int active = rs.getInt("active");
+				String email = rs.getString("email");
+				String firstname = rs.getString("user_firstname");
+				String lastname = rs.getString("user_lastname");
+				String ini = rs.getString("ini");
+				rs.close();
+				List<String> roles = getRoles(opr_ID);
+				return new UserDTO(opr_ID,username,firstname,lastname,ini,cpr,password,email,roles,active);
+			}
+		} catch (SQLException e) {
+			throw new DALException(e);
+		}
+		finally {
+			try {
+				Connector.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+
+		return null;
 
 	}
 
