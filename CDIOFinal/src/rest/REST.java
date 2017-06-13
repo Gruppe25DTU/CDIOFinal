@@ -44,20 +44,20 @@ public class REST {
 	}
 
 	@GET
-	@Path("/{type : \\d+}")
+	@Path("/{type : [a-zA-Z0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getListDTO(@PathParam("type") String dtoType) {
-
+	  System.out.println("GET - REST");
 		try {
 			BLL.getList(dtoType);
 		} catch (DALException | DTOException e) {
 
-			return Response.status(Status.NOT_FOUND).build();
+			return Response.status(Status.NOT_ACCEPTABLE).build();
 		}
 		try {
 			return Response.status(Status.OK).entity(BLL.getList(dtoType)).build();
 		} catch (DTOException | DALException e) {
-			return Response.status(Status.NOT_FOUND).build();
+			return Response.status(Status.NOT_ACCEPTABLE).build();
 		}
 	}
 
@@ -70,12 +70,12 @@ public class REST {
 			BLL.get(dtoType, id);
 		} catch (DALException | DTOException e) {
 
-			return Response.status(Status.NOT_FOUND).build();
+			return Response.status(Status.NOT_ACCEPTABLE).build();
 		}
 		try {
 			return Response.status(Status.OK).entity(BLL.get(dtoType, id)).build();
 		} catch (DTOException | DALException e) {
-			return Response.status(Status.NOT_FOUND).build();
+			return Response.status(Status.NOT_ACCEPTABLE).build();
 		}
 	}
 }

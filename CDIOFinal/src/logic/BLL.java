@@ -155,13 +155,14 @@ public class BLL {
     throw new DALException();
   }
   
-  public static IDTO[] getList(String dtoType) throws DTOException, DALException {
+  public static Object[] getList(String dtoType) throws DTOException, DALException {
     Method getter = getListMap.get(dtoType);
     if (getter == null) {
       throw new DTOException();
     }
     try {
-      return (IDTO[]) ((List<IDTO>) getter.invoke(getter.getDeclaringClass())).toArray();
+      List<IDTO> list = (List<IDTO>) getter.invoke(getter.getDeclaringClass());
+      return list.toArray();
     } catch (IllegalAccessException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
