@@ -31,7 +31,7 @@
 				</h2>
 			</section>
 			<section class="optionline">
-				<input type="button" name="list" id="listbut"
+				<input type="button" class="CBlist" name="list" id="listbut"
 					value="List all Commodities Batches" style="min-width: 260px;">
 				<input type="button" name="new" class="create" id="new"
 					value="Add New Commodity Batch" style="min-width: 240px;">
@@ -45,9 +45,9 @@
 							class="protected auto" disabled>
 					</div>
 					<div class="informationbox">
-						Commodity:<br> <input type="text" name="commodity"
+						Commodity:<br> <input type="text" name="commodity" maxlength="20"
 							id="commodity" class="protected" disabled> Quantity:<br>
-						<input type="text" id="quantity" name="quantity"
+						<input type="text" id="quantity" name="quantity" maxlength="7"
 							class="editable protected" onkeyup="checkState.call(this)"
 							disabled>
 					</div>

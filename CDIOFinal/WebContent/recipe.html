@@ -30,7 +30,7 @@
 					</h2>
 			</section>
 			<section class="optionline">
-			<input type="button" name="list" id="listbut"
+			<input type="button"  class="Rlist" name="list" id="listbut"
 						value="List all Recipes" style="left: 50%;"> <input
 						type="button" name="new" class="create" id="new"
 						value="Add New Recipe" style="left: 50%; min-width: 280px;">
@@ -44,8 +44,8 @@
 							class="protected auto" onkeyup="checkState.call(this)" disabled>
 					</div>
 						Name:<br> <input type="text" name="name" id="name"
-							class="editable protected" onkeyup="checkState.call(this)" 
-							style="width: 90%;"							disabled>
+							class="editable protected" maxlength="20" onkeyup="checkState.call(this)" 
+							style="width: 90%;"	disabled>
 							<br>
 							
 							Added commodities:

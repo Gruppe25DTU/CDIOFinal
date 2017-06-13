@@ -30,7 +30,7 @@
 					Commodity Information </h2>
 			</section>
 			<section class="optionline">
-					<input type="button" name="list" id="listbut" value="List all Commodities"><input type="button" name="new"
+					<input type="button" class="Clist" name="list" id="listbut" value="List all Commodities" ><input type="button" name="new"
 						class="create" id="new" value="Add New Commodity"
 						> <input type="button" name="edit"
 						id="edit" class="edit" value="Edit Commodity">
@@ -43,9 +43,9 @@
 							class="protected auto" disabled>
 					</div>
 					<div class="informationbox">
-						Name:<br> <input type="text" name="name" id="name"
+						Name:<br> <input type="text" name="name" id="name" maxlength="20"
 							class="editable protected" onkeyup="checkState.call(this)"
-							disabled> Supplier:<br> <input type="text"
+							disabled> Supplier:<br> <input type="text" maxlength="20"
 							name="supplier" id="supplier" class="protected" disabled>
 					</div>
 
