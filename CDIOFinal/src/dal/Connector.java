@@ -93,7 +93,9 @@ public class Connector {
 			return rs; 
 		}
 		catch (SQLException e) 
-		{return null;}
+		{
+		  throw e;
+		}
 		
 	}
 	/**

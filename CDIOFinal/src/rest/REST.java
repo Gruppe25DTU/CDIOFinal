@@ -17,13 +17,50 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import dto.IDTO;
+import dto.UserDTO;
 import logic.BLL;
 import logic.CDIOException.*;
 import logic.validation.*;
 
 @Path("")
 public class REST {
+  @POST
+  @Path("/{type : [a-zA-Z0-9]+}")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response createDTO(@PathParam("type") String dtoType, UserDTO dto) {
+   int id;
+   try {
+   id = BLL.createDTO(dto, dtoType);
+   } catch (DALException | DTOException e) {
 
+    return Response.status(Status.NOT_ACCEPTABLE).build();
+
+   } catch (UnauthorizedException e) {
+    return Response.status(Status.UNAUTHORIZED).build();  
+   }
+
+   return Response.status(Status.CREATED).entity(id).build();
+  }
+  
+  @POST
+  @Path("/{type : [a-zA-Z0-9]+}/cpr/{old_cpr : [0-9]+}")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response updateDTO(@PathParam("type") String dtoType, @PathParam("old_cpr") String old_cpr, UserDTO dto) {
+   boolean updated;
+   try {
+   updated = BLL.updateUser(dto, old_cpr);
+   } catch (DALException | DTOException e) {
+
+    return Response.status(Status.NOT_ACCEPTABLE).build();
+
+   } catch (UnauthorizedException e) {
+    return Response.status(Status.UNAUTHORIZED).build();  
+   }
+
+   return Response.status(Status.CREATED).entity(updated).build();
+  }
+  
+  
 	@GET
 	@Path("/validate/{type : [a-zA-Z0-9]+}/{field : [a-zA-Z0-9]+}/{value : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
