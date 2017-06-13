@@ -30,15 +30,14 @@ public class BLL {
         continue;
       }
       String[] lines = line.split(" ");
-      if (lines.length != 3) {
-        System.out.println("Enter 3 strings\n");
-        continue;
-      }
       String type = lines[0];
       String field = lines[1];
-      String value = lines[2];
+      String value = "";
+      if (lines.length == 3) {
+      value = lines[2];
+      }
       if (type.equals("get")) {
-        if (!value.isEmpty())
+        if (!value.equals(""))
         {
           try { 
             int id = Integer.valueOf(value);

@@ -116,6 +116,9 @@ public class RecipeDAO {
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
+			if (rs == null) {
+			  return list;
+			}
 			while(rs.next()) {
 				list.add(new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getDouble("nom_net_weight"),rs.getDouble("tolerance")));
 			}

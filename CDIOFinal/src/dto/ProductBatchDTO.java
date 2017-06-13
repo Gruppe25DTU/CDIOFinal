@@ -3,7 +3,7 @@ package dto;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class ProductBatchDTO {
+public class ProductBatchDTO implements IDTO {
 	private int productBatchID = -1;
 	private int status = -1;
 	private int recipeID =-1;
