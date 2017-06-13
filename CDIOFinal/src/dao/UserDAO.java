@@ -179,7 +179,6 @@ public class UserDAO {
 	public static int create(UserDTO dto, String password) throws DALException{
 		String addUser = "CALL addUser('%s','%s','%s');";
 		String addUserInfo = "CALL addUserInfo('%s','%s','%s','%s');";
-		String addUserRoles = "CALL addUserRole('%s','%d');";
 		List<String> roles = dto.getRoles();
 		addUser = String.format(addUser,dto.getCpr(),dto.getUserName(),dto.getEmail());
 		addUserInfo = String.format(addUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr());
@@ -191,6 +190,8 @@ public class UserDAO {
 			rs.next();
 			int ID = rs.getInt("ID");
 			for(int i = 0;i<roles.size();i++) {
+				String addUserRoles = "CALL addUserRole('%s','%d');";
+
 				addUserRoles = String.format(addUserRoles, roles.get(i),ID);
 				try {
 					Connector.doUpdate(addUserRoles);
