@@ -10,12 +10,11 @@ import org.junit.Test;
 
 import dao.ProductBatchDAO;
 import dao.RecipeDAO;
-import daoInterface.ProductBatchInterfaceDAO;
-import daoInterface.RecipeInterfaceDAO;
 import dto.ProductBatchCompDTO;
 import dto.ProductBatchDTO;
 import dto.RecipeCompDTO;
 import dto.RecipeDTO;
+import logic.CDIOException.DALException;
 
 public class JUnitProductBatchAndProductBatchComp {
 
@@ -37,10 +36,10 @@ public class JUnitProductBatchAndProductBatchComp {
 	 * Test Create and get
 	 */
 	@Test
-	public void testCreate() {
+	public void testCreate() throws DALException{
 		Connector.changeTestMode(true);
-		ProductBatchInterfaceDAO productbatch = new ProductBatchDAO();
-		RecipeInterfaceDAO recipe = new RecipeDAO();
+		ProductBatchDAO productbatch = new ProductBatchDAO();
+		RecipeDAO recipe = new RecipeDAO();
 		
 		List<RecipeCompDTO> recipeCompList = new ArrayList<>();
 		RecipeCompDTO recipeCompDTO1 = new RecipeCompDTO(4, 1, 0.5, 0.1);
@@ -80,10 +79,10 @@ public class JUnitProductBatchAndProductBatchComp {
 
 	
 	@Test
-	public void testgetList() {
+	public void testgetList() throws DALException{
 		Connector.changeTestMode(true);
-		ProductBatchInterfaceDAO productbatch = new ProductBatchDAO();
-		RecipeInterfaceDAO recipe = new RecipeDAO();
+		ProductBatchDAO productbatch = new ProductBatchDAO();
+		RecipeDAO recipe = new RecipeDAO();
 		
 		
 		List<RecipeCompDTO> list1 = new ArrayList<>();
