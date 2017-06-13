@@ -28,14 +28,14 @@ import logic.validation.RuleSetInterface;
 
 @Path("/commodity")
 public class RESTCommodity {
-	
+
 	@POST
 	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createDTO(@PathParam("type") String type, IDTO dto) {
+	public Response createDTO(@PathParam("type") String dtoType, IDTO dto) {
 
 		try {
-			BLL.createDTO(dto);
+			BLL.createDTO(dto, dtoType);
 		} catch (DALException | DTOException e) {
 
 			return Response.status(Status.NOT_ACCEPTABLE).build();
@@ -46,23 +46,4 @@ public class RESTCommodity {
 
 		return Response.status(Status.CREATED).build();
 	}
-
-	@PUT
-	@Path("/{type : [a-zA-Z0-9]+}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateDTO(@PathParam("type") String type, IDTO dto) {
-
-		try {
-			BLL.updateDTO(dto);
-		} catch (DALException | DTOException e) {
-
-			return Response.status(Status.NOT_ACCEPTABLE).build();
-
-		} catch (UnauthorizedException e) {
-			return Response.status(Status.UNAUTHORIZED).build();  
-		}
-
-		return Response.status(Status.CREATED).build();
-
-	}	
 }

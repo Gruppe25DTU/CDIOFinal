@@ -42,41 +42,41 @@ public class REST {
 
 		return Response.status(Status.OK).build();
 	}
-	
+
 	@GET
 	@Path("/{type : \\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getDTO(@PathParam("type") String type, IDTO dto) {
-		
+	public Response getListDTO(@PathParam("type") String dtoType) {
+
 		try {
-			BLL.createDTO(dto);
+			BLL.getList(dtoType);
 		} catch (DALException | DTOException e) {
 
 			return Response.status(Status.NOT_FOUND).build();
-
-		} catch (UnauthorizedException e) {
-			return Response.status(Status.UNAUTHORIZED).build();  
 		}
-
-		return Response.status(Status.OK).entity(BLL.).build();
+		try {
+			return Response.status(Status.OK).entity(BLL.getList(dtoType)).build();
+		} catch (DTOException | DALException e) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
 	}
-	
+
 	@GET
 	@Path("/{type : [a-zA-Z0-9]+}/{id : \\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getListDTO(@PathParam("type") String type, @PathParam("id") String id, IDTO dto) {
-		
+	public Response getDTO(@PathParam("type") String dtoType, @PathParam("id") int id) {
+
 		try {
-			BLL.getListDTO(dto);
+			BLL.get(dtoType, id);
 		} catch (DALException | DTOException e) {
 
 			return Response.status(Status.NOT_FOUND).build();
-
-		} catch (UnauthorizedException e) {
-			return Response.status(Status.UNAUTHORIZED).build();  
 		}
-
-		return Response.status(Status.OK).entity(BLL.getListDTO(dto)).build();
+		try {
+			return Response.status(Status.OK).entity(BLL.get(dtoType, id)).build();
+		} catch (DTOException | DALException e) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
 	}
 }
-	
+

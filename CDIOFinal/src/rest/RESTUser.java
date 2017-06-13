@@ -32,10 +32,10 @@ public class RESTUser {
 	@POST
 	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createDTO(@PathParam("type") String type, IDTO dto) {
+	public Response createDTO(@PathParam("type") String dtoType, IDTO dto) {
 
 		try {
-			BLL.createDTO(dto);
+			BLL.createDTO(dto, dtoType);
 		} catch (DALException | DTOException e) {
 
 			return Response.status(Status.NOT_ACCEPTABLE).build();
@@ -50,10 +50,10 @@ public class RESTUser {
 	@PUT
 	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateDTO(@PathParam("type") String type, IDTO dto) {
+	public Response updateDTO(@PathParam("type") String old_cpr, UserDTO dto) {
 
 		try {
-			BLL.updateDTO(dto);
+			BLL.updateUser(dto, old_cpr);
 		} catch (DALException | DTOException e) {
 
 			return Response.status(Status.NOT_ACCEPTABLE).build();
