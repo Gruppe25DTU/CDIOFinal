@@ -15,6 +15,7 @@ import dto.ProductBatchCompDTO;
 import dto.ProductBatchDTO;
 import dto.RecipeCompDTO;
 import dto.UserDTO;
+import logic.CDIOException.DALException;
 
 public class SessionController {
 
@@ -38,7 +39,7 @@ public class SessionController {
 		netto = 0;
 		cBatch = null;
 		phase = PhaseType.LOGIN;
-		
+
 		try 
 		{
 			// Setting the key controls so we can see key codes when buttons on weight are pressed-
@@ -56,9 +57,9 @@ public class SessionController {
 		}
 	}
 
-	public void processInput(SocketInMessage msg) throws IOException
+	public void processInput(SocketInMessage msg)
 	{
-		System.out.println("Input: "+msg.getMsg() + " type : "+msg.getReplyType() + " at phase: "+phase);
+		
 		try
 		{
 			switch(phase)
@@ -94,7 +95,9 @@ public class SessionController {
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
+			System.err.println(e.getMessage());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
 		}
 
 	}
@@ -111,24 +114,29 @@ public class SessionController {
 				{
 					int labId = Integer.parseInt(message.getMsg());
 					UserDAO uDAO = new UserDAO();
-					user = uDAO.getUser(labId);
-					
+					try {
+						user = uDAO.getUser(labId);
+					} catch (DALException e1) {
+						throw new IOException("Problem occured trying to retrieve User");
+					}
+
 					if(user != null)
 					{
 						if((user.getRoles().contains("LaboratoryTechnician") 
-						|| user.getRoles().contains("Pharmacist")
-						|| user.getRoles().contains("Foreman")) && user.getStatus()==1)
+								|| user.getRoles().contains("Pharmacist")
+								|| user.getRoles().contains("Foreman")) && user.getStatus()==1)
 						{
 							//Progress to next phase --Confirm the user name--
-							String name = user.getFirstName()+" "+user.getLastName();
-							if(name.length() > 16)
-								name = user.getIni();
-							String output = "P111 \""+name+"? y:[-> n:Exit\"";
+							String name = user.getFirstName().charAt(0)+" "+user.getLastName();
+							if(name.length() > 25)
+								name = name.substring(0, 25);
+							name.replace("\"", ""); // removes quotation marks that might confuse the weight
+							String output = "P111 \""+name+"? [->\"";
 							phase = PhaseType.CONFIRM_NAME;
 							RM20Expecting = false;
 							conn.outputMsg(output);
-							
-							
+
+
 						}
 						else
 						{
@@ -139,12 +147,12 @@ public class SessionController {
 							} 
 							catch (InterruptedException e) 
 							{
-								
+
 							}
 							conn.outputMsg("P111 \"\"");
 							conn.outputMsg("RM20 8 \"Enter Lab ID\" \"\" \"&3\"");
 						}
-						
+
 					}
 					else
 					{
@@ -155,7 +163,7 @@ public class SessionController {
 						} 
 						catch (InterruptedException e) 
 						{
-							
+
 						}
 						conn.outputMsg("P111 \"\"");
 						conn.outputMsg("RM20 8 \"Enter Lab ID\" \"\" \"&3\"");
@@ -170,7 +178,7 @@ public class SessionController {
 					} 
 					catch (InterruptedException e) 
 					{
-						
+
 					}
 					conn.outputMsg("P111 \"\"");
 					conn.outputMsg("RM20 8 \"Enter Lab ID\" \"\" \"&3\"");
@@ -206,13 +214,13 @@ public class SessionController {
 		}
 
 	}
-	
+
 	private void confirmNamePhase(SocketInMessage message) throws IOException
 	{
 		switch(message.getReplyType())
 		{
 		case SEND :
-			
+
 			//Progress to next phase --Enter the ID of the product batch--
 			RM20Expecting = true;
 			phase = PhaseType.CHOOSE_PRODUCT;
@@ -226,7 +234,7 @@ public class SessionController {
 		}
 	}
 
-	
+
 
 	private void chooseProductPhase(SocketInMessage message) throws IOException, SQLException
 	{
@@ -239,15 +247,27 @@ public class SessionController {
 				{
 					int pb_id = Integer.parseInt(message.getMsg());
 					ProductBatchDAO pbDAO = new ProductBatchDAO();
-					prod = pbDAO.get(pb_id);
+					try {
+						prod = pbDAO.get(pb_id);
+					} catch (DALException e2) {
+						throw new IOException("Problem occured trying to retrieve Product batch");
+					}
 					if(prod != null)
 					{
 						if(prod.getStatus() < 2)
 						{
 							//Progress to the next phase -- Clear the weight--
-							currentRecipeComp = pbDAO.getNonWeighedComp(pb_id);
+							try {
+								currentRecipeComp = pbDAO.getNonWeighedComp(pb_id);
+							} catch (DALException e1) {
+								throw new IOException("Problem occured trying to retrieve Recipe component");
+							}
 							CommodityDAO cDAO = new CommodityDAO();
-							comm = cDAO.get(currentRecipeComp.getCommodityID());
+							try {
+								comm = cDAO.get(currentRecipeComp.getCommodityID());
+							} catch (DALException e) {
+								throw new IOException("Problem occured trying to retrieve Commodity");
+							}
 							phase = PhaseType.CLEAR_WEIGHT;
 							conn.outputMsg("P111 \"Clear the weight [->\"");
 						}
@@ -260,7 +280,7 @@ public class SessionController {
 							} 
 							catch (InterruptedException e) 
 							{
-								
+
 							}
 							conn.outputMsg("P111 \"\"");
 							conn.outputMsg("RM20 8 \"Enter ProductBatch ID\" \"\" \"&3\"");
@@ -275,7 +295,7 @@ public class SessionController {
 						} 
 						catch (InterruptedException e) 
 						{
-							
+
 						}
 						conn.outputMsg("P111 \"\"");
 						conn.outputMsg("RM20 8 \"Enter ProductBatch ID\" \"\" \"&3\"");
@@ -290,7 +310,7 @@ public class SessionController {
 					} 
 					catch (InterruptedException e) 
 					{
-						
+
 					}
 					conn.outputMsg("P111 \"\"");
 					conn.outputMsg("RM20 8 \"Enter ProductBatch ID\" \"\" \"&3\"");
@@ -305,7 +325,7 @@ public class SessionController {
 			}
 		}
 	}
-	
+
 	private void clearWeightPhase(SocketInMessage message) throws IOException
 	{
 		switch(message.getReplyType())
@@ -356,28 +376,12 @@ public class SessionController {
 			break;
 		case TARA_REPLY :
 			double t = Double.valueOf(message.getMsg());
-			//If the weight has changed less than 4% between the the two commands
-			//Then we accept the result
-			if(t >= tara*(1-0.10) && t<= tara*(1+0.10))
-			{
-				//Progress to the next phase --Weighing the commodity--
-				conn.outputMsg("P111 \""+comm.getName()+" [->\"");
-				phase = PhaseType.WEIGH_COMMODITY;
-
-			}
-			else
-			{
-				conn.outputMsg("P111 \"Don't disrupt the weight\"");
-				try 
-				{
-					Thread.sleep(2000);
-				} 
-				catch (InterruptedException e) 
-				{
-				}
-
-				conn.outputMsg("P111 \"Place Tare on weight [->\"");
-			}
+			//Progress to the next phase --Weighing the commodity--
+			String name = comm.getName().length() > 17 ? comm.getName().substring(0 , 17) : comm.getName();
+			String nom_netto = Double.toString(currentRecipeComp.getNomNetWeight()).replace(",", ".");
+			nom_netto = nom_netto.length() > 5 ? nom_netto.substring(0 , 5)+" kg" : nom_netto+ " kg";
+			conn.outputMsg("P111 \""+name+ " "+nom_netto+" [->\"");
+			phase = PhaseType.WEIGH_COMMODITY;
 			break;
 		case WEIGHT_REPLY :
 			tara = Double.valueOf(message.getMsg());
@@ -460,7 +464,13 @@ public class SessionController {
 				{
 					int cb_id = Integer.parseInt(message.getMsg());
 					CommodityBatchDAO cbDAO = new CommodityBatchDAO();
-					cBatch = cbDAO.get(cb_id);
+					try 
+					{
+						cBatch = cbDAO.get(cb_id);
+					} 
+					catch (DALException e1) {
+						throw new IOException("Problem occured trying to retrieve Commodity batch");
+					}
 					if(cBatch != null)
 					{
 						//Progress to the next phase -- Perform brutto control (Weight must be equal to -tare)--
@@ -480,12 +490,12 @@ public class SessionController {
 									Thread.sleep(2000);
 								} 
 								catch (InterruptedException e) {
-									
+
 								}
 								conn.outputMsg("P111 \"\"");
 								conn.outputMsg("RM20 8 \"Enter another CommBatch ID\" \"\" \"&3\"");
 							}
-							
+
 						}
 						else
 						{
@@ -496,12 +506,12 @@ public class SessionController {
 							} 
 							catch (InterruptedException e) 
 							{
-								
+
 							}
 							conn.outputMsg("P111 \"\"");
 							conn.outputMsg("RM20 8 \"Enter CommodityBatch ID\" \"\" \"&3\"");
 						}
-						
+
 					}
 					else
 					{
@@ -632,55 +642,63 @@ public class SessionController {
 
 		ProductBatchCompDTO component = 
 				new ProductBatchCompDTO(prod.getId() , 
-										cBatch.getId(), 
-										tara, netto , user.getId());
-
-		System.out.println("Created ProductBatchComponent: "+pbDAO.addComponent(component));
-		System.out.println("Changed CommodityBatch: "+cbDAO.changeAmount(cBatch.getId(), cBatch.getQuantity()-netto));
-		
+						cBatch.getId(), 
+						tara, netto , user.getId());
 
 		try 
 		{
-			Thread.sleep(1000);
-		} 
-		catch (InterruptedException e1) {
-			
-		}
-		conn.outputMsg("DW");
-		currentRecipeComp = pbDAO.getNonWeighedComp(prod.getId());
-		if(currentRecipeComp != null)
-		{
-			comm = cDAO.get(currentRecipeComp.getCommodityID());
-			//There is more to weigh so we ask if the lab tech wishes to continue
-			if(prod.getStatus() == 0)
-			{	
-				prod.setStatus(1);
-				pbDAO.changeStatus(prod.getId(), 1);
-			}
-			phase = PhaseType.END_OF_WEIGHING;
-			conn.outputMsg("P111 \"Continue? y:[-> n:Exit\"");
-
-		}
-		else
-		{
-			//There is nothing more to weigh on this productbatch so it's finished 
-			prod.setStatus(2);
-			Timestamp ts = new Timestamp(System.currentTimeMillis());
-			prod.setEndDate(ts);
-			pbDAO.changeStatus(prod.getId(), 2);
-			pbDAO.setStopdate(prod);
-			conn.outputMsg("P111 \"ProductBatch finished!\"");
+			pbDAO.addComponent(component);
+			cbDAO.changeAmount(cBatch.getId(), cBatch.getQuantity()-netto);
 			try 
 			{
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			} 
-			catch (InterruptedException e)
-			{
+			catch (InterruptedException e1) {
+
 			}
-			conn.createNewSession();
+			conn.outputMsg("DW");
+			currentRecipeComp = pbDAO.getNonWeighedComp(prod.getId());
+			if(currentRecipeComp != null)
+			{
+				comm = cDAO.get(currentRecipeComp.getCommodityID());
+				//There is more to weigh so we ask if the lab tech wishes to continue
+				if(prod.getStatus() == 0)
+				{	
+					prod.setStatus(1);
+					pbDAO.changeStatus(prod.getId(), 1);
+				}
+				phase = PhaseType.END_OF_WEIGHING;
+				conn.outputMsg("P111 \"Continue? [->\"");
+
+			}
+			else
+			{
+				//There is nothing more to weigh on this productbatch so it's finished 
+				prod.setStatus(2);
+				Timestamp ts = new Timestamp(System.currentTimeMillis());
+				prod.setEndDate(ts);
+				pbDAO.changeStatus(prod.getId(), 2);
+				pbDAO.setStopdate(prod);
+				conn.outputMsg("P111 \"ProductBatch finished!\"");
+				try 
+				{
+					Thread.sleep(2000);
+				} 
+				catch (InterruptedException e)
+				{
+				}
+				conn.createNewSession();
+			}
+		} 
+		catch (DALException e2) 
+		{
+			throw new IOException("Problem occured when saving to database");
 		}
+
+
+
 	}
-	
+
 
 	public UserDTO getUser() {
 		return user;

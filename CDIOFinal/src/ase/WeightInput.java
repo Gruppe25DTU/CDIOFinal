@@ -51,7 +51,6 @@ public class WeightInput implements Runnable{
 	{
 		if(input!=null)
 		{
-			System.out.println(Arrays.asList(input.split(" ")));
 			try{
 				SocketInMessage sInMsg;
 				switch(input.split(" ")[0])

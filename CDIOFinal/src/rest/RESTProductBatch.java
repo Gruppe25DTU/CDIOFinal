@@ -17,66 +17,33 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import dao.ProductBatchDAO;
+import dto.IDTO;
 import dto.ProductBatchDTO;
+import logic.BLL;
+import logic.CDIOException.DALException;
+import logic.CDIOException.DTOException;
+import logic.CDIOException.UnauthorizedException;
 import logic.validation.RuleSet;
 import logic.validation.RuleSetInterface;
 
 @Path("/productbatch")
 public class RESTProductBatch {
 
-	static final ProductBatchDAO dao = new ProductBatchDAO();
-
-	@PUT
-	@Path("/ProductBatch/create}")
+	@POST
+	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createProductBatch(ProductBatchDTO dto) {
+	public Response createDTO(@PathParam("type") String dtoType, IDTO dto) {
+
 		try {
-			dao.create(dto);
-			return Response.status(Status.CREATED).build();
-		} catch (Exception e) {
-			return Response.status(Status.UNAUTHORIZED).build();
+			BLL.createDTO(dto, dtoType);
+		} catch (DALException | DTOException e) {
+
+			return Response.status(Status.NOT_ACCEPTABLE).build();
+
+		} catch (UnauthorizedException e) {
+			return Response.status(Status.UNAUTHORIZED).build();  
 		}
 
-	}
-
-	@PUT
-	@Path("/ProductBatch/print}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response printProductBatch(int id) {
-		try {
-			dao.print(id);
-
-		} catch(Exception e) {
-
-		}
-		return null;
-	}
-
-	@GET
-	@Path("/view/id={id : [0-9+]}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getProductBatch(@PathParam("id") int id) {
-		try {	
-			dao.get(id);
-			return Response.status(Status.OK).entity(dao.get(id)).build();
-
-		} catch (Exception e) {
-			return Response.status(Status.NOT_FOUND).build();
-
-		} 
-
-	}
-
-	@GET
-	@Path("/list/productbatch")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getProductBatchList() {
-		try {
-			dao.getList();
-			return Response.status(Status.OK).entity(dao.getList()).build();
-
-		} catch (Exception e) {
-			return Response.status(Status.NOT_FOUND).build();
-		}
+		return Response.status(Status.CREATED).build();
 	}
 }

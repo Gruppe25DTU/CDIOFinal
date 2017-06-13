@@ -8,9 +8,16 @@ public class ASEConnection {
 
 	private Socket socket;
 	private SessionController sesh;
+	
+
+	public void setBroadcasting(boolean broadcasting) {
+		this.broadcasting = broadcasting;
+	}
+
 	private WeightInput input;
 	private DataOutputStream output;
 	private ASEConnectionManager cM;
+	private volatile boolean broadcasting;
 	private int connNr;
 	
 	public ASEConnection(Socket socket , ASEConnectionManager cM , int connNr) throws IOException {
@@ -20,6 +27,7 @@ public class ASEConnection {
 			sesh = new SessionController(this);
 			this.cM = cM;
 			this.connNr = connNr;
+			broadcasting = false;
 			new Thread(this.input).start();
 	}
 	
@@ -35,12 +43,19 @@ public class ASEConnection {
 	
 	public void processInput(SocketInMessage msg) throws IOException
 	{
+		if(broadcasting)
+			System.out.println
+				   ("Connection#"+connNr+
+					" Input: "+msg.getMsg() + 
+					" type : "+msg.getReplyType() + 
+					" at phase: "+sesh.getPhase());
+		
 		this.sesh.processInput(msg);
 	}
 	
 	public void outputMsg(String msg) throws IOException
-	{	
-		System.out.println("Output: "+msg);
+	{	if(broadcasting)
+			System.out.println("Output: "+msg+ " at phase: "+sesh.getPhase());
 		msg = msg + "\r\n";
 		this.output.write(msg.getBytes());
 		this.output.flush();
@@ -54,6 +69,34 @@ public class ASEConnection {
 	public Socket getSocket()
 	{
 		return socket;
+	}
+	
+	public SessionController getSesh() {
+		return sesh;
+	}
+
+	public void setSesh(SessionController sesh) {
+		this.sesh = sesh;
+	}
+
+	public WeightInput getInput() {
+		return input;
+	}
+
+	public void setInput(WeightInput input) {
+		this.input = input;
+	}
+
+	public DataOutputStream getOutput() {
+		return output;
+	}
+
+	public void setOutput(DataOutputStream output) {
+		this.output = output;
+	}
+
+	public boolean isBroadcasting() {
+		return broadcasting;
 	}
 
 }

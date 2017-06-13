@@ -8,7 +8,9 @@
 <script src="script/jquery.serialize-object.js"></script>
 <script type="text/javascript" src="script/default.js"></script>
 <script type="text/javascript" src="script/productbatch.js"></script>
+<script type="text/javascript" src="script/searchfunctions.js"></script>
 <link rel="stylesheet" type="text/css" href="css/default.css">
+<link rel="stylesheet" type="text/css" href="css/productbatch.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
@@ -21,16 +23,21 @@
 <div id="details" class="details">
 	<div id="contentfield">
 		<form id="detailsForm" class="detailsForm" name="user">
-			<section class="optionlineUser">
+			<section class="optionline">
 				<h2 style="font-family: candara;">
 					<i class="icon glyphicon glyphicon-list-alt" style="font-size: 30px;"></i>
-					Product Batch Information <input type="button" name="newuser" class="create"
-						id="newuser" value="Add New Product Batch" style="left: 50%; min-width: 220px;"> <input
-						type="button" name="edit" id="edit" class="edit" value="Edit Product Batch"
-						style="left: 50%;">
-				</h2>
+					Product Batch Information
+					</h2>
 			</section>
+			<section class="optionline">
+			<input type="button" name="list" id="listbut"
+				value="List all product batches">
+					 <input type="button" name="new" class="create"
+						id="new" value="Add New Product Batch" style="min-width: 220px;"> <input
+						type="button" name="edit" id="edit" class="edit" value="Edit Product Batch">
+				</section>
 
+<div id="inputfield" style="display: none;">
 			<div class="content">
 				<div class="informationbox">
 
@@ -61,6 +68,31 @@
 					</tr>
 				</tbody>
 			</table>
+				</div>
+				<div id="list">
+				<div style="min-width: 800px; float: left;">
+					<input type="text" id="PInput" onkeyup="PtableSearch()"
+						placeholder="Search..." title="Search by any value"
+						style="float: left;"> <i
+						class="icon glyphicon glyphicon-search"
+						style="font-size: 30px; padding-top: 20px"> </i>
+				</div>
+				<table id="PTablecss">
+					<tr class="header">
+						<th style="width: 10%;">Product Batch ID:</th>
+						<th style="width: 10%;">Recipe ID:</th>
+						<th style="width: 20%;">Components (list?)</th>
+						<th style="width: 20%;">Status</th>
+						<th style="width: 20%;">Start</th>
+						<th style="width: 20%;">End</th>
+				
+					</tr>
+					<tbody id="PTable">
+
+					</tbody>
+				</table>
+			</div>
+				
 		</form>
 		</div>
 	</div>

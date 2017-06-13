@@ -6,17 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dal.Connector;
-import daoInterface.UserInterfaceDAO;
 import dto.UserDTO;
+import logic.CDIOException.DALException;
 
-public class UserDAO implements UserInterfaceDAO{
+public class UserDAO {
 
 	/**
 	 * Returns a user
-	 * @return userDTO 
+	 * @return {@code userDTO} 
+	 * @throws DALException 
 	 */
-	@Override
-	public UserDTO getUser(int ID){
+  
+  public UserDTO get(int id) throws DALException {
+    return getUser(id);
+  }
+	public UserDTO getUser(int ID) throws DALException{
 		String cmd = "CALL getUser('%d');";
 		cmd = String.format(cmd, ID);
 		UserDTO dto;
@@ -61,7 +65,7 @@ public class UserDAO implements UserInterfaceDAO{
 	 * @param ID
 	 * @return
 	 */
-	private static List<String> getRoles(int ID) {
+	private static List<String> getRoles(int ID) throws DALException{
 		List<String> roles = new ArrayList<String>();
 
 		String cmd = "CALL getUserRoles('%d');";
@@ -77,8 +81,7 @@ public class UserDAO implements UserInterfaceDAO{
 			}
 			return roles;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -95,9 +98,9 @@ public class UserDAO implements UserInterfaceDAO{
 	 * Returns a list over every user with a specific role
 	 * @param roleName
 	 * @return List < UserDTO >
+	 * @throws DALException 
 	 */
-	@Override
-	public List<UserDTO> getUserWithRole(String roleName) {
+	public List<UserDTO> getUserWithRole(String roleName) throws DALException {
 		String cmd = "CALL getUserWithRole('%s');";
 		cmd = String.format(cmd, roleName);
 		List<UserDTO> list = new ArrayList<UserDTO>();
@@ -124,8 +127,7 @@ public class UserDAO implements UserInterfaceDAO{
 			}
 			return list;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
 		}	
 		finally {
 			try {
@@ -144,8 +146,8 @@ public class UserDAO implements UserInterfaceDAO{
 	 * 
 	 * 
 	 */
-	@Override
-	public boolean changeStatus(int ID, boolean active){
+
+	public boolean changeStatus(int ID, boolean active) throws DALException{
 		String cmd = "CALL setActive('%d','%d');";
 		int status;
 		if(active) {
@@ -159,8 +161,7 @@ public class UserDAO implements UserInterfaceDAO{
 			Connector.doUpdate(cmd);
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -174,38 +175,41 @@ public class UserDAO implements UserInterfaceDAO{
 	}
 
 	/**
-	 * Creates an user
+	 * Creates an user. <br>
+	 * Database selects ID. <br>
 	 * User is pr. default active.
+	 * @return Function returns userID if successful<br>
+	 * Function returns -1 if not
+	 * 
 	 */
-	@Override
-	public boolean create(UserDTO dto){
-		String addUser = "CALL addUser('%d','%s','%s','%s','%s');";
+	public int create(UserDTO dto) throws DALException{
+		String addUser = "CALL addUser('%s','%s','%s','%s');";
 		String addUserInfo = "CALL addUserInfo('%s','%s','%s','%s');";
 		String addUserRoles = "CALL addUserRole('%s','%d');";
 		List<String> roles = dto.getRoles();
 
-		addUser = String.format(addUser, dto.getId(),dto.getCpr(),dto.getPassword(),dto.getUserName(),dto.getEmail());
+		addUser = String.format(addUser,dto.getCpr(),dto.getPassword(),dto.getUserName(),dto.getEmail());
 		addUserInfo = String.format(addUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr());
 
 
 		try {
-			int result1 = Connector.doUpdate(addUserInfo);
-			int result2 = Connector.doUpdate(addUser);
+			Connector.doUpdate(addUserInfo);
+			ResultSet rs = Connector.doQuery(addUser);
+			rs.next();
+			int ID = rs.getInt("ID");
 			for(int i = 0;i<roles.size();i++) {
-				addUserRoles = String.format(addUserRoles, roles.get(i),dto.getId());
+				addUserRoles = String.format(addUserRoles, roles.get(i),ID);
 				try {
 					Connector.doUpdate(addUserRoles);
 				} catch (SQLException e) {
-					e.printStackTrace();
+					throw new DALException(e);
+
 				}
 			}
-			if(result1 == 0 && result2 == 0) {
-				return false;
-			}
-			return true;
+
+			return ID;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -222,8 +226,8 @@ public class UserDAO implements UserInterfaceDAO{
 	 * @param dto
 	 * @return
 	 */
-	@Override
-	public boolean update(UserDTO dto,String old_cpr){
+
+	public static boolean update(UserDTO dto,String old_cpr) throws DALException{
 		String updateUser = "CALL updateUser('%d','%s','%s','%d','%s');";
 		String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
 		String deleteExistingRoles = "CALL deleteUserRoles('%d');";
@@ -242,13 +246,12 @@ public class UserDAO implements UserInterfaceDAO{
 				try {
 					Connector.doUpdate(addUserRoles);
 				} catch (SQLException e) {
-					e.printStackTrace();
+					throw new DALException();
 				}
 			}
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new DALException(e);
 		}	}
 
 	/**
@@ -258,15 +261,12 @@ public class UserDAO implements UserInterfaceDAO{
 	 * returns false if username doesn't exists <br>
 	 * returns true if ResultSet == null
 	 */
-	@Override
-	public boolean userExists(String name){
+
+	public boolean userExists(String name) throws DALException{
 		String cmd = "CALL userExists('%s');";
 		cmd = String.format(cmd, name);
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return true;
-			}
 			rs.next();
 
 			int result = rs.getInt("result");
@@ -276,8 +276,7 @@ public class UserDAO implements UserInterfaceDAO{
 			else
 				return false;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return true;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -293,15 +292,12 @@ public class UserDAO implements UserInterfaceDAO{
 	 * Returns a list of the deactivated users <br>
 	 * returns null if function failed.
 	 */
-	@Override
-	public List<UserDTO> getDeactiveUsers(){
+
+	public List<UserDTO> getDeactiveUsers() throws DALException {
 		String cmd = "CALL getDeactivatedUserList();";
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
-			}
 			while (rs.next()) 
 			{
 				String cpr = rs.getString("cpr");
@@ -320,8 +316,7 @@ public class UserDAO implements UserInterfaceDAO{
 			}
 			return list;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -336,9 +331,10 @@ public class UserDAO implements UserInterfaceDAO{
 	/**
 	 * Returns a list of activated users
 	 * @return
+	 * @throws DALException 
 	 */
-	@Override
-	public List<UserDTO> getActivatedUsers() {
+
+	public List<UserDTO> getActivatedUsers() throws DALException {
 		String cmd = "CALL getActivatedUserList();";
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
@@ -364,8 +360,7 @@ public class UserDAO implements UserInterfaceDAO{
 			}
 			return list;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -379,9 +374,15 @@ public class UserDAO implements UserInterfaceDAO{
 
 	/**
 	 * Returns every user regardless of their status
+	 * @return {@code List<UserDTO>} 
+	 * @throws DALException 
 	 */
-	@Override
-	public List<UserDTO> getUserList(){
+	
+	public List<UserDTO> getList() throws DALException {
+	  return getUserList();
+	}
+
+	public List<UserDTO> getUserList() throws DALException{
 		String cmd = "CALL getUserList();";
 		List<UserDTO> list = new ArrayList<UserDTO>();
 		try {
@@ -407,8 +408,7 @@ public class UserDAO implements UserInterfaceDAO{
 			}
 			return list;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new DALException(e);
 		}	
 		finally {
 			try {
@@ -422,38 +422,5 @@ public class UserDAO implements UserInterfaceDAO{
 	}
 
 
-	/**
-	 * Finds a free userID that is not used. <br>
-	 * It's possible to use the ID returned as a new ID.
-	 * @return returns 0 if function fails <br>
-	 * A number in the interval 1-99999999 if functions succeeds
-	 */
-	@Override
-	public int findFreeUserID() {
-		String cmd = "CALL findFreeUserID();";
-		try {
-			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return 0;
-			}
-			int result = 0;
-			while(rs.next())  {
 
-				result = Integer.parseInt((rs.getString("max")));
-			}
-			return result;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
-		}	
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-
-	}
 }

@@ -4,9 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import dal.Connector;
-import daoInterface.SessionInterfaceDAO;
+import logic.CDIOException.DALException;
 
-public class SessionDAO implements SessionInterfaceDAO{
+public class SessionDAO {
 
 	/**
 	 * confirm login. If username and password login exists in database.
@@ -14,15 +14,12 @@ public class SessionDAO implements SessionInterfaceDAO{
 	 * true if username and password exists for an user <br>
 	 * false if username and password doesn't exists for an user
 	 */
-	@Override
-	public boolean login(String name, String pwd) {
+
+	public boolean login(String name, String pwd) throws DALException{
 		String cmd = "CALL confirmLogin('%s','%s');";
 		cmd = String.format(cmd, name,pwd);
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return false;
-			}
 			rs.next();
 
 			if(rs.getInt("result") == 1) {
@@ -31,8 +28,7 @@ public class SessionDAO implements SessionInterfaceDAO{
 			else
 				return false;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new DALException(e);
 		}
 		finally {
 			try {
@@ -43,17 +39,17 @@ public class SessionDAO implements SessionInterfaceDAO{
 		}
 
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * @param ID
 	 */
-	@Override
+
 	public void logout(int ID) {
 
 	}
 
-	
+
 
 }

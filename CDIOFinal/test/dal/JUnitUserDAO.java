@@ -16,17 +16,7 @@ import dto.UserDTO;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class JUnitUserDAO {
 
-	/**
-	 * Before a user have been created
-	 */
-	@Test
-	public void t1FindFreeUserIDBefore() {
-		UserInterfaceDAO userDAO = new UserDAO();
-		int freeID = userDAO.findFreeUserID();
-		int expectedID = 1;
-		assertEquals(freeID,expectedID);
-		
-	}
+	
 	@Test
 	public void t2CreateUserAndGetUser() {
 		Connector.changeTestMode(true);
@@ -92,16 +82,16 @@ public class JUnitUserDAO {
 		
 		List<String> roles = new ArrayList<String>();
 		roles.add("Foreman");
-		UserDTO activatedUser = new UserDTO(2,"Username2","firstname2","lastname2","ini2","0000000002","password2","email2",roles,1);
-		UserDTO deactivatedUser = new UserDTO(3,"Username3","firstname3","lastname3","ini2","00000000003","password3","email3",roles,0);
-		UserDTO existingUser = new UserDTO(1,"Username2","firstname2","lastname2","ini2","1111111111","password2","email2",roles,1);
-
+		int id1 = userDAO.findFreeUserID();
+		UserDTO activatedUser = new UserDTO(2,"Username" +id1,"firstname"+id1,"lastname"+id1,"ini"+id1,"000000000"+id1,"password"+id1,"email+id1",roles,1);
+		int id2 = userDAO.findFreeUserID();
+		UserDTO deactivatedUser = new UserDTO(id2,"Username"+id2,"firstname"+id2,"lastname"+id2,"ini"+id2,"0000000000"+id2,"password"+id2,"email+id2",roles,0);
+		
 		userDAO.create(activatedUser);
 		userDAO.create(deactivatedUser);
 		userDAO.changeStatus(deactivatedUser.getId(), false);
 		
 		List<UserDTO> actual = new ArrayList<>();
-		actual.add(existingUser);
 		actual.add(activatedUser);
 		List<UserDTO> expected = userDAO.getActivatedUsers();
 		

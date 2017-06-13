@@ -90,7 +90,7 @@ public class DataCheckerInterface {
     }
   }
   
-  public static boolean checkDTO(IDTO dto) throws DALException, DTOException
+  public static boolean checkDTO(IDTO dto, String dtoType) throws DALException, DTOException
   {
     return true;
   }

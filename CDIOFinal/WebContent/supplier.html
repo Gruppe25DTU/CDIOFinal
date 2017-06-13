@@ -8,46 +8,75 @@
 <script src="script/jquery.serialize-object.js"></script>
 <script type="text/javascript" src="script/default.js"></script>
 <script type="text/javascript" src="script/supplier.js"></script>
+<script type="text/javascript" src="script/searchfunctions.js"></script>
 <link rel="stylesheet" type="text/css" href="css/default.css">
+<link rel="stylesheet" type="text/css" href="css/supplier.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
-<div class="informationboxsmall search">  
-    <form class="searchForm" id="searchForm" name="searchForm">
-        Search for supplier by ID: <input type="text" name="search" class="search" autofocus>
-        <input type="submit" value="Submit"/>
-    </form> 
+<div class="informationboxsmall search">
+	<form class="searchForm" id="searchForm" name="searchForm">
+		Search for supplier by ID: <input type="text" name="search"
+			class="search" autofocus> <input type="submit" value="Submit" />
+	</form>
 </div>
 <div id="details" class="details">
-    <form id="detailsForm" class="detailsForm" name="supplier">
-        <section class="optionlineUser">
-		<h2 style="font-family: candara;">
-		<i class="icon glyphicon glyphicon-user" style="font-size: 30px;"></i>	
-		Supplier Information 
-			<input type="button" name="newuser" class="create" id="newuser" value="Add New Supplier"
-				style="left: 50%;"> 
-				
-			<input type="button" name="edit"
-				id="edit" class="edit" value="Edit Supplier" style="left: 50%;">
-			</h2>	
+	<form id="detailsForm" class="detailsForm" name="supplier">
+		<section class="optionline">
+			<h2 style="font-family: candara;">
+				<i class="icon glyphicon glyphicon-user" style="font-size: 30px;"></i>
+				Supplier Information
+			</h2>
 		</section>
-        <br>
-        <div class="informationboxsmall">
-            ID:<br>
-                <input type="text" name="id" id="id" class="protected auto" onkeyup="checkState.call(this)" disabled>
-        </div>
-        <div class="informationbox">
-            Name:<br>
-            <input type="text" name="name" id="name" class="editable protected" onkeyup="checkState.call(this)" disabled>
-        </div>
-        <div class="informationbox">
-            <input type="button" name="update"
-							id="update" class="update" value="Update" style="display: none;">
-							<input type="button" name="create" class="create" id="create" value="Create New Supplier" style="display: none;">
-							<input type="button" name="cancel" id="cancel" class="cancel"
-							value="Cancel" style="display: none;">
-    </div>
-    </form>
+		<section class="optionline">
+			<input type="button" name="list" id="listbut"
+				value="List all Suppliers"> <input type="button"
+				name="new" class="create" id="new" value="Add New Supplier">
+			<input type="button" name="edit" id="edit" class="edit"
+				value="Edit Supplier">
+		</section>
+		<div id="inputfield" style="display: none;">
+			<div class="content">
+
+				<div class="informationboxsmall">
+					ID:<br> <input type="text" name="id" id="id"
+						class="protected auto" onkeyup="checkState.call(this)" disabled>
+				</div>
+				<div class="informationbox">
+					Name:<br> <input type="text" name="name" id="name"
+						class="editable protected" onkeyup="checkState.call(this)"
+						disabled>
+				</div>
+				<div class="informationbox">
+					<input type="button" name="update" id="update" class="update"
+						value="Update" style="display: none;"> <input
+						type="button" name="create" class="create" id="create"
+						value="Create New Supplier" style="display: none;"> <input
+						type="button" name="cancel" id="cancel" class="cancel"
+						value="Cancel" style="display: none;">
+				</div>
+				</div>
+				</div>
+				<div id="list">
+				<div style="min-width: 800px; float: left;">
+					<input type="text" id="SInput" onkeyup="StableSearch()"
+						placeholder="Search..." title="Search by any value"
+						style="float: left;"> <i
+						class="icon glyphicon glyphicon-search"
+						style="font-size: 30px; padding-top: 20px"> </i>
+				</div>
+				<table id="STablecss">
+					<tr class="header">
+						<th style="width: 40%;">Supplier ID:</th>
+						<th style="width: 40%;">Supplier Name</th>
+				
+					</tr>
+					<tbody id="STable">
+
+					</tbody>
+				</table>
+			</div>
+	</form>
 </div>
 </body>
 </html>

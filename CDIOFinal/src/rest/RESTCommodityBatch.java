@@ -14,55 +14,32 @@ import javax.ws.rs.core.Response.Status;
 
 import dao.CommodityBatchDAO;
 import dto.CommodityBatchDTO;
+import dto.IDTO;
+import logic.BLL;
+import logic.CDIOException.DALException;
+import logic.CDIOException.DTOException;
+import logic.CDIOException.UnauthorizedException;
 import logic.validation.RuleSet;
 import logic.validation.RuleSetInterface;
 
 @Path("/commoditybatch")
 public class RESTCommodityBatch {
 
-	static final CommodityBatchDAO dao = new CommodityBatchDAO();
-
 	@POST
-	@Path("/update/id={id : [0-9+]}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response changeAmount(int amount, @PathParam("id") int id) {
-		try {
-			dao.changeAmount(id, amount);
-			return Response.status(Status.ACCEPTED).build();
-		} 	
-		catch (Exception e) {
-			return Response.status(Status.NOT_FOUND).build();
-		}
-
-	}
-
-	@PUT
-	@Path("/commoditybatch/create}")
+	@Path("/{type : [a-zA-Z0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createCommodityBatch(CommodityBatchDTO dto) {
-		try {
-			dao.create(dto);
-			return Response.status(Status.CREATED).build();
+	public Response createDTO(@PathParam("type") String dtoType, IDTO dto) {
 
-		} catch (Exception e) {
-			return Response.status(Status.UNAUTHORIZED).build();
+		try {
+			BLL.createDTO(dto, dtoType);
+		} catch (DALException | DTOException e) {
+
+			return Response.status(Status.NOT_ACCEPTABLE).build();
+
+		} catch (UnauthorizedException e) {
+			return Response.status(Status.UNAUTHORIZED).build();  
 		}
 
-	}
-
-
-	@GET
-	@Path("/view/id={id : [0-9+]}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCmmodityBatch(@PathParam("id") int id) {
-		try {	
-			dao.get(id);
-			return Response.status(Status.OK).entity(dao.get(id)).build();
-
-		} catch (Exception e) {
-			return Response.status(Status.NOT_FOUND).build();
-
-		} 
-
+		return Response.status(Status.CREATED).build();
 	}
 }
