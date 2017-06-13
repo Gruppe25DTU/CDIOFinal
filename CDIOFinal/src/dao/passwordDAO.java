@@ -12,6 +12,16 @@ public class passwordDAO {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public static void createPassword(int ID,String pwd) throws DALException{
+		String cmd = "CALL createPassword('%d','%s');";
+		cmd = String.format(cmd, ID,pwd);
+		try {
+			Connector.doUpdate(cmd);
+		} catch (SQLException e) {
+			throw new DALException(e);
+		}
+		
+	}
 	
 	public static String getPassword(int ID) throws DALException{
 		String cmd = "CALL getPassword('%d');";

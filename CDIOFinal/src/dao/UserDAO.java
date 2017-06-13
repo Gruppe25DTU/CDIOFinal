@@ -176,13 +176,12 @@ public class UserDAO {
 	 * Function returns -1 if not
 	 * 
 	 */
-	public static int create(UserDTO dto) throws DALException{
+	public static int create(UserDTO dto, String password) throws DALException{
 		String addUser = "CALL addUser('%s','%s','%s');";
 
 		String addUserInfo = "CALL addUserInfo('%s','%s','%s','%s');";
 		String addUserRoles = "CALL addUserRole('%s','%d');";
 		List<String> roles = dto.getRoles();
-
 		addUser = String.format(addUser,dto.getCpr(),dto.getUserName(),dto.getEmail());
 		addUserInfo = String.format(addUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr());
 
@@ -201,7 +200,7 @@ public class UserDAO {
 
 				}
 			}
-
+			passwordDAO.createPassword(dto.getId(), password);
 			return ID;
 		} catch (SQLException e) {
 			throw new DALException(e);
