@@ -13,11 +13,12 @@ jQuery(function($){
 		location.replace(location.pathname + "?name=" + search);
 		focusOnSearch();
 		return false;
+		
 	});
 });
 
 $(document).ready(function(){
-	$("#newuser").click(function(){
+	$("#new").click(function(){
 		$("#list").hide();
 		$("#inputfield").show();
 	});
@@ -42,7 +43,7 @@ $(document).ready(function() {
 		};
 		form.find('input[id="edit"]')[0].style="display: none";
 		form.find('input[id="create"]')[0].style="display: none";
-		form.find('input[id="newuser"]')[0].style="display: none";
+		form.find('input[id="new"]')[0].style="display: none";
 		form.find('input[id="update"]')[0].style="display: initial";
 		form.find('input[id="cancel"]')[0].style="display: initial";
 	});
@@ -68,7 +69,7 @@ $(document).ready(function() {
 			fields[i].disabled = true;
 		};
 		form.find('input[id="edit"]')[0].style="display: initial";
-		form.find('input[id="newuser"]')[0].style="display: initial";
+		form.find('input[id="new"]')[0].style="display: initial";
 		form.find('input[id="create"]')[0].style="display: none";
 		form.find('input[id="update"]')[0].style="display: none";
 		form.find('input[id="cancel"]')[0].style="display: none";
@@ -81,13 +82,58 @@ $(document).ready(function() {
 			},
 			error : function(error) {alert(error)}
 		});
+		$.ajax({
+			//ugyldig sti
+			url : 'rest/test/user/list',
+			dataType : 'json',
+			success : function(data) {
+				populateSupplierlist(data);
+			},
+			error : function(error) {alert(error)}
+		});
+		$.ajax({
+			//ugyldig sti
+			url : 'rest/test/user/list',
+			dataType : 'json',
+			success : function(data) {
+				populateProductBatchlist(data);
+			},
+			error : function(error) {alert(error)}
+		});
+		$.ajax({
+			//ugyldig sti
+			url : 'rest/test/user/list',
+			dataType : 'json',
+			success : function(data) {
+				populateCommoditylist(data);
+			},
+			error : function(error) {alert(error)}
+		});
+		$.ajax({
+			//ugyldig sti
+			url : 'rest/test/user/list',
+			dataType : 'json',
+			success : function(data) {
+				populateCommodityBatchlist(data);
+			},
+			error : function(error) {alert(error)}
+		});
+		$.ajax({
+			//ugyldig sti
+			url : 'rest/test/user/list',
+			dataType : 'json',
+			success : function(data) {
+				populateRecipelist(data);
+			},
+			error : function(error) {alert(error)}
+		});
 	});
 
-	$('#newuser').click(function() {
+	$('#new').click(function() {
 		var form = $(this).closest('form[class="detailsForm"]');
 		form.find('input[id="edit"]')[0].style="display: none";
 		form.find('input[id="update"]')[0].style="display: none";
-		form.find('input[id="newuser"]')[0].style="display: none";
+		form.find('input[id="new"]')[0].style="display: none";
 		form.find('input[id="cancel"]')[0].style="display: initial";
 		form.find('input[id="create"]')[0].style="display: initial";
 		form.find('input[id="create"]')[0].tag="active";
@@ -152,7 +198,7 @@ $(document).ready(function() {
 			fields[i].disabled = true;
 		};
 		form.find('input[id="edit"]')[0].style="display: initial";
-		form.find('input[id="newuser"]')[0].style="display: initial";
+		form.find('input[id="new"]')[0].style="display: initial";
 		form.find('input[id="create"]')[0].style="display: none";
 		form.find('input[id="update"]')[0].style="display: none";
 		form.find('input[id="cancel"]')[0].style="display: none";
@@ -164,7 +210,7 @@ $(document).ready(function() {
 			form.find('input[id="create"]')[0].tag = "";
 			create(form[0].name, form);
 			form.find('input[id="edit"]')[0].style="display: initial";
-			form.find('input[id="newuser"]')[0].style="display: initial";
+			form.find('input[id="new"]')[0].style="display: initial";
 			form.find('input[id="create"]')[0].style="display: none";
 			form.find('input[id="update"]')[0].style="display: none";
 			form.find('input[id="cancel"]')[0].style="display: none";
@@ -236,6 +282,74 @@ function populateUserlist(data) {
 }
 
 
+function populateSupplierlist(data) {
+	$("#STable tr").remove();
+	for (i = 0; i < data.length; i++) {
+		var user = data[i];
+		$("#STable").append('<tr><td id="STableid' + i + '"></td><td id="STablename' + i + '"></td></tr>');
+		$.each(user, function(key, value) {
+			if ($("#STable" + key + i)[0] != null) {
+				$("#STable" + key + i)[0].append(value);
+			}
+		});
+	}
+}
+
+function populateCommoditylist(data) {
+	$("#CTable tr").remove();
+	for (i = 0; i < data.length; i++) {
+		var user = data[i];
+		$("#CTable").append('<tr><td id="CTableid' + i + '"></td><td id="CTablename' + i + '"></td><td id="CTablesupplierID' + i + '"></td></tr>');
+		$.each(user, function(key, value) {
+			if ($("#CTable" + key + i)[0] != null) {
+				$("#CTable" + key + i)[0].append(value);
+			}
+		});
+	}
+}
+
+function populateCommodityBatchlist(data) {
+	$("#CBTable tr").remove();
+	for (i = 0; i < data.length; i++) {
+		var user = data[i];
+		$("#CBTable").append('<tr><td id="CBTableid' + i + '"></td><td id="CBTablecommodityID' + i + '"></td><td id="CBTablequantity' + i + '"></td></tr>');
+		$.each(user, function(key, value) {
+			if ($("#CBTable" + key + i)[0] != null) {
+				$("#CBTable" + key + i)[0].append(value);
+			}
+		});
+	}
+}
+
+function populateProductBatchlist(data) {
+	$("#PTable tr").remove();
+	for (i = 0; i < data.length; i++) {
+		var user = data[i];
+		$("#PTable").append('<tr><td id="PTableid' + i + '"></td><td id="PTablerecipeID' + i + '"></td><td id="PTablecomponents' + i + '"></td><td id="PTablestatus' + i + '"></td><td id="PTablestartDate' + i + '"></td><td id="PTableendDate' + i + '"></td></tr>');
+		$.each(user, function(key, value) {
+			if ($("#PTable" + key + i)[0] != null) {
+				$("#PTable" + key + i)[0].append(value);
+			}
+		});
+	}
+}
+
+function populateRecipelist(data) {
+	$("#RLTable tr").remove();
+	for (i = 0; i < data.length; i++) {
+		var user = data[i];
+		$("#RLTable").append('<tr><td id="RLTableid' + i + '"></td><td id="RLTablename' + i + '"></td><td id="RLTablecomponents' + i + '"></td></tr>');
+		$.each(user, function(key, value) {
+			if ($("#RLTable" + key + i)[0] != null) {
+				$("#RLTable" + key + i)[0].append(value);
+			}
+		});
+	}
+}
+
+
+
+
 function getById(path, id){
 	return Promise.resolve($.ajax(
 			{
@@ -293,33 +407,3 @@ function create(path, form) {
 		}
 	});	
 }
-
-function tableSearch() {
-	  var input, filter, table, tr, td, i;
-	  input = document.getElementById("UInput");
-	  filter = input.value.toUpperCase();
-	  table = document.getElementById("UTable");
-	  tr = table.getElementsByTagName("tr");
-	  for (i = 0; i < tr.length; i++) {
-	    td = tr[i].getElementsByTagName("td")[0];
-	    td2 = tr[i].getElementsByTagName("td")[1];
-	    td3 = tr[i].getElementsByTagName("td")[2];
-	    td4 = tr[i].getElementsByTagName("td")[3];
-	    td5 = tr[i].getElementsByTagName("td")[4];
-	    td6 = tr[i].getElementsByTagName("td")[5];
-	    td7 = tr[i].getElementsByTagName("td")[6];
-	    if (td || td2) {
-	      if (td.innerHTML.toUpperCase().indexOf(filter) > -1 || 
-	    		  td2.innerHTML.toUpperCase().indexOf(filter) > -1|| 
-	    		  td3.innerHTML.toUpperCase().indexOf(filter) > -1|| 
-	    		  td4.innerHTML.toUpperCase().indexOf(filter) > -1|| 
-	    		  td5.innerHTML.toUpperCase().indexOf(filter) > -1|| 
-	    		  td6.innerHTML.toUpperCase().indexOf(filter) > -1|| 
-	    		  td7.innerHTML.toUpperCase().indexOf(filter) > -1) {
-	        tr[i].style.display = "";
-	      } else {
-	        tr[i].style.display = "none";
-	      }
-	    }       
-	  }
-	}

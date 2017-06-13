@@ -1,0 +1,47 @@
+@CHARSET "ISO-8859-1";
+
+#SInput {
+  width: 30%;
+  font-size: 16px;
+  padding: 15px 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  font-family: Candara;
+}
+
+#STablecss {
+  border-collapse: collapse;
+  width: 80%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+  font-family: Candara;
+}
+
+.STable {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+  font-family: Candara;
+}
+
+
+#STable th, #STable td, #STable input[type=button] {
+  text-align: left;
+  padding: 12px;
+}
+
+#STable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#STable tr:hover {
+color: #ff8000;
+ background-color: #e7ebe8;
+}
+
+#STable tr.header, #STable tr.header:hover {
+background-color: #e7ebe8;
+color:black;
+}
+
