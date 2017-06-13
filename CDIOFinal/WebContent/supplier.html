@@ -8,6 +8,7 @@
 <script src="script/jquery.serialize-object.js"></script>
 <script type="text/javascript" src="script/default.js"></script>
 <script type="text/javascript" src="script/supplier.js"></script>
+<script type="text/javascript" src="script/searchfunctions.js"></script>
 <link rel="stylesheet" type="text/css" href="css/default.css">
 <link rel="stylesheet" type="text/css" href="css/supplier.css">
 <link rel="stylesheet"
@@ -58,7 +59,7 @@
 				</div>
 				<div id="list">
 				<div style="min-width: 800px; float: left;">
-					<input type="text" id="SInput" onkeyup="tableSearch()"
+					<input type="text" id="SInput" onkeyup="StableSearch()"
 						placeholder="Search..." title="Search by any value"
 						style="float: left;"> <i
 						class="icon glyphicon glyphicon-search"
@@ -67,7 +68,7 @@
 				<table id="STablecss">
 					<tr class="header">
 						<th style="width: 40%;">Supplier ID:</th>
-						<th style="width: 40%;">Supplier name</th>
+						<th style="width: 40%;">Supplier Name</th>
 				
 					</tr>
 					<tbody id="STable">

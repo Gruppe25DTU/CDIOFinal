@@ -8,6 +8,7 @@
 <script src="script/jquery.serialize-object.js"></script>
 <script type="text/javascript" src="script/default.js"></script>
 <script type="text/javascript" src="script/productbatch.js"></script>
+<script type="text/javascript" src="script/searchfunctions.js"></script>
 <link rel="stylesheet" type="text/css" href="css/default.css">
 <link rel="stylesheet" type="text/css" href="css/productbatch.css">
 <link rel="stylesheet"
@@ -70,7 +71,7 @@
 				</div>
 				<div id="list">
 				<div style="min-width: 800px; float: left;">
-					<input type="text" id="PInput" onkeyup="tableSearch()"
+					<input type="text" id="PInput" onkeyup="PtableSearch()"
 						placeholder="Search..." title="Search by any value"
 						style="float: left;"> <i
 						class="icon glyphicon glyphicon-search"
@@ -79,7 +80,8 @@
 				<table id="PTablecss">
 					<tr class="header">
 						<th style="width: 10%;">Product Batch ID:</th>
-						<th style="width: 30%;">Components (list?)</th>
+						<th style="width: 10%;">Recipe ID:</th>
+						<th style="width: 20%;">Components (list?)</th>
 						<th style="width: 20%;">Status</th>
 						<th style="width: 20%;">Start</th>
 						<th style="width: 20%;">End</th>

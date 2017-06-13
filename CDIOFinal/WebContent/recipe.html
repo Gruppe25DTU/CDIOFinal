@@ -8,6 +8,7 @@
 <script src="script/jquery.serialize-object.js"></script>
 <script type="text/javascript" src="script/default.js"></script>
 <script type="text/javascript" src="script/recipe.js"></script>
+<script type="text/javascript" src="script/searchfunctions.js"></script>
 <link rel="stylesheet" type="text/css" href="css/default.css">
 <link rel="stylesheet" type="text/css" href="css/recipe.css">
 <link rel="stylesheet"
@@ -106,13 +107,13 @@
 			</div>
 	<div id="list">
 	<div style="min-width: 800px; float: left;">
-		<input type="text" id="UInput" onkeyup="tableSearch()"
+		<input type="text" id="RLInput" onkeyup="RLtableSearch()"
 			placeholder="Search..." title="Search by any value"
 			style="float: left;"> <i
 			class="icon glyphicon glyphicon-search"
 			style="font-size: 30px; padding-top: 20px"> </i>
 			</div>
-		<table id="UTablecss">
+		<table id="RLTablecss">
 			<tr class="header">
 				<th style="width: 20%;">Recipe ID:</th>
 				<th style="width: 40%;">Recipe Name</th>
@@ -120,17 +121,8 @@
 			</tr>
 
 
-			<tbody id="UTable">
-			<tr>
-				<td>323232</td>
-				<td>32323244</td>
-				<td>43434334091</td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" /> &nbsp;</td>
-				<td><input type="checkbox" /> &nbsp;</td>
-				<td><input type="checkbox" /> &nbsp;</td>
-			</tr>
+			<tbody id="RLTable">
+			
 
 			</tbody>
 		</table>
