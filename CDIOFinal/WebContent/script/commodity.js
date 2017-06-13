@@ -36,7 +36,7 @@ function populate(frm, data) {
 function getSupplierName(id) {
 	return Promise.resolve($.ajax(
 			{
-				url : 'rest/test/supplier/id/' + id,
+				url : 'rest/supplier/' + id,
 				dataType : 'json',
 				error : function(jqXHR, text, error){
 					console.log(jqXHR.status + text + error);

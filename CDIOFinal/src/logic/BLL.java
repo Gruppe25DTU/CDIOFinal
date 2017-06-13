@@ -132,6 +132,7 @@ public class BLL {
   public static boolean updateUser(UserDTO dto, String old_cpr) throws DTOException, DALException, UnauthorizedException
   {
     DataCheckerInterface.checkDTO(dto, "user");
+    System.out.println(dto);
     return UserDAO.update(dto, old_cpr);
   }
   

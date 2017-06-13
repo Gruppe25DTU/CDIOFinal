@@ -1,5 +1,6 @@
 package logic.validation;
 
+import dao.UserDAO;
 import dto.UserDTO;
 import logic.CDIOException.DALException;
 import logic.CDIOException.DTOException;
@@ -14,11 +15,7 @@ public class UserDataCheck {
 	private static EmailValidator EmailVal = new EmailValidator();
 
 
-	public static void create(UserDTO dto) throws RuleException{
-
-		if(rules.getID().test(dto.getId()) == false){
-			throw new RuleException("Invalid ID!");
-		}
+	public static int create(UserDTO dto) throws RuleException, DALException{
 
 		if(rules.getName().test(dto.getUserName()) == false || dto.getUserName() == null){
 			throw new RuleException("Invalid Username!");
@@ -41,6 +38,7 @@ public class UserDataCheck {
 		};
 
 		dto.setPassword(PasswordGenerator.makePassword(8));	
+		return UserDAO.create(dto);
 
 	}
 	

@@ -13,7 +13,7 @@ jQuery(function($){
 		location.replace(location.pathname + "?name=" + search);
 		focusOnSearch();
 		return false;
-		
+
 	});
 });
 
@@ -30,7 +30,7 @@ $(document).ready(function(){
 		$("#list").show();
 		//When show a new view, close the previous view
 		$("#inputfield").hide();
-	
+
 	});
 });
 
@@ -47,7 +47,7 @@ $(document).ready(function() {
 		form.find('input[id="update"]')[0].style="display: initial";
 		form.find('input[id="cancel"]')[0].style="display: initial";
 	});
-	
+
 	$('#listbut').click(function() {
 		var form = $(this).closest('form[class="detailsForm"]');
 		if (form.find('input[id="create"]')[0].tag == "active") {
@@ -73,60 +73,87 @@ $(document).ready(function() {
 		form.find('input[id="create"]')[0].style="display: none";
 		form.find('input[id="update"]')[0].style="display: none";
 		form.find('input[id="cancel"]')[0].style="display: none";
+        var listname = document.getElementById('listbut').className;
 		
+		if(listname == 'Ulist'){
+			$.ajax({
+				url : 'rest/user/',
+				dataType : 'json',
+				success : function(data) {
+					populateUserlist(data);
+				},
+				error: function (error) {
+					alert(" Can't do because: " + error);
+				}
+			});
+		}
+		
+		if(listname == 'Slist'){
 		$.ajax({
-			url : 'rest/test/user/list',
-			dataType : 'json',
-			success : function(data) {
-				populateUserlist(data);
-			},
-			error : function(error) {alert(error)}
-		});
-		$.ajax({
-			//ugyldig sti
-			url : 'rest/test/user/list',
+
+			url : 'rest/supplier/',
 			dataType : 'json',
 			success : function(data) {
 				populateSupplierlist(data);
 			},
-			error : function(error) {alert(error)}
+			error: function (error) {
+				alert(" Can't do because: " + error);
+			}
 		});
+		}
+		
+		if(listname == 'Plist'){
 		$.ajax({
-			//ugyldig sti
-			url : 'rest/test/user/list',
+			url : 'rest/productbatch/',
 			dataType : 'json',
 			success : function(data) {
 				populateProductBatchlist(data);
 			},
-			error : function(error) {alert(error)}
+			error: function (error) {
+				alert(" Can't do because: " + error);
+			}
 		});
+		}
+		
+		if(listname == 'Clist'){
 		$.ajax({
-			//ugyldig sti
-			url : 'rest/test/user/list',
+
+			url : 'rest/commodity/',
 			dataType : 'json',
 			success : function(data) {
 				populateCommoditylist(data);
 			},
-			error : function(error) {alert(error)}
+			error: function (error) {
+				alert(" Can't do because: " + error);
+			}
 		});
+		}
+		
+		if(listname == 'CBlist'){
 		$.ajax({
-			//ugyldig sti
-			url : 'rest/test/user/list',
+			url : 'rest/commoditybatch/',
 			dataType : 'json',
 			success : function(data) {
 				populateCommodityBatchlist(data);
 			},
-			error : function(error) {alert(error)}
+			error: function (error) {
+				alert(" Can't do because: " + error);
+			}
 		});
+		}
+		
+		if(listname == 'Rlist'){
 		$.ajax({
-			//ugyldig sti
-			url : 'rest/test/user/list',
+			url : 'rest/recipe/',
 			dataType : 'json',
 			success : function(data) {
 				populateRecipelist(data);
 			},
-			error : function(error) {alert(error)}
+			error: function (error) {
+				alert(" Can't do because: " + error);
+			}
 		});
+		}
 	});
 
 	$('#new').click(function() {
@@ -164,7 +191,7 @@ $(document).ready(function() {
 		var formData = $("#detailsForm").serializeObject();
 		$('#cancel').click();
 		$.ajax({
-			url : "rest/test/" + form[0].name + "/update",
+			url : "rest/" + form[0].name,
 			data : JSON.stringify(formData),
 			contentType : "application/json",
 			method : "POST",
@@ -238,7 +265,7 @@ function checkState() {
 	var field = $(this)[0];
 	$.ajax(
 			{
-				url : "rest/test/" + form.name + "/validity/" + field.name + "/" + field.value,
+				url : "rest/" + form.name + "/validity/" + field.name + "/" + field.value,
 				success : function(data) {
 					field.style = "color : black";
 					field.tag = "valid";
@@ -276,6 +303,9 @@ function populateUserlist(data) {
 		$.each(user, function(key, value) {
 			if ($("#UTable" + key + i)[0] != null) {
 				$("#UTable" + key + i)[0].append(value);
+			}
+			if ($("#UTable" + key + i)[0] == roles){
+				$.each("#UTable" + key + i)[0].append('<table><tr><td>'+value+'</td></tr></table>');
 			}
 		});
 	}
@@ -327,8 +357,11 @@ function populateProductBatchlist(data) {
 		var user = data[i];
 		$("#PTable").append('<tr><td id="PTableid' + i + '"></td><td id="PTablerecipeID' + i + '"></td><td id="PTablecomponents' + i + '"></td><td id="PTablestatus' + i + '"></td><td id="PTablestartDate' + i + '"></td><td id="PTableendDate' + i + '"></td></tr>');
 		$.each(user, function(key, value) {
-			if ($("#PTable" + key + i)[0] != null) {
+			if ($("#PTable" + key + i)[0] != null){
 				$("#PTable" + key + i)[0].append(value);
+			}
+			if ($("#PTable" + key + i)[0] == components){
+				$.each("#PTable" + key + i)[0].append('<table><tr><td>'+value+'</td></tr></table>');
 			}
 		});
 	}
@@ -343,6 +376,9 @@ function populateRecipelist(data) {
 			if ($("#RLTable" + key + i)[0] != null) {
 				$("#RLTable" + key + i)[0].append(value);
 			}
+			if ($("#RTable" + key + i)[0] == components){
+				$.each("#RTable" + key + i)[0].append('<table><tr><td>'+value+'</td></tr></table>');
+			}
 		});
 	}
 }
@@ -353,7 +389,7 @@ function populateRecipelist(data) {
 function getById(path, id){
 	return Promise.resolve($.ajax(
 			{
-				url : "rest/test/" + path + "/id/"+id,
+				url : "rest/" + path + "/"+id,
 				dataType : 'json',
 				error : function(jqXHR, text, error){
 					console.log(jqXHR.status + text + error);
@@ -362,40 +398,27 @@ function getById(path, id){
 	));
 }
 
-function getByName(path, name){
-	return Promise.resolve($.ajax(
-			{
-				url : "rest/test/" + path + "/name/"+name,
-				dataType : 'json',
-				success : function(data){
-					populate(frm, data);
-				},
-				error : function(jqXHR, text, error){
-					console.log(jqXHR.status + text + error);
-				}
-			}
-	));
-}
+//function getByName(path, name){
+//return Promise.resolve($.ajax(
+//{
+//url : "rest/" + path + "/name/"+name,
+//dataType : 'json',
+//success : function(data){
+//populate(frm, data);
+//},
+//error : function(jqXHR, text, error){
+//console.log(jqXHR.status + text + error);
+//}
+//}
+//));
+//}
 
-function setAvailableID(path, field) {
-	$.ajax(
-			{
-				url : "rest/test/" + path + "/request/getAvailableID",
-				success : function(data) {
-					field.value = data;
-				},
-				error : function(data) {
-					field.value = -1
-				}
-			}
-	);
-}
 
 function create(path, form) {
 	var formData = $("#detailsForm").serializeObject();
 	$('#cancel').click();
 	$.ajax({
-		url : "rest/test/" + path + "/",
+		url : "rest/" + path + "/",
 		data : JSON.stringify(formData),
 		contentType : "application/json",
 		method : "PUT",

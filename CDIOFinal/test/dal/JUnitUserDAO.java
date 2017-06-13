@@ -26,7 +26,7 @@ public class JUnitUserDAO {
 		roles.add("Administrator");
 		UserDTO actualUser = new UserDTO(1,"Username1","firstname1","lastname1","ini1","0000000001","password1","email1",roles,1);
 		userDAO.create(actualUser);
-		UserDTO expectedUser = userDAO.getUser(1);
+		UserDTO expectedUser = userDAO.get(1);
 
 		equal(actualUser,expectedUser);
 		
@@ -41,7 +41,7 @@ public class JUnitUserDAO {
 		Connector.changeTestMode(true);
 		UserDAO userDAO = new UserDAO();
 		userDAO.update(actualUser,"0000000001");
-		UserDTO expectedUser = userDAO.getUser(1);
+		UserDTO expectedUser = userDAO.get(1);
 
 		equal(actualUser,expectedUser);
 
@@ -56,12 +56,12 @@ public class JUnitUserDAO {
 		UserDTO actualUser = new UserDTO(1,"Username2","firstname2","lastname2","ini2","1111111111","password2","email2",roles,1);
 
 		userDAO.changeStatus(actualUser.getId(), false);
-		UserDTO dto1 = userDAO.getUser(1);
+		UserDTO dto1 = userDAO.get(1);
 		
 		assertEquals(dto1.getStatus(),0);
 		
 		userDAO.changeStatus(actualUser.getId(), true);
-		UserDTO dto2 = userDAO.getUser(1);
+		UserDTO dto2 = userDAO.get(1);
 		
 		assertEquals(dto2.getStatus(),1);
 	}

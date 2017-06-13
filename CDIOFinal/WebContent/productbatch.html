@@ -25,51 +25,49 @@
 		<form id="detailsForm" class="detailsForm" name="user">
 			<section class="optionline">
 				<h2 style="font-family: candara;">
-					<i class="icon glyphicon glyphicon-list-alt" style="font-size: 30px;"></i>
-					Product Batch Information
-					</h2>
+					<i class="icon glyphicon glyphicon-list-alt"
+						style="font-size: 30px;"></i> Product Batch Information
+				</h2>
 			</section>
 			<section class="optionline">
-			<input type="button" name="list" id="listbut"
-				value="List all product batches">
-					 <input type="button" name="new" class="create"
-						id="new" value="Add New Product Batch" style="min-width: 220px;"> <input
-						type="button" name="edit" id="edit" class="edit" value="Edit Product Batch">
-				</section>
+				<input type="button" class="Plist" name="list" id="listbut"
+					value="List all product batches"> <input type="button"
+					name="new" class="create" id="new" value="Add New Product Batch"
+					style="min-width: 220px;"> <input type="button" name="edit"
+					id="edit" class="edit" value="Edit Product Batch">
+			</section>
 
-<div id="inputfield" style="display: none;">
-			<div class="content">
-				<div class="informationbox">
+			<div id="inputfield" style="display: none;">
+				<div class="content">
+					<div class="informationbox">
 
-					ID:<br> <input type="text" name="id" id="id"
-						class="protected auto" disabled> <br> Recipe Name:<br>
-					<input type="text" name="name" id="name" class="protected auto"
-						disabled> <br>
-				</div>
-				<div class="informationbox">
-				<br>
-				<br>
-				<br>
-		<input type="button" name="update"
+						ID:<br> <input type="text" name="id" id="id"
+							class="protected auto" disabled> <br> Recipe Name:<br>
+						<input type="text" name="name" id="name" class="protected auto"
+							maxlength="20" disabled> <br>
+					</div>
+					<div class="informationbox">
+						<br> <br> <br> <input type="button" name="update"
 							id="update" class="update" value="Update" style="display: none;">
-							<input type="button" name="create" class="create" id="create" value="Create New Product Batch" style="display: none;">
-							<input type="button" name="cancel" id="cancel" class="cancel"
+						<input type="button" name="create" class="create" id="create"
+							value="Create New Product Batch" style="display: none;">
+						<input type="button" name="cancel" id="cancel" class="cancel"
 							value="Cancel" style="display: none;">
+					</div>
 				</div>
+				<table>
+					<tbody id="componentTable" align="right">
+						<tr>
+							<td>Commodity Batch</td>
+							<td>Commodity</td>
+							<td>Non Net Weight</td>
+							<td>Tolerance</td>
+							<td>Lab. Technician</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-			<table>
-				<tbody id="componentTable" align="right">
-					<tr>
-						<td>Commodity Batch</td>
-						<td>Commodity</td>
-						<td>Non Net Weight</td>
-						<td>Tolerance</td>
-						<td>Lab. Technician</td>
-					</tr>
-				</tbody>
-			</table>
-				</div>
-				<div id="list">
+			<div id="list">
 				<div style="min-width: 800px; float: left;">
 					<input type="text" id="PInput" onkeyup="PtableSearch()"
 						placeholder="Search..." title="Search by any value"
@@ -81,11 +79,11 @@
 					<tr class="header">
 						<th style="width: 10%;">Product Batch ID:</th>
 						<th style="width: 10%;">Recipe ID:</th>
-						<th style="width: 20%;">Components (list?)</th>
+						<th style="width: 20%;">Components</th>
 						<th style="width: 20%;">Status</th>
 						<th style="width: 20%;">Start</th>
 						<th style="width: 20%;">End</th>
-				
+
 					</tr>
 					<tbody id="PTable">
 

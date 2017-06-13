@@ -20,7 +20,7 @@ public class UserDAO {
 	public static UserDTO get(Integer ID) throws DALException{
 		String cmd = "CALL getUser('%d');";
 		cmd = String.format(cmd, ID);
-		UserDTO dto;
+		UserDTO dto = null;
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			if(rs == null) {
@@ -141,7 +141,7 @@ public class UserDAO {
 	 * 
 	 */
 
-	public boolean changeStatus(int ID, boolean active) throws DALException{
+	public static boolean changeStatus(int ID, boolean active) throws DALException{
 		String cmd = "CALL setActive('%d','%d');";
 		int status;
 		if(active) {
@@ -176,8 +176,9 @@ public class UserDAO {
 	 * Function returns -1 if not
 	 * 
 	 */
-	public int create(UserDTO dto) throws DALException{
+	public static int create(UserDTO dto) throws DALException{
 		String addUser = "CALL addUser('%s','%s','%s');";
+
 		String addUserInfo = "CALL addUserInfo('%s','%s','%s','%s');";
 		String addUserRoles = "CALL addUserRole('%s','%d');";
 		List<String> roles = dto.getRoles();
