@@ -70,10 +70,7 @@ public class WeightInput implements Runnable{
 					}
 					else if(rm == 'A')
 					{
-						if(input.split("\"").length>1)
-							input = input.split("\"")[1];
-						else
-							input = "";
+						input = input.substring(input.indexOf("\""),input.length()-1);
 						sInMsg = new SocketInMessage(MessageType.RM20_A , input);
 						conn.processInput(sInMsg);
 					}
@@ -88,20 +85,12 @@ public class WeightInput implements Runnable{
 					conn.processInput(sInMsg);
 					break;
 				case "S" : 
-					System.out.println(input.length() + input.split(" ")[6]);
-					if(input.split(" ").length == 8)
-						input = input.split(" ")[6];
-					else
-						input = input.split(" ")[7];
-					System.out.println(input);
+					input = input.substring(3 , input.length()-2).trim();
 					sInMsg = new SocketInMessage(MessageType.WEIGHT_REPLY , input);
 					conn.processInput(sInMsg);
 					break;
 				case "T" :
-					if(input.split(" ").length == 8)
-						input = input.split(" ")[6];
-					else
-						input = input.split(" ")[7];
+					input = input.substring(3 , input.length()-2).trim();
 					sInMsg = new SocketInMessage(MessageType.TARA_REPLY , input);
 					conn.processInput(sInMsg);
 					break;
