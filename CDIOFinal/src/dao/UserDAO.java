@@ -16,6 +16,10 @@ public class UserDAO {
 	 * @return {@code userDTO} 
 	 * @throws DALException 
 	 */
+  
+  public UserDTO get(int id) throws DALException {
+    return getUser(id);
+  }
 	public UserDTO getUser(int ID) throws DALException{
 		String cmd = "CALL getUser('%d');";
 		cmd = String.format(cmd, ID);
@@ -373,6 +377,10 @@ public class UserDAO {
 	 * @return {@code List<UserDTO>} 
 	 * @throws DALException 
 	 */
+	
+	public List<UserDTO> getList() throws DALException {
+	  return getUserList();
+	}
 
 	public List<UserDTO> getUserList() throws DALException{
 		String cmd = "CALL getUserList();";

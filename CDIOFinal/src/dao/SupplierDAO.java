@@ -34,6 +34,10 @@ public class SupplierDAO {
 	 * Returns a supplier
 	 */
 	
+	public SupplierDTO get(int id) throws DALException {
+	  return getSupplier(id);
+	}
+	
 	public SupplierDTO getSupplier(int ID) throws DALException{
 		String cmd = "CALL getSupplier('%d');";
 		cmd = String.format(cmd, ID);

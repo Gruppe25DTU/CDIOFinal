@@ -71,13 +71,16 @@ public class RecipeDAO {
 	}
 
 
+	public RecipeDTO get(int id) throws DALException {
+	  return getRecipe(id);
+	}
 
 	/**
 	 * Returns a recipe with parameter ID:
 	 * @param id
 	 * @return
 	 */
-
+	
 	public RecipeDTO getRecipe(int id) throws DALException{
 		String cmd = "CALL getRecipe('%d');";
 		cmd = String.format(cmd, id);
@@ -129,6 +132,11 @@ public class RecipeDAO {
 		}
 
 	}
+	
+	public List<RecipeDTO> getList() throws DALException {
+	  return getRecipeList();
+	}
+	
 	/**
 	 * Returns a list over every existing recipes
 	 */
