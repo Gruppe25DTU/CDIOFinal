@@ -26,7 +26,7 @@ public class UserDAO {
       ResultSet rs = Connector.doQuery(cmd);
       while (rs.next()) {
         String cpr = rs.getString("cpr");
-        int opr_ID = rs.getInt("user_ID");
+        int user_ID = rs.getInt("user_ID");
         String username = rs.getString("username");
         int active = rs.getInt("active");
         String email = rs.getString("email");
@@ -34,8 +34,8 @@ public class UserDAO {
         String lastname = rs.getString("user_lastname");
         String ini = rs.getString("ini");
         rs.close();
-        String[] roles = getRoles(opr_ID);
-        dto = new UserDTO(opr_ID, username, firstname, lastname, ini, cpr, email, roles, active);
+        String[] roles = getRoles(user_ID);
+        dto = new UserDTO(user_ID, username, firstname, lastname, ini, cpr, email, roles, active);
         return dto;
       }
         throw new EmptyResultSetException();
@@ -130,14 +130,13 @@ public class UserDAO {
   }
 
   /**
-   * Changes a status of an user <br>
-   * false if user is inactive<br>
-   * true if user in active
-   * 
-   * 
+	 * Changes the status of an user: <br>
+	 * Function not allowed if function is deactivating the last administrator in the system. <br>
+	 * @param ID
+	 * @param active
+	 * @throws DALException
    */
-
-  public static boolean changeStatus(int ID, boolean active) throws DALException {
+	public static void changeStatus(int ID, boolean active) throws DALException {
     String cmd = "CALL setActive('%d','%d');";
     int status;
     if (active) {
@@ -147,8 +146,10 @@ public class UserDAO {
     cmd = String.format(cmd, status, ID);
 
     try {
-      Connector.doUpdate(cmd);
-      return true;
+			ResultSet rs = Connector.doQuery(cmd);
+			if(rs.getInt("result") == 0) {
+				throw new DALException("Deactivation not allowed");
+			}
     } catch (SQLException e) {
       throw new DALException(e);
     } finally {

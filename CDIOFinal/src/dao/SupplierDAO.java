@@ -24,7 +24,7 @@ public class SupplierDAO {
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			rs.next();
-			return rs.getInt("ID");
+			return rs.getInt("supplier_ID");
 		} catch (SQLException e) {
 			throw new DALException(e);
 		}

@@ -27,7 +27,7 @@ public class CommodityDAO {
       if (!rs.next()) {
         throw new EmptyResultSetException();
       }
-			ID = rs.getInt("ID");
+			ID = rs.getInt("commodity_ID");
 			return ID;
 		} catch (SQLException e) {
 			throw new DALException(e);

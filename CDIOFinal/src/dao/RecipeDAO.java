@@ -90,7 +90,9 @@ public class RecipeDAO {
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			rs.next();
+			if(!rs.next()) {
+			  throw new EmptyResultSetException();
+			}
 			int recipe_ID = rs.getInt("recipe_ID");
 			String recipe_Name = rs.getString("recipe_Name");
 			RecipeCompDTO[] components = getRecipeComponent(recipe_ID);
