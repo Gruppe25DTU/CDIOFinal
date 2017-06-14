@@ -31,11 +31,19 @@ public ProductBatchDTO(ProductBatchDTO productBatch){
 	this.components = productBatch.getComponents();
 }
 
+public ProductBatchDTO() {}
+
 	public int getId() {
-		return productBatchID;
+	  return getProductBatchID();
 	}
 
+	 public int getProductBatchID() {
+	    return productBatchID;
+	  }
 
+	  public void setId(int id) {
+	    setProductBatchID(id);
+	  }
 
 	public void setProductBatchID(int productBatchID) {
 		this.productBatchID = productBatchID;

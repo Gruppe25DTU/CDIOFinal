@@ -20,11 +20,14 @@ public class RecipeDAO {
 	 */
 
 	public static int create(RecipeDTO dto) throws DALException{
-		String cmd = "CALL addRecipe('%d','%s')";
-		cmd = String.format(cmd, dto.getId(),dto.getName());
+		String cmd = "CALL addRecipe('%s')";
+		cmd = String.format(cmd, dto.getName());
 		int ID;
 		try {
 			ResultSet rs  = Connector.doQuery(cmd);
+			if (!rs.next()) {
+			  throw new EmptyResultSetException();
+			}
 			ID = rs.getInt("ID");
 			if(dto.getComponents() != null) {
 				for(RecipeCompDTO component : dto.getComponents()) {

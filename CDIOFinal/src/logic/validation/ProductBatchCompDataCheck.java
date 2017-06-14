@@ -10,7 +10,7 @@ public class ProductBatchCompDataCheck {
 	public static void create(ProductBatchCompDTO dto) throws RuleException{
 		if(rules.getID().test(dto.getProductBatchID()) == false ||
 				String.valueOf(dto.getProductBatchID()) == null){
-			throw new RuleException("Invalid ProductBatchComp ID!");
+			throw new RuleException("Invalid ProductBatch ID!");
 		}
 		if(rules.getID().test(dto.getCommodityBatchID()) == false ||
 				String.valueOf(dto.getCommodityBatchID())== null){
@@ -31,7 +31,7 @@ public class ProductBatchCompDataCheck {
 	public static void productBatchID(int id) throws RuleException{
 		if(rules.getID().test(id) == false ||
 				String.valueOf(id) == null){
-			throw new RuleException("Invalid ProductBatchComp ID!");
+			throw new RuleException("Invalid ProductBatch ID!");
 		}
 	}
 	public static void commodityBatchID(int id) throws RuleException{

@@ -66,7 +66,10 @@ public class UserDAO {
     try {
       rs = Connector.doQuery(cmd);
       while (rs.next()) {
-        roles.add(rs.getString("role_Name"));
+        String role = rs.getString("role_Name");
+        if (role != null) {
+          roles.add(role);
+        }
       }
       if (roles.isEmpty()) {
         throw new EmptyResultSetException();

@@ -1,5 +1,6 @@
 package logic.validation;
 
+import dao.RecipeDAO;
 import dto.RecipeCompDTO;
 import logic.validation.RuleSetInterface.RuleException;
 
@@ -7,7 +8,7 @@ public class RecipeCompDataCheck {
 
   private static RuleSetInterface rules = new RuleSet();
 
-	public static void create(RecipeCompDTO dto) throws RuleException{
+	public static boolean create(RecipeCompDTO dto) throws RuleException{
 		if(rules.getID().test(dto.getRecipeID()) == false){
 			throw new RuleException("Invalid RecipeID!");
 		}
@@ -23,6 +24,7 @@ public class RecipeCompDataCheck {
 				String.valueOf(dto.getTolerance()) == null){
 			throw new RuleException("Invalid Tolerance");
 		}
+		return true;
 	}
 
 	public static void commodityID(int id) throws RuleException{

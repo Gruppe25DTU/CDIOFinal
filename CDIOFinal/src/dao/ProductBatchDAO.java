@@ -24,9 +24,9 @@ public class ProductBatchDAO {
 	 */
 
 	public static int create(ProductBatchDTO dto) throws DALException{
-		String cmd = "CALL addProductBatch('%d','%d');";
+		String cmd = "CALL addProductBatch('%d');";
 
-		cmd = String.format(cmd, dto.getId(),dto.getRecipeID());
+		cmd = String.format(cmd, dto.getRecipeID());
 
 		int id;
 		try {
@@ -159,8 +159,8 @@ public class ProductBatchDAO {
 				Timestamp startdate = rs.getTimestamp("startdate");
 				Timestamp stopdate = rs.getTimestamp("stopdate");
 				try {
-				ProductBatchCompDTO[] components = getProductBatchComponents(ID);
-        list.add(new ProductBatchDTO(ID,status,recipe_ID,startdate,stopdate,components));
+  				ProductBatchCompDTO[] components = getProductBatchComponents(ID);
+          list.add(new ProductBatchDTO(ID,status,recipe_ID,startdate,stopdate,components));
 				} catch (EmptyResultSetException e) {
 				  continue;
 				}

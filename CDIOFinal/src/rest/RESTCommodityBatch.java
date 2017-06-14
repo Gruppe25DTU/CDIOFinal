@@ -57,7 +57,6 @@ public class RESTCommodityBatch {
   }
 
 	@POST
-	@Path("/commoditybatch/id={id : \\d+}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response commoditybatchDTO(CommodityBatchDTO dto) {
 		try {

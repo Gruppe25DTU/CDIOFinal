@@ -17,12 +17,14 @@ public class RecipeDTO implements IDTO {
 		this.recipeID = recipe.getId();
 		this.name = recipe.getName();
 	}
+	
+	public RecipeDTO() {}
 
 	public int getId() {
 		return this.recipeID;
 	}
 
-	public void setRecipeID(int recipeID) {
+	public void setId(int recipeID) {
 		this.recipeID = recipeID;
 	}
 

@@ -2,17 +2,15 @@ package logic.validation;
 
 import java.security.Timestamp;
 
+import dao.ProductBatchDAO;
 import dto.ProductBatchDTO;
+import logic.CDIOException.DALException;
 import logic.validation.RuleSetInterface.RuleException;
 
 public class ProductBatchDataCheck {
   private static RuleSetInterface rules = new RuleSet();
 
-	public static void create(ProductBatchDTO dto) throws RuleException{
-		if(rules.getID().test(dto.getId()) == false ||
-				String.valueOf(dto.getId()) == null){
-			throw new RuleException("Invalid ProductBatch ID!");
-		}
+	public static int create(ProductBatchDTO dto) throws RuleException, DALException{
 		if(rules.getID().test(dto.getRecipeID()) == false ||
 				String.valueOf(dto.getRecipeID()) == null){
 			throw new RuleException("Invalid RecipeID!");
@@ -24,16 +22,7 @@ public class ProductBatchDataCheck {
 		if(dto.getStartDate() == null){
 			throw new RuleException("Invalid StartDate");
 		}
-		if(dto.getEndDate() == null){
-			throw new RuleException("Invalid EndDate");
-		}
-	}
-
-	public static void id(int id) throws RuleException{
-		if(rules.getID().test(id) == false ||
-				String.valueOf(id) == null){
-			throw new RuleException("Invalid ProductBatch ID!");
-		}
+		return ProductBatchDAO.create(dto);
 	}
 
 	public static void recipeID(int id) throws RuleException{

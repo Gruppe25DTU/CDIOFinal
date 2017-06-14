@@ -23,8 +23,10 @@ public class CommodityDAO {
 		cmd = String.format(cmd,dto.getName(),dto.getSupplierID());
 		int ID;
 		try {
-
 			ResultSet rs = Connector.doQuery(cmd);
+      if (!rs.next()) {
+        throw new EmptyResultSetException();
+      }
 			ID = rs.getInt("ID");
 			return ID;
 		} catch (SQLException e) {

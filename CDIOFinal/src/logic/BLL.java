@@ -20,10 +20,9 @@ public class BLL {
     try {
       this.put("commodityBatch", CommodityBatchDataCheck.class.getMethod("create", new Class[] {CommodityBatchDTO.class}));
       this.put("commodity", CommodityDataCheck.class.getMethod("create", new Class[] {CommodityDTO.class}));
-      this.put("productBatchComp", ProductBatchCompDataCheck.class.getMethod("create", new Class[] {ProductBatchCompDTO.class}));
+      this.put("productBatchComponent", ProductBatchCompDataCheck.class.getMethod("create", new Class[] {ProductBatchCompDTO.class}));
       this.put("productBatch", ProductBatchDataCheck.class.getMethod("create", new Class[] {ProductBatchDTO.class}));
       this.put("recipe", RecipeDataCheck.class.getMethod("create", new Class[] {RecipeDTO.class}));
-      this.put("recipeComp", RecipeCompDataCheck.class.getMethod("create", new Class[] {RecipeCompDTO.class}));
       this.put("supplier", SupplierDataCheck.class.getMethod("create", new Class[] {SupplierDTO.class}));
       this.put("user", UserDataCheck.class.getMethod("create", new Class[] {UserDTO.class}));
     } catch (Exception e) {
