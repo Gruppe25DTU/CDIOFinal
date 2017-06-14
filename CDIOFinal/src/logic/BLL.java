@@ -16,50 +16,6 @@ import logic.validation.*;
 
 public class BLL {
   
-  //TEST MAIN
-  public static void main(String[] args) {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    String line = "";
-    while(!line.equals("quit")) {
-      try {
-        line = br.readLine();
-      } catch (IOException e1) {
-        e1.printStackTrace();
-      }
-      if (line == null) {
-        continue;
-      }
-      String[] lines = line.split(" ");
-      String type = lines[0];
-      String field = lines[1];
-      String value = "";
-      if (lines.length == 3) {
-      value = lines[2];
-      }
-      if (type.equals("get")) {
-        if (!value.equals(""))
-        {
-          try { 
-            int id = Integer.valueOf(value);
-            System.out.println(BLL.get(field, id));
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        }
-        else {
-          try {
-            System.out.println(BLL.getList(field));
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        }
-      }
-    }
-  }
-
-  private static Class[] argIDTO = {IDTO.class};
-  private static Class[] argInt = {Integer.class};
-  
   private static HashMap<String, Method> creatorMap = new HashMap<String, Method>() {{
     try {
       this.put("commodityBatch", CommodityBatchDataCheck.class.getMethod("create", new Class[] {CommodityBatchDTO.class}));
@@ -70,34 +26,6 @@ public class BLL {
       this.put("recipeComp", RecipeCompDataCheck.class.getMethod("create", new Class[] {RecipeCompDTO.class}));
       this.put("supplier", SupplierDataCheck.class.getMethod("create", new Class[] {SupplierDTO.class}));
       this.put("user", UserDataCheck.class.getMethod("create", new Class[] {UserDTO.class}));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }};
-  
-  private static HashMap<String, Method> getterMap = new HashMap<String, Method>() {{
-    try {
-      this.put("commodityBatch", CommodityBatchDAO.class.getMethod("get", argInt));
-      this.put("commodity", CommodityDAO.class.getMethod("get", argInt));
-      this.put("productBatchComp", ProductBatchDAO.class.getMethod("getProductBatchComponents", argInt));
-      this.put("productBatch", ProductBatchDAO.class.getMethod("get", argInt));
-      this.put("recipe", RecipeDAO.class.getMethod("get", argInt));
-      this.put("recipeComp", RecipeDAO.class.getMethod("getRecipeComponent", argInt));
-      this.put("supplier", SupplierDAO.class.getMethod("get", argInt));
-      this.put("user", UserDAO.class.getMethod("get", argInt));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }};
-  
-  private static HashMap<String, Method> getListMap = new HashMap<String, Method>() {{
-    try {
-      this.put("commodityBatch", CommodityBatchDAO.class.getMethod("getList", null));
-      this.put("commodity", CommodityDAO.class.getMethod("getList", null));
-      this.put("productBatch", ProductBatchDAO.class.getMethod("getList", null));
-      this.put("recipe", RecipeDAO.class.getMethod("getList", null));
-      this.put("supplier", SupplierDAO.class.getMethod("getList", null));
-      this.put("user", UserDAO.class.getMethod("getList", null));
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -135,46 +63,61 @@ public class BLL {
     System.out.println(dto);
     return UserDAO.update(dto, old_cpr);
   }
-  
-  public static IDTO get(String dtoType, int id) throws DTOException, DALException {
-    Method getter = getterMap.get(dtoType);
-    if (getter == null) {
-      throw new DTOException();
-    }
-    try {
-      return (IDTO) getter.invoke(getter, id);
-    } catch (IllegalAccessException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (IllegalArgumentException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    throw new DALException();
+
+  public static CommodityDTO[] getCommodity() throws DALException, SessionException {
+    return CommodityDAO.getList();
   }
-  
-  public static Object[] getList(String dtoType) throws DTOException, DALException {
-    Method getter = getListMap.get(dtoType);
-    if (getter == null) {
-      throw new DTOException();
-    }
-    try {
-      List<IDTO> list = (List<IDTO>) getter.invoke(getter.getDeclaringClass());
-      return list.toArray();
-    } catch (IllegalAccessException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (IllegalArgumentException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    throw new DALException();
+
+  public static CommodityDTO getCommodity(int id) throws DALException, SessionException {
+    return CommodityDAO.get(id);
+  }
+
+  public static CommodityBatchDTO[] getCommodityBatch() throws DALException, SessionException {
+    return CommodityBatchDAO.getList();
+  }
+
+  public static CommodityBatchDTO getCommodityBatch(int id) throws DALException, SessionException {
+    return CommodityBatchDAO.get(id);
+  }
+
+  public static ProductBatchDTO[] getProductBatch() throws DALException, SessionException {
+    return ProductBatchDAO.getList();
+  }
+
+  public static ProductBatchDTO getProductBatch(int id) throws DALException, SessionException {
+    return ProductBatchDAO.get(id);
+  }
+
+  public static RecipeDTO[] getRecipe() throws DALException, SessionException {
+    return RecipeDAO.getList();
+  }
+
+  public static RecipeDTO getRecipe(int id) throws DALException, SessionException {
+    return RecipeDAO.get(id);
+  }
+
+  public static SupplierDTO[] getSupplier() throws DALException, SessionException {
+    return SupplierDAO.getList();
+  }
+
+  public static SupplierDTO getSupplier(int id) throws DALException, SessionException {
+    return SupplierDAO.get(id);
+  }
+
+  public static UserDTO[] getUser() throws DALException, SessionException {
+    return UserDAO.getList();
+  }
+
+  public static UserDTO getUser(int id) throws DALException, SessionException {
+    return UserDAO.get(id);
+  }
+
+  public static RecipeCompDTO[] getRecipeComponent(int id) throws DALException, SessionException {
+    return RecipeDAO.getRecipeComponent(id);
+  }
+
+  public static ProductBatchCompDTO[] getProductBatchComponents(int id) throws DALException, SessionException {
+    return ProductBatchDAO.getProductBatchComponents(id);
   }
   
 }

@@ -41,21 +41,20 @@ public class JUnitProductBatchAndProductBatchComp {
 		ProductBatchDAO productbatch = new ProductBatchDAO();
 		RecipeDAO recipe = new RecipeDAO();
 		
-		List<RecipeCompDTO> recipeCompList = new ArrayList<>();
 		RecipeCompDTO recipeCompDTO1 = new RecipeCompDTO(4, 1, 0.5, 0.1);
 		RecipeCompDTO recipeCompDTO2 = new RecipeCompDTO(4, 2, 0.5, 0.1);
 		RecipeCompDTO recipeCompDTO3 = new RecipeCompDTO(4, 3, 0.5, 0.1);
 		RecipeCompDTO recipeCompDTO4 = new RecipeCompDTO(4, 4, 0.5, 0.1);
 
-		recipeCompList.add(recipeCompDTO1);
-		recipeCompList.add(recipeCompDTO2);
-		recipeCompList.add(recipeCompDTO3);
-		recipeCompList.add(recipeCompDTO4);
+		RecipeCompDTO[] recipeCompList = { 
+		    recipeCompDTO1,
+		    recipeCompDTO2,
+		    recipeCompDTO3,
+		    recipeCompDTO4
+		};
 		
-		List<ProductBatchCompDTO> productBatchCompList = new ArrayList<>();
-		ProductBatchCompDTO productbatchcompDTO1 = new ProductBatchCompDTO(4,1,30.01,20.01,1);
-		productBatchCompList.add(productbatchcompDTO1);
-		
+		ProductBatchCompDTO productbatchcompDTO1 = new ProductBatchCompDTO(4,1,30.01,20.01,1);		
+    ProductBatchCompDTO[] productBatchCompList = {productbatchcompDTO1};
 		
 		RecipeDTO recipeDTO = new RecipeDTO(4,"Dej",recipeCompList);
 		Timestamp startdate = Timestamp.valueOf("2017-06-02 16:23:46");
@@ -83,11 +82,6 @@ public class JUnitProductBatchAndProductBatchComp {
 		Connector.changeTestMode(true);
 		ProductBatchDAO productbatch = new ProductBatchDAO();
 		RecipeDAO recipe = new RecipeDAO();
-		
-		
-		List<RecipeCompDTO> list1 = new ArrayList<>();
-		List<RecipeCompDTO> list2 = new ArrayList<>();
-		List<RecipeCompDTO> list3 = new ArrayList<>();
 
 
 		RecipeCompDTO recipeCompDTO11 = new RecipeCompDTO(1,1,0.1,1.0);
@@ -97,14 +91,17 @@ public class JUnitProductBatchAndProductBatchComp {
 		RecipeCompDTO recipeCompDTO15 = new RecipeCompDTO(1,6,0.5,1.0);
 		RecipeCompDTO recipeCompDTO16 = new RecipeCompDTO(1,7,0.6,1.0);
 		RecipeCompDTO recipeCompDTO17 = new RecipeCompDTO(1,10,19.0,1.0);
-		list1.add(recipeCompDTO11);
-		list1.add(recipeCompDTO12);
-		list1.add(recipeCompDTO13);
-		list1.add(recipeCompDTO14);
-		list1.add(recipeCompDTO15);
-		list1.add(recipeCompDTO16);
-		list1.add(recipeCompDTO17);
-
+		
+		
+		RecipeCompDTO[] list1 = {
+		    recipeCompDTO11,
+		    recipeCompDTO12,
+		    recipeCompDTO13,
+		    recipeCompDTO14,
+		    recipeCompDTO15,
+		    recipeCompDTO16,
+		    recipeCompDTO17
+		};
 		
 		
 		RecipeCompDTO recipeCompDTO21 = new RecipeCompDTO(2,1,1,1.0);
@@ -115,13 +112,15 @@ public class JUnitProductBatchAndProductBatchComp {
 		RecipeCompDTO recipeCompDTO26 = new RecipeCompDTO(2,8,6,1.0);
 		RecipeCompDTO recipeCompDTO27 = new RecipeCompDTO(2,9,7,1.0);
 
-		list2.add(recipeCompDTO21);
-		list2.add(recipeCompDTO22);
-		list2.add(recipeCompDTO23);
-		list2.add(recipeCompDTO24);
-		list2.add(recipeCompDTO25);
-		list2.add(recipeCompDTO26);
-		list2.add(recipeCompDTO27);
+    RecipeCompDTO[] list2 = {
+        recipeCompDTO21,
+        recipeCompDTO22,
+        recipeCompDTO23,
+        recipeCompDTO24,
+        recipeCompDTO25,
+        recipeCompDTO26,
+        recipeCompDTO27
+    };
 		
 		RecipeCompDTO recipeCompDTO31 = new RecipeCompDTO(3,1,0.12,1.0);
 		RecipeCompDTO recipeCompDTO32 = new RecipeCompDTO(3,2,0.3,1.0);
@@ -131,13 +130,15 @@ public class JUnitProductBatchAndProductBatchComp {
 		RecipeCompDTO recipeCompDTO36 = new RecipeCompDTO(3,6,77.3905,1.0);
 		RecipeCompDTO recipeCompDTO37 = new RecipeCompDTO(3,7,23.3413,1.0);
 
-		list3.add(recipeCompDTO31);
-		list3.add(recipeCompDTO32);
-		list3.add(recipeCompDTO33);
-		list3.add(recipeCompDTO34);
-		list3.add(recipeCompDTO35);
-		list3.add(recipeCompDTO36);
-		list3.add(recipeCompDTO37);
+    RecipeCompDTO[] list3 = {
+        recipeCompDTO31,
+        recipeCompDTO32,
+        recipeCompDTO33,
+        recipeCompDTO34,
+        recipeCompDTO35,
+        recipeCompDTO36,
+        recipeCompDTO37
+    };
 
 		
 		RecipeDTO recipe1 = new RecipeDTO(1,"Ananas Pizza",list1);
@@ -145,29 +146,31 @@ public class JUnitProductBatchAndProductBatchComp {
 		RecipeDTO recipe3 = new RecipeDTO(3,"Skinke Pizza",list3);
 
 		
-		List<RecipeCompDTO> recipeCompList = new ArrayList<>();
 		RecipeCompDTO recipeCompDTO1 = new RecipeCompDTO(4, 1, 0.5, 0.1);
 		RecipeCompDTO recipeCompDTO2 = new RecipeCompDTO(4, 2, 0.5, 0.1);
 		RecipeCompDTO recipeCompDTO3 = new RecipeCompDTO(4, 3, 0.5, 0.1);
 		RecipeCompDTO recipeCompDTO4 = new RecipeCompDTO(4, 4, 0.5, 0.1);
 
 
-		recipeCompList.add(recipeCompDTO1);
-		recipeCompList.add(recipeCompDTO2);
-		recipeCompList.add(recipeCompDTO3);
-		recipeCompList.add(recipeCompDTO4);
+		RecipeCompDTO[] recipeCompList = {
+		    recipeCompDTO1,
+		    recipeCompDTO2,
+		    recipeCompDTO3,
+		    recipeCompDTO4
+		};
 		RecipeDTO recipeDTO = new RecipeDTO(4,"Dej",recipeCompList);
 
 		
-		List<RecipeDTO> expectedRecipeList = new ArrayList<>();
-		expectedRecipeList.add(recipe1);
-		expectedRecipeList.add(recipe2);
-		expectedRecipeList.add(recipe3);
-		expectedRecipeList.add(recipeDTO);
-		List<RecipeDTO> actualRecipeList = recipe.getRecipeList();
+		RecipeDTO[] expectedRecipeList = {
+		    recipe1,
+		    recipe2,
+		    recipe3,
+		    recipeDTO
+		};
+		RecipeDTO[] actualRecipeList = recipe.getRecipeList();
 		
-		for(int i = 0;i<actualRecipeList.size();i++) {
-			compareRecipe(actualRecipeList.get(i),expectedRecipeList.get(i));
+		for(int i = 0;i<actualRecipeList.length;i++) {
+			compareRecipe(actualRecipeList[i],expectedRecipeList[i]);
 			
 		}
 		
@@ -178,8 +181,8 @@ public class JUnitProductBatchAndProductBatchComp {
 		assertEquals(dto1.getId(),dto2.getId());
 		assertEquals(dto1.getName(),dto2.getName());
 		
-		for(int i = 0;i<dto1.getComponents().size();i++) {
-			compareRecipeComp(dto1.getComponents().get(i),dto2.getComponents().get(i));
+		for(int i = 0;i<dto1.getComponents().length;i++) {
+			compareRecipeComp(dto1.getComponents()[i],dto2.getComponents()[i]);
 		}
 
 	}
@@ -206,8 +209,8 @@ public class JUnitProductBatchAndProductBatchComp {
 		}
 		assertEquals(dto1.getEndDate(),dto2.getEndDate());
 		
-		for(int i = 0;i<dto1.getComponents().size();i++) {
-			compareProductBatchComp(dto1.getComponents().get(i), dto2.getComponents().get(i));
+		for(int i = 0;i<dto1.getComponents().length;i++) {
+			compareProductBatchComp(dto1.getComponents()[i], dto2.getComponents()[i]);
 		}
 		
 

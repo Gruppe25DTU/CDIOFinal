@@ -191,7 +191,9 @@ $(document).ready(function() {
 		var formData = $("#detailsForm").serializeObject();
 		$('#cancel').click();
 		$.ajax({
-			url : "rest/" + form[0].name,
+		
+		
+			url : "rest/" + form[0].name +"/cpr=" + cpr,
 			data : JSON.stringify(formData),
 			contentType : "application/json",
 			method : "POST",

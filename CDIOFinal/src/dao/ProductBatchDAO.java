@@ -10,7 +10,7 @@ import dal.Connector;
 import dto.ProductBatchCompDTO;
 import dto.ProductBatchDTO;
 import dto.RecipeCompDTO;
-import logic.CDIOException.DALException;
+import logic.CDIOException.*;
 
 public class ProductBatchDAO {
 
@@ -28,18 +28,18 @@ public class ProductBatchDAO {
 
 		cmd = String.format(cmd, dto.getId(),dto.getRecipeID());
 
-		int result;
+		int id;
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			rs.next();
-			result = rs.getInt("ID");
+			id = rs.getInt("ID");
 			if(dto.getStartDate() != null) {
 				setStartdate(dto);
 			}
 			if(dto.getEndDate() != null) {
 				setStopdate(dto);
 			}
-			return result;
+			return id;
 		} catch (SQLException e) {
 			throw new DALException(e);
 		}
@@ -114,19 +114,19 @@ public class ProductBatchDAO {
 		ResultSet rs;
 		try {
 			rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
+			if(!rs.next()) {
+			  throw new EmptyResultSetException();
 			}
-			rs.next();
-			int ID = rs.getInt("productBatch_ID");
-			int status = rs.getInt("status");
-			int recipe_ID = rs.getInt("recipe_ID");
-			Timestamp startdate = rs.getTimestamp("startdate");
-			Timestamp stopdate = rs.getTimestamp("stopdate");
-			List<ProductBatchCompDTO> components = getProductBatchComponents(ID);
-			ProductBatchDTO pbDTO = new ProductBatchDTO(ID,status,recipe_ID,startdate,stopdate,components);
-			return pbDTO;
-
+			else {
+  			int ID = rs.getInt("productbatch_ID");
+  			int status = rs.getInt("status");
+  			int recipe_ID = rs.getInt("recipe_ID");
+  			Timestamp startdate = rs.getTimestamp("startdate");
+  			Timestamp stopdate = rs.getTimestamp("stopdate");
+  			ProductBatchCompDTO[] components = getProductBatchComponents(ID);
+  			ProductBatchDTO pbDTO = new ProductBatchDTO(ID,status,recipe_ID,startdate,stopdate,components);
+  			return pbDTO;
+			}
 		} catch (SQLException e) {
 			throw new DALException(e);
 		}
@@ -146,26 +146,29 @@ public class ProductBatchDAO {
 	 * @return List< ProductBatchDTO >
 	 */
 
-	public static List<ProductBatchDTO> getList() throws DALException{
+	public static ProductBatchDTO[] getList() throws DALException{
 		String cmd = "CALL getProductBatchList();";
 		List<ProductBatchDTO> list = new ArrayList<ProductBatchDTO>();
 
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
-			if(rs == null) {
-				return null;
-			}
 			while(rs.next()) {
 				int ID = rs.getInt("productBatch_ID");
 				int status = rs.getInt("status");
 				int recipe_ID = rs.getInt("recipe_ID");
 				Timestamp startdate = rs.getTimestamp("startdate");
 				Timestamp stopdate = rs.getTimestamp("stopdate");
-				List<ProductBatchCompDTO> components = getProductBatchComponents(ID);
-				list.add(new ProductBatchDTO(ID,status,recipe_ID,startdate,stopdate,components));
+				try {
+				ProductBatchCompDTO[] components = getProductBatchComponents(ID);
+        list.add(new ProductBatchDTO(ID,status,recipe_ID,startdate,stopdate,components));
+				} catch (EmptyResultSetException e) {
+				  continue;
+				}
 			}
-			return list;
-
+			if (list.isEmpty()) {
+			  throw new EmptyResultSetException();
+			}
+			return (ProductBatchDTO[]) list.toArray(new ProductBatchDTO[list.size()]);
 		} catch (SQLException e) {
 			throw new DALException(e);
 
@@ -226,7 +229,7 @@ public class ProductBatchDAO {
 				RecipeCompDTO recipeComp = new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getDouble("nom_net_weight"),rs.getDouble("tolerance"));
 				return recipeComp;
 			}
-			return null;
+			throw new EmptyResultSetException();
 		} catch (SQLException e) {
 			throw new DALException(e);
 		}
@@ -241,7 +244,7 @@ public class ProductBatchDAO {
 	}
 
 
-	public static List<ProductBatchCompDTO> getProductBatchComponents(Integer productBatchID) throws DALException{
+	public static ProductBatchCompDTO[] getProductBatchComponents(Integer productBatchID) throws DALException{
 		String cmd = "CALL getProductBatchComponent('%d')";
 		cmd = String.format(cmd, productBatchID);
 		List<ProductBatchCompDTO> list = new ArrayList<>();
@@ -249,9 +252,6 @@ public class ProductBatchDAO {
 		try {
 			ResultSet rs = Connector.doQuery(cmd);
 			while(rs.next()) {
-				if(rs.getInt("productbatch_ID") != productBatchID) {
-					return null;
-				}
 				int commodityBatchID = rs.getInt("commodityBatch_ID");
 				Double tare = rs.getDouble("tare");
 				Double net = rs.getDouble("net");
@@ -259,7 +259,7 @@ public class ProductBatchDAO {
 				ProductBatchCompDTO dto = new ProductBatchCompDTO(productBatchID,commodityBatchID,tare,net,userID);
 				list.add(dto);
 			}
-			return list;
+			return (ProductBatchCompDTO[]) list.toArray(new ProductBatchCompDTO[list.size()]);
 		} catch (SQLException e) {
 			throw new DALException(e);
 		}

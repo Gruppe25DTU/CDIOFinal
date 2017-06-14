@@ -17,51 +17,69 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import dao.UserDAO;
+import dto.CommodityDTO;
 import dto.IDTO;
 import dto.UserDTO;
 import logic.BLL;
-import logic.CDIOException.DALException;
-import logic.CDIOException.DTOException;
-import logic.CDIOException.UnauthorizedException;
+import logic.CDIOException.*;
 import logic.validation.RuleSet;
 import logic.validation.RuleSetInterface;
 
-@Path("")
+@Path("user")
 public class RESTUser {
 
+  @GET
+  @Path("/list")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getListDTO() {
+    try {
+      UserDTO[] dto = BLL.getUser();
+      return Response.status(Status.OK).entity(dto).build();
+    } catch (DALException e) {
+      return Response.status(Status.NOT_ACCEPTABLE).build();
+    } catch (SessionException e) {
+      return Response.status(Status.UNAUTHORIZED).build();  
+    }
+  }
+
+  @GET
+  @Path("/id={id : \\d+}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getDTO(@PathParam("id") int id) {
+    try {
+      UserDTO dto = BLL.getUser(id);
+      return Response.status(Status.OK).entity(dto).build();
+    } catch (DALException e) {
+      return Response.status(Status.NOT_ACCEPTABLE).build();
+    } catch (SessionException e) {
+      return Response.status(Status.UNAUTHORIZED).build();  
+    }
+  }
+
 	@POST
-	@Path("/user")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createDTO(UserDTO dto) {
-		int id;
 		try {
-			id = BLL.createDTO(dto, "user");
+			int id = BLL.createDTO(dto, "user");
+			return Response.status(Status.CREATED).entity("Id =" + id).build();
 		} catch (DALException | DTOException e) {
-
 			return Response.status(Status.NOT_ACCEPTABLE).build();
-
-		} catch (UnauthorizedException e) {
+		} catch (SessionException e) {
 			return Response.status(Status.UNAUTHORIZED).build();  
 		}
-
-		return Response.status(Status.CREATED).entity("Id =" + id).build();
 	}
 
 	@PUT
-	@Path("/user/cpr={old_cpr : [0-9]+}")
+	@Path("/cpr={old_cpr : [0-9]+}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateDTO(@PathParam("old_cpr") String old_cpr, UserDTO dto) {
-		boolean updated;
 		try {
-			updated = BLL.updateUser(dto, old_cpr);
+			boolean updated = BLL.updateUser(dto, old_cpr);
+			return Response.status(Status.CREATED).entity(updated).build();
 		} catch (DALException | DTOException e) {
-
 			return Response.status(Status.NOT_ACCEPTABLE).build();
-
-		} catch (UnauthorizedException e) {
+		} catch (SessionException e) {
 			return Response.status(Status.UNAUTHORIZED).build();  
 		}
-
-		return Response.status(Status.CREATED).entity(updated).build();
 	}
 }
