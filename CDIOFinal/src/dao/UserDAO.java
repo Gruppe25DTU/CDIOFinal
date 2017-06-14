@@ -133,14 +133,20 @@ public class UserDAO {
 
 	}
 
-	/**
-	 * Changes a status of an user <br>
-	 * false if user is inactive<br>
-	 * true if user in active
-	 * 
-	 * 
-	 */
+	
 
+	
+	/**
+	 * Changes the status of an user. <br>
+	 * True for activating <br>
+	 * false for deactivating <br>
+	 * @param ID
+	 * @param active
+	 * @return
+	 * 1 if user allowed to be deactivated/activated <br>
+	 * 0 if user is NOT allowed to be deactivated <br>
+	 * @throws DALException
+	 */
 	public static boolean changeStatus(int ID, boolean active) throws DALException{
 		String cmd = "CALL setActive('%d','%d');";
 		int status;
@@ -152,8 +158,12 @@ public class UserDAO {
 		cmd = String.format(cmd, status, ID);
 
 		try {
-			Connector.doUpdate(cmd);
-			return true;
+			ResultSet rs = Connector.doQuery(cmd);
+			if(rs.getInt("result") == 1) {
+				return true;
+			}
+			else
+				return false;
 		} catch (SQLException e) {
 			throw new DALException(e);
 		}
@@ -191,7 +201,6 @@ public class UserDAO {
 			int ID = rs.getInt("ID");
 			for(int i = 0;i<roles.size();i++) {
 				String addUserRoles = "CALL addUserRole('%s','%d');";
-
 				addUserRoles = String.format(addUserRoles, roles.get(i),ID);
 				try {
 					Connector.doUpdate(addUserRoles);
@@ -225,7 +234,6 @@ public class UserDAO {
 		String updateUser = "CALL updateUser('%d','%s','%d','%s');";
 		String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
 		String deleteExistingRoles = "CALL deleteUserRoles('%d');";
-		String addUserRoles = "CALL addUserRole('%s','%d');";
 		updateUser = String.format(updateUser, dto.getId(),dto.getUserName(),dto.getStatus(),dto.getEmail());
 		updateUserInfo = String.format(updateUserInfo, dto.getFirstName(),dto.getLastName(),dto.getIni(),dto.getCpr(),old_cpr);
 		deleteExistingRoles = String.format(deleteExistingRoles, dto.getId());
@@ -236,6 +244,7 @@ public class UserDAO {
 			Connector.doUpdate(updateUser);
 			Connector.doUpdate(deleteExistingRoles);
 			for(int i = 0;i<dto.getRoles().size();i++) {
+				String addUserRoles = "CALL addUserRole('%s','%d');";
 				addUserRoles = String.format(addUserRoles, dto.getRoles().get(i),dto.getId());
 				try {
 					Connector.doUpdate(addUserRoles);
