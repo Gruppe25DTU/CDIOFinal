@@ -191,7 +191,6 @@ public class UserDAO {
           Connector.doUpdate(addUserRoles);
         } catch (SQLException e) {
           throw new DALException(e);
-
         }
       }
       passwordDAO.createPassword(dto.getId(), password);
@@ -219,7 +218,6 @@ public class UserDAO {
     String updateUser = "CALL updateUser('%d','%s','%d','%s');";
     String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
     String deleteExistingRoles = "CALL deleteUserRoles('%d');";
-    String addUserRoles = "CALL addUserRole('%s','%d');";
     updateUser = String.format(updateUser, dto.getId(), dto.getUserName(), dto.getStatus(), dto.getEmail());
     updateUserInfo = String.format(updateUserInfo, dto.getFirstName(), dto.getLastName(), dto.getIni(), dto.getCpr(),
         old_cpr);
@@ -229,12 +227,16 @@ public class UserDAO {
       Connector.doUpdate(updateUserInfo);
       Connector.doUpdate(updateUser);
       Connector.doUpdate(deleteExistingRoles);
-      for (int i = 0; i < dto.getRoles().length; i++) {
-        addUserRoles = String.format(addUserRoles, dto.getRoles()[i], dto.getId());
+      String[] roles = dto.getRoles();
+      int ID = dto.getId();
+      for (int i = 0; i < roles.length; i++) {
+        String addUserRoles = "CALL addUserRole('%s','%d');";
+
+        addUserRoles = String.format(addUserRoles, roles[i], ID);
         try {
           Connector.doUpdate(addUserRoles);
         } catch (SQLException e) {
-          throw new DALException();
+          throw new DALException(e);
         }
       }
       return true;
