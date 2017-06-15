@@ -22,7 +22,7 @@ public class RecipeDAO {
 	public static int create(RecipeDTO dto) throws DALException{
     Connector conn = new Connector();
 		String cmd = "CALL addRecipe('%s')";
-		cmd = String.format(cmd, dto.getName());
+		cmd = String.format(cmd, dto.getRecipeName());
 		int ID;
 		try {
 			ResultSet rs  = conn.doQuery(cmd);

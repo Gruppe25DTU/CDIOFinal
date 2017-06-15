@@ -11,6 +11,23 @@ import dto.CommodityDTO;
 import logic.CDIOException.*;
 
 public class CommodityDAO {
+  
+  public static void updateCommodity(CommodityDTO dto) throws DALException {
+    Connector conn = new Connector();
+    String cmd = "CALL updateCommodity('%d','%s','%d');";
+    cmd = String.format(cmd, dto.getId(),dto.getCommodityName(),dto.getSupplierID());
+    try {
+     conn.doUpdate(cmd);
+    } catch (SQLException e) {
+     throw new DALException(e);
+    } finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
+   }
 
 	/**
 	 * 
@@ -21,7 +38,7 @@ public class CommodityDAO {
 	public static int create(CommodityDTO dto) throws DALException{
 	  Connector conn = new Connector();
 		String cmd = "CALL addCommodity('%s','%d');";
-		cmd = String.format(cmd,dto.getName(),dto.getSupplierID());
+		cmd = String.format(cmd,dto.getCommodityName(),dto.getSupplierID());
 		int ID;
 		try {
 			ResultSet rs = conn.doQuery(cmd);

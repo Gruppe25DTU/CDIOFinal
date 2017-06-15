@@ -3,16 +3,16 @@ package dto;
 public class SupplierDTO implements IDTO {
 
 	private int supplierID = -1;
-	private String name = "";
+	private String supplierName = "";
 	
 	public SupplierDTO(int supplierID, String name){
 		this.supplierID = supplierID;
-		this.name = name;
+		this.supplierName = name;
 	}
 
 	public SupplierDTO(SupplierDTO supplier){
 		this.supplierID = supplier.getId();
-		this.name = supplier.getName();
+		this.supplierName = supplier.getSupplierName();
 	}
 	
 	public SupplierDTO() {}
@@ -25,12 +25,12 @@ public class SupplierDTO implements IDTO {
 		this.supplierID = supplierID;
 	}
 
-	public String getName() {
-		return name;
+	public String getSupplierName() {
+		return supplierName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setSupplierName(String name) {
+		this.supplierName = name;
 	}
 	
 	

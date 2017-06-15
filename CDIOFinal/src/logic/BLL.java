@@ -62,6 +62,10 @@ public class BLL {
     System.out.println(dto);
     return UserDAO.update(dto, old_cpr);
   }
+  
+  public static void updateCommodity(CommodityDTO dto) throws DALException {
+    CommodityDAO.updateCommodity(dto);
+  }
 
   public static CommodityDTO[] getCommodity() throws DALException, SessionException {
     return CommodityDAO.getList();

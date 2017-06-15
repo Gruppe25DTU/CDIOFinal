@@ -20,7 +20,7 @@ public class SupplierDAO {
 	public static int create(SupplierDTO dto) throws DALException{
     Connector conn = new Connector();
 		String cmd = "CALL addSupplier('%s');";
-		cmd = String.format(cmd, dto.getName());
+		cmd = String.format(cmd, dto.getSupplierName());
 
 		try {
 			ResultSet rs = conn.doQuery(cmd);

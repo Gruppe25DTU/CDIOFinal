@@ -179,7 +179,7 @@ public class JUnitProductBatchAndProductBatchComp {
 	
 	private static void compareRecipe(RecipeDTO dto1,RecipeDTO dto2) {
 		assertEquals(dto1.getId(),dto2.getId());
-		assertEquals(dto1.getName(),dto2.getName());
+		assertEquals(dto1.getRecipeName(),dto2.getRecipeName());
 		
 		for(int i = 0;i<dto1.getComponents().length;i++) {
 			compareRecipeComp(dto1.getComponents()[i],dto2.getComponents()[i]);

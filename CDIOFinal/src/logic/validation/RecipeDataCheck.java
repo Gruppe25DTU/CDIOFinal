@@ -12,7 +12,7 @@ public class RecipeDataCheck {
   private static RuleSetInterface rules = new RuleSet();
 
 	public static int create(RecipeDTO dto) throws RuleException, DALException{
-		if(rules.getName().test(dto.getName()) == false || dto.getName() == null){
+		if(rules.getName().test(dto.getRecipeName()) == false || dto.getRecipeName() == null){
 			throw new RuleException("Invalid Recipe name!");
 		}
 		if(dto.getComponents() == null){

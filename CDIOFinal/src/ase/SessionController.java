@@ -364,7 +364,7 @@ public class SessionController {
 			{
 				//Progress to the next phase -- Put tare on the weight --
 				
-				String name = comm.getName().length() > 17 ? comm.getName().substring(0 , 17) : comm.getName();
+				String name = comm.getCommodityName().length() > 17 ? comm.getCommodityName().substring(0 , 17) : comm.getCommodityName();
 				String nom_netto = Double.toString(currentRecipeComp.getNomNetWeight()).replace(",", ".");
 				nom_netto = nom_netto.length() > 5 ? nom_netto.substring(0 , 5)+" kg" : nom_netto+ " kg";
 				conn.outputMsg("P111 \""+name+ " "+nom_netto+"\"");

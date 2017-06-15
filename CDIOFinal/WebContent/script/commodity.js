@@ -33,7 +33,7 @@ function populateCommodity(frm, data) {
     $.each(data, function(key, value) {  
     	if (key=="supplierID") {
 			getSupplierName(value).then(data => {
-				$("#supplier")[0].value = data.name;
+				$("#supplier")[0].value = data.supplierName;
 			}).catch(error => console.log(error));
     	}
         var ctrl = $('[name="'+key+'"]', frm);  
@@ -74,11 +74,11 @@ function populateCommoditylist(data) {
 			var commodity = data[i];
 			
 			$("#CTable").append('<tr class="clickablefield" data-href="?id=' + commodity.id + '"><td id="CTableid' + i + '">' + commodity.id +
-					'</td><td id="CTable' + i + '">' + commodity.name + 
+					'</td><td id="CTable' + i + '">' + commodity.commodityName + 
 					'</td><td id="CTablesupplierID' + i + '">' + commodity.supplierID + '</td>' +
 					'<td id="CTablesupplier' + i + '"></td></tr>');
 			getSupplierName(commodity.supplierID, $("#CTablesupplier" + i)).then(data => {
-				data.dest.append(data.name);
+				data.dest.append(data.supplierName);
 			}).catch(error => console.log(error));
 		}
 	$(".clickablefield").click(function() {
@@ -88,6 +88,6 @@ function populateCommoditylist(data) {
 
 function reloadSupplierName() {
 	getSupplierName($("#supplierID")[0].value).then(data => {
-		$("#supplier")[0].value = data.name;
+		$("#supplier")[0].value = data.supplierName;
 	}).catch(error => console.log(error))	
 }

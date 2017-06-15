@@ -22,7 +22,7 @@
 </div>
 <div id="details" class="details">
 	<div id="contentfield">
-		<form id="detailsForm" class="detailsForm" name="user">
+		<form id="detailsForm" class="detailsForm" name="recipe">
 			<section class="optionline">
 				<h2 style="font-family: candara;">
 					<i class="icon glyphicon glyphicon-pencil" style="font-size: 30px;"></i>
@@ -32,10 +32,8 @@
 			<section class="optionline">
 			<input type="button"  class="Rlist" name="list" id="listbut" value="List all Recipes" style="left: 50%;">
 			<input type="button" name="new" class="new" id="new" value="Add New Recipe" style="left: 50%; min-width: 280px;">
-			<input type="button" name="edit" id="edit" class="edit" value="Edit Recipe" style="left: 50%;">
 			</section>
             <div class="informationbox">
-                <input type="button" name="update" id="update" class="update" value="Update" style="display: none;">
                 <input type="button" name="create" class="create" id="create" value="Create New Recipe" style="display: none;">
                 <input type="button" name="cancel" id="cancel" class="cancel" value="Cancel" style="display: none;">
             </div>
@@ -46,7 +44,7 @@
 						<div class="informationboxsmall" style="padding: 0%;">ID:<br><input type="text" name="id" id="id"
 								class="protected auto" onkeyup="checkState.call(this)" disabled>
 						</div>
-						Name:<br> <input type="text" name="name" id="name"
+						Name:<br> <input type="text" name="recipeName" id="recipeName"
 							class="editable protected" maxlength="20" onkeyup="checkState.call(this)" 
 							style="width: 90%;"	disabled>
 							<br>

@@ -14,8 +14,8 @@ public class CommodityDataCheck {
 				String.valueOf(dto.getSupplierID()) == null){
 			throw new RuleException("Invalid Supplier ID!");
 		}
-		if(rules.getName().test(dto.getName())== false || 
-				dto.getName() == null){
+		if(rules.getName().test(dto.getCommodityName())== false || 
+				dto.getCommodityName() == null){
 			throw new RuleException("Invalid name!");
 		}
 		return CommodityDAO.create(dto);

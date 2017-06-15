@@ -24,6 +24,7 @@ jQuery(function($){
 
 $(document).ready(function(){
 	$("#new").click(function(){
+		editing = true;
 		startNew($(this));
 	});
 	$("#edit").click(function(){
@@ -31,6 +32,7 @@ $(document).ready(function(){
 		$("#inputfield").show();
 	});
 	$("#listbut").click(function(){
+		editing = false;
 		$("#list").show();
 		//When show a new view, close the previous view
 		$("#inputfield").hide();
@@ -51,51 +53,14 @@ $(document).ready(function() {
 		form.find('input[id="update"]')[0].style="display: initial";
 		form.find('input[id="cancel"]')[0].style="display: initial";
 	});
-
-	$('#listbut').click(function() {
-		$('#cancel').click();
-		var form = $(this).closest('form[class="detailsForm"]');
-		if (form.find('input[id="create"]')[0].tag == "active") {
-			var fields = form.find('input[class*="protected"]');
-			for (i = 0; i < fields.length; i++) {
-				var field = fields[i];
-				switch (field.type) {
-				case "radio" : case "checkbox" :
-					field.checked = false;
-					break;
-				default: 
-					field.value = "";
-				}
-				field.disabled = false;
-			};			
-		}
-		var fields = form.find('input[class*="protected"]');
-		for (i = 0; i < fields.length; i++) {
-			fields[i].disabled = true;
-		};
-		form.find('input[id="edit"]')[0].style="display: initial";
-		form.find('input[id="new"]')[0].style="display: initial";
-		form.find('input[id="create"]')[0].style="display: none";
-		form.find('input[id="update"]')[0].style="display: none";
-		form.find('input[id="cancel"]')[0].style="display: none";
-        var listname = document.getElementById('listbut').className;
-		
-		if(listname == 'Plist'){
-		$.ajax({
-			url : 'rest/productbatch/list',
-			dataType : 'json',
-			success : function(data) {
-				populateProductBatchlist(data);
-			},
-			error: function (error) {
-				console.log(error);
-			}
-		});
-		}
-	});
+    $('#listbut').click(function() {
+    	window.location = location.pathname;
+    });
 
 	$('#update').click(function() {
-		update($(this).closest('form[class="detailsForm"]'))
+		editing = false;
+		var form = $(this).closest('form[class="detailsForm"]');
+		update(form);
 	});
 
 	$('#cancel').click(function() {
@@ -103,32 +68,28 @@ $(document).ready(function() {
 	});
 
 	$('#create').click(function() {
+		editing = false;
 		var form = $(this).closest('form[class="detailsForm"]');
 		create(form[0].name, form)
 			.then(data => $("#id")[0].value = data)
 			.catch(error => console.log(error));
-		form.find('input[id="edit"]')[0].style="display: initial";
-		form.find('input[id="new"]')[0].style="display: initial";
-		form.find('input[id="create"]')[0].style="display: none";
-		form.find('input[id="update"]')[0].style="display: none";
-		form.find('input[id="cancel"]')[0].style="display: none";
 	});
 });
 
 function update(form) {
-	var fields = form.find('input');
+	var fields = form.find('input[class*="protected"]');
 	for (i = 0; i < fields.length; i++) {
 		fields[i].disabled = false;
 	};
 	var formData = $("#detailsForm").serializeObject();
+	for (i = 0; i < fields.length; i++) {
+		fields[i].disabled = true;
+	};
 	$.ajax({
 		url : "rest/" + form[0].name,
 		data : JSON.stringify(formData),
 		contentType : "application/json",
 		method : "PUT",
-		success : function(data){
-
-		},
 		error : function(jqXHR , text , error){
 			alert(jqXHR.status + text + error);
 		}
@@ -222,12 +183,7 @@ function populateSupplierlist(data) {
 	for (i = 0; i < data.length; i++) {
 		var supplier = data[i];
 		$("#STable").append('<tr class="clickablefield" data-href="?id=' + supplier.id + '">' +	
-				'<td id="STableid' + i + '"></td><td id="STablename' + i + '"></td></tr>');
-		$.each(supplier, function(key, value) {
-			if ($("#STable" + key + i)[0] != null) {
-				$("#STable" + key + i)[0].append(value);
-			}
-		});
+				'<td id="STableid' + i + '">' + supplier.id + '</td><td id="STablename' + i + '">' + supplier.supplierName + '</td></tr>');
 	}
 	$(".clickablefield").click(function() {
 		window.location = location.pathname + $(this).data("href");
@@ -300,6 +256,11 @@ function create(path, form) {
 			alert(jqXHR.status + text + error);
 		}
 	}));	
+	form.find('input[id="edit"]')[0].style="display: initial";
+	form.find('input[id="new"]')[0].style="display: initial";
+	form.find('input[id="create"]')[0].style="display: none";
+	form.find('input[id="update"]')[0].style="display: none";
+	form.find('input[id="cancel"]')[0].style="display: none";
 }
 
 function startNew(event) {

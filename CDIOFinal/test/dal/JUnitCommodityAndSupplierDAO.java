@@ -96,12 +96,12 @@ public class JUnitCommodityAndSupplierDAO {
 	
 	private static void compareSupplierDTO(SupplierDTO dto1, SupplierDTO dto2) {
 		assertEquals(dto1.getId(),dto2.getId()); 
-		assertEquals(dto1.getName(),dto2.getName());
+		assertEquals(dto1.getSupplierName(),dto2.getSupplierName());
 	}
 	
 	private static void compareCommodityDTO(CommodityDTO dto1,CommodityDTO dto2) {
 		assertEquals(dto1.getId(),dto2.getId());
-		assertEquals(dto1.getName(),dto2.getName());
+		assertEquals(dto1.getCommodityName(),dto2.getCommodityName());
 		assertEquals(dto1.getSupplierID(),dto2.getSupplierID());
 	}
 

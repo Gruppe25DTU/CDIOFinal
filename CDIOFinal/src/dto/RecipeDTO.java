@@ -4,18 +4,18 @@ import java.util.List;
 
 public class RecipeDTO implements IDTO {
 	private  int recipeID =-1;
-	private String name = "";
+	private String recipeName = "";
 	RecipeCompDTO[] components;
 	
 	public RecipeDTO(int recipeID, String name, RecipeCompDTO[] components){
 		this.recipeID = recipeID;
-		this.name = name;
+		this.recipeName = name;
 		this.components = components;
 	}
 	
 	public RecipeDTO(RecipeDTO recipe){
 		this.recipeID = recipe.getId();
-		this.name = recipe.getName();
+		this.recipeName = recipe.getRecipeName();
 	}
 	
 	public RecipeDTO() {}
@@ -28,12 +28,12 @@ public class RecipeDTO implements IDTO {
 		this.recipeID = recipeID;
 	}
 
-	public String getName() {
-		return name;
+	public String getRecipeName() {
+		return recipeName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setRecipeName(String name) {
+		this.recipeName = name;
 	}
 
 	public RecipeCompDTO[] getComponents() {

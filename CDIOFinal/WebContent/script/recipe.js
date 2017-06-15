@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	$("#commoditiesTableBox").hide();
-	$("#edit").click(function() {
+	$("#new").click(function() {
+		editing = true;
 	    getCommodityList().then(data => populateCommodityShoppingList(data)).catch(error => console.log(error));
 		$("#commoditiesTableBox").show();
 	});
@@ -55,9 +56,9 @@ function populate(frm, data) {
     					"</td><td>" + value[i].nomNetWeight + "</td><td>" + value[i].tolerance + "</td><td id='supplier" + i + "'>");
     			$("#componentTable").append("</td></tr>");
     			getCommodityName(value[i].commodityID, $("#commodity" + i)).then(data => {
-    				data.dest.append(data.name);
+    				data.dest.append(data.commodityName);
         			getSupplierName(data.supplierID, $("#"+data.dest[0].id.replace("commodity","supplier"))).then(data2 => {
-        				data2.dest.append(data2.name);
+        				data2.dest.append(data2.supplierName);
         			}).catch(error => console.log(error));
     			}).catch(error => console.log(error));
     		}
@@ -136,14 +137,14 @@ function populateRecipelist(data) {
 	for (i = 0; i < data.length; i++) {
 		var recipe = data[i];
 		
-		$("#RLTable").append('<tr class="clickablefield" data-href="?id=' + recipe.id + '"><td id="RLTableid' + i + '"></td><td id="RLTablename' + i + '"></td><td id="RLTablecomponents' + i + '"></td></tr>');
+		$("#RLTable").append('<tr class="clickablefield" data-href="?id=' + recipe.id + '"><td id="RLTableid' + i + '"></td><td id="RLTablerecipeName' + i + '"></td><td id="RLTablecomponents' + i + '"></td></tr>');
 		$.each(recipe, function(key, value) {
 			if (key == "components"){
 				$("#RLTablecomponents" + i).append('<table>');
 				for (j = 0; j < value.length; j++) {
 					$("#RLTablecomponents" + i).append('<tr><td id="recipe' + i + 'component' + j + '"></td></tr>');
 	    			getCommodityName(value[j].commodityID, $("#recipe" + i + "component" + j)).then(data => {
-	    				data.dest.append(data.name);
+	    				data.dest.append(data.commodityName);
 	    			}).catch(error => console.log(error));
 				}
 				$("#RLTablecomponents" + i).append('</table>');
@@ -162,8 +163,6 @@ function startNew(event) {
 	$("#list").hide();
 	$("#inputfield").show();
 	var form = event.closest('form[class="detailsForm"]');
-	form.find('input[id="edit"]')[0].style="display: none";
-	form.find('input[id="update"]')[0].style="display: none";
 	form.find('input[id="new"]')[0].style="display: none";
 	form.find('input[id="cancel"]')[0].style="display: initial";
 	form.find('input[id="create"]')[0].style="display: initial";
@@ -184,7 +183,36 @@ function startNew(event) {
 	$("#componentTable tr").remove();
 }
 
+function tableToJSON() {
+	var jsonString = "{recipeName:'" + $("#recipeName")[0].value + "',components:[";
+	var jsonEnd = "]}"
+	for (i = 0; i < $("#componentTable tr").length; i++) {
+		var id = $("#componentTable tr")[i].children[0].innerText;
+		var weight = $("#componentTable tr")[i].children[2].innerText;
+		var tolerance = $("#componentTable tr")[i].children[3].innerText;
+		if (i > 0) {
+			jsonString = jsonString + ",";
+		}
+		jsonString = jsonString + "{commodityID:" + id + ",nomNetWeight:" + weight + ",tolerance:" + tolerance + "}";
+	}
+	jsonString = jsonString + jsonEnd;
+	$.ajax(
+			{
+				url : 'rest/recipe',
+				data : JSON.stringify(jsonString),
+				contentType : "application/json",
+				method : "POST",			
+			}
+	)
+}
 
+function create(path, form) {
+	var formData = $("#detailsForm").serializeObject();
+	form.find('input[id="new"]')[0].style="display: initial";
+	form.find('input[id="create"]')[0].style="display: none";
+	form.find('input[id="cancel"]')[0].style="display: none";
+	tableToJSON();
+}
 
 function populateCommodityShoppingList(data) {
 	$("#CLTable tr").remove();
@@ -206,10 +234,10 @@ function populateCommodityShoppingList(data) {
 		
 		$("#commoditiesTable").append('<tr id="CLcommodity' + i + '" class="shoppingitem" data-id="' + commodity.id + '"><td name="CLid' + commodity.id + '">' + commodity.id + '</td><td id="CLname' + i + '"></td><td id="CLsupplier' + i + '"></td></tr>');
 		getCommodityName(commodity.id, $("#CLname" + i)).then(data => {
-			data.dest.append(data.name);
+			data.dest.append(data.commodityName);
 		}).catch(error => console.log(error));
 		getSupplierName(commodity.supplierID, $("#CLsupplier" + i)).then(data => {
-			data.dest.append(data.name);
+			data.dest.append(data.supplierName);
 		}).catch(error => console.log(error));
 	}
 }
@@ -220,9 +248,9 @@ function addCommodity(commodity) {
 			"</td><td>" + 0 + "</td><td>" + 0.1 + "</td><td id='supplier" + id + "'>");
 	$("#componentTable").append("</td></tr>");
 	getCommodityName(commodity.data("id"), $("#commodity" + id)).then(data => {
-		data.dest.append(data.name);
+		data.dest.append(data.commodityName);
 		getSupplierName(data.supplierID, $("#"+data.dest[0].id.replace("commodity","supplier"))).then(data2 => {
-			data2.dest.append(data2.name);
+			data2.dest.append(data2.supplierName);
 		}).catch(error => console.log(error));
 	}).catch(error => console.log(error));
 }

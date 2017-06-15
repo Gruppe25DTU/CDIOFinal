@@ -33,23 +33,21 @@ function populateCommodityBatch(frm, data) {
     $.each(data, function(key, value) {  
     	if (key=="commodityID") {
 			getCommodityName(value).then(data => {
-				$("#commodity")[0].value = data.name;
+				$("#commodityName")[0].value = data.commodityName;
 			}).catch(error => console.log(error));
     	}
-    	else {
-	        var ctrl = $('[name="'+key+'"]', frm);  
-	        switch(ctrl.prop("type")) { 
-	            case "radio": case "checkbox":
-	            	for(i = 0; i < value.length; i++) {
-		                ctrl.each(function() {
-		                    if($(this).attr('value') == value[i]) $(this).attr("checked","checked");
-		                });
-	            	}
-	                break;  
-	            default:
-	                ctrl.val(value); 
-	        }
-    	}
+        var ctrl = $('[name="'+key+'"]', frm);  
+        switch(ctrl.prop("type")) { 
+            case "radio": case "checkbox":
+            	for(i = 0; i < value.length; i++) {
+	                ctrl.each(function() {
+	                    if($(this).attr('value') == value[i]) $(this).attr("checked","checked");
+	                });
+            	}
+                break;  
+            default:
+                ctrl.val(value); 
+        }
     });  
 }
 
@@ -79,10 +77,10 @@ function populateCommodityBatchlist(data) {
 					'</td><td id="CBTableSupplierID' + i + '"></td>' +
 					'<td id="CBTableSupplier' + i + '"></td></tr>');
 			getCommodity(commodityBatch.commodityID, i).then(data => {
-				$("#CBTableCommodity" + data.dest)[0].append(data.name);
+				$("#CBTableCommodity" + data.dest)[0].append(data.commodityName);
 				getSupplierName(data.supplierID, data.dest).then(data => {
 					$("#CBTableSupplierID" + data.dest)[0].append(data.id);
-					$("#CBTableSupplier" + data.dest)[0].append(data.name);
+					$("#CBTableSupplier" + data.dest)[0].append(data.supplierName);
 				}).catch(error => console.log(error));
 			}).catch(error => console.log(error));
 		}
@@ -120,4 +118,36 @@ function getCommodity(id, dest){
 				}
 			}
 	));
+}
+
+function startNew(event) {
+	$("#list").hide();
+	$("#inputfield").show();
+	var form = event.closest('form[class="detailsForm"]');
+	form.find('input[id="new"]')[0].style="display: none";
+	form.find('input[id="cancel"]')[0].style="display: initial";
+	form.find('input[id="create"]')[0].style="display: initial";
+	form.find('input[id="create"]')[0].tag="active";
+	$("#id")[0].value = "";
+	var fields = form.find('input[class*="protected"]');
+	for (i = 0; i < fields.length; i++) {
+		var field = fields[i];
+		if (field.classList.contains("auto")) {
+			continue;
+		}
+		switch (field.type) {
+		case "radio" : case "checkbox" :
+			field.checked = false;
+			break;
+		default: 
+			field.value = "";
+		}
+		field.disabled = false;
+	};
+}
+
+function reloadCommodityName() {
+	getCommodityName($("#commodityID")[0].value).then(data => {
+		$("#commodityName")[0].value = data.commodityName;
+	}).catch(error => console.log(error))	
 }

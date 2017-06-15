@@ -12,7 +12,7 @@ public class SupplierDataCheck {
 
 	public static int create(SupplierDTO dto) throws RuleException, DALException{
 
-		if(rules.getName().test(dto.getName()) == false || dto.getName() == null){
+		if(rules.getName().test(dto.getSupplierName()) == false || dto.getSupplierName() == null){
 			throw new RuleException("Invalid Supplier Name!");
 		}
 		return SupplierDAO.create(dto);

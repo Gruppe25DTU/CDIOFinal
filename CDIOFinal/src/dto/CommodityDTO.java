@@ -2,18 +2,18 @@ package dto;
 
 public class CommodityDTO implements IDTO {
 	private int commodityID = -1;
-	private String name = "";
+	private String commodityName = "";
 	private int supplierID = -1;
 
 public CommodityDTO(int commodityID, String name, int supplierID){
 		this.commodityID = commodityID;
-		this.name = name;
+		this.commodityName = name;
 		this.supplierID = supplierID;
 	}
 
 public CommodityDTO(CommodityDTO commodity){
 	this.commodityID = commodity.getId();
-	this.name = commodity.getName();
+	this.commodityName = commodity.getCommodityName();
 	this.supplierID = commodity.getSupplierID();
 }
 
@@ -27,12 +27,12 @@ public void setId(int commodityID) {
 	this.commodityID = commodityID;
 }
 
-public String getName() {
-	return name;
+public String getCommodityName() {
+	return commodityName;
 }
 
-public void setName(String name) {
-	this.name = name;
+public void setCommodityName(String name) {
+	this.commodityName = name;
 }
 
 public int getSupplierID() {
