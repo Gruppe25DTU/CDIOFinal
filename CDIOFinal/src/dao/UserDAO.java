@@ -136,7 +136,7 @@ public class UserDAO {
 	 * @param active
 	 * @throws DALException
    */
-	public static void changeStatus(int ID, boolean active) throws DALException {
+	public static boolean changeStatus(int ID, boolean active) throws DALException {
     Connector conn = new Connector();
     String cmd = "CALL setActive('%d','%d');";
     int status;
@@ -148,9 +148,7 @@ public class UserDAO {
 
     try {
 			ResultSet rs = conn.doQuery(cmd);
-			if(rs.getInt("result") == 0) {
-				throw new DALException("Deactivation not allowed");
-			}
+			return rs.next();
     } catch (SQLException e) {
       throw new DALException(e);
     } finally {
@@ -217,14 +215,15 @@ public class UserDAO {
   public static boolean update(UserDTO dto, String old_cpr) throws DALException {
     Connector conn = new Connector();
     String updateUser = "CALL updateUser('%d','%s','%d','%s');";
-    String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%d','%d');";
+    String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
     String deleteExistingRoles = "CALL deleteUserRoles('%d');";
     updateUser = String.format(updateUser, dto.getId(), dto.getUserName(), dto.getStatus(), dto.getEmail());
-    updateUserInfo = String.format(updateUserInfo, dto.getFirstName(), dto.getLastName(), dto.getIni(), Long.valueOf(dto.getCpr()),
-        Long.valueOf(old_cpr));
+    updateUserInfo = String.format(updateUserInfo, dto.getFirstName(), dto.getLastName(), dto.getIni(), dto.getCpr(),
+        old_cpr);
     deleteExistingRoles = String.format(deleteExistingRoles, dto.getId());
 
     try {
+      System.out.println(updateUserInfo);
       conn.doUpdate(updateUserInfo);
       conn.doUpdate(updateUser);
       conn.doUpdate(deleteExistingRoles);

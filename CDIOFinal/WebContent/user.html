@@ -6,9 +6,9 @@
 <META HTTP-EQUIV="Expires" CONTENT="-1">
 <script src="script/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="script/jquery.serialize-object.js" type="text/javascript"></script>
-<script type="text/javascript" src="script/default.js" type="text/javascript"></script>
-<script type="text/javascript" src="script/user.js" type="text/javascript"></script>
-<script type="text/javascript" src="script/searchfunctions.js" type="text/javascript"></script>
+<script src="script/default.js" type="text/javascript"></script>
+<script src="script/user.js" type="text/javascript"></script>
+<script src="script/searchfunctions.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="css/default.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
@@ -45,7 +45,7 @@
 							onkeyup="checkState.call(this)" disabled> CPR:<br>
 						<div id="CPRTOTAL">
 							<input type="text" id="CPR" name="cpr" maxlength="10"
-								onkeyup="checkState.call(this)" class="protected" disabled>
+								onkeyup="checkState.call(this)" class="editable protected" disabled>
 						</div>
 						Email:<br> <input type="email" name="email" id="EmailField"
 							class="editable protected" onkeyup="checkState.call(this)"
@@ -59,33 +59,29 @@
 							id="SurnameField" class="editable protected"
 							onkeyup="checkState.call(this)" disabled><br>
 						Initials:<br> <input type="text" id="initialsField" maxlength="4"
-							name="ini" maxlength="4" class="protected"
+							name="ini" maxlength="4" class="editable protected"
 							onkeyup="checkState.call(this)" disabled><br>
 					</div>
 					<div class="informationbox">
 
 						<div class="rolebox">
-							Roles:<br> Pharmacist:<input type="checkbox"
-								value="pharmacist" name="roles[]" name="pharmacist"
-								class="editable protected" onkeyup="checkState.call(this)"
-								disabled> Administrator:<input type="checkbox"
-								value="administrator" name="roles[]" class="editable protected"
-								onkeyup="checkState.call(this)" disabled><br>
-							Foreman: <input type="checkbox"
-								value="foreman" name="roles[]"
-								class="editable protected" onkeyup="checkState.call(this)"
-								disabled> Lab Technician: <input type="checkbox"
-								value="LaboratoryTechnician" name="roles[]" class="editable protected"
-								onkeyup="checkState.call(this)" disabled><br>
+							Roles:<br>
+							Pharmacist:
+							<input type="checkbox" value="Pharmacist" name="roles[]"class="editable protected" onkeyup="checkState.call(this)" disabled>
+							Administrator:
+							<input type="checkbox" value="Administrator" name="roles[]" class="editable protected" onkeyup="checkState.call(this)" disabled><br>
+							Foreman:
+							<input type="checkbox" value="Foreman" name="roles[]" class="editable protected" onkeyup="checkState.call(this)" disabled>
+							Lab Technician:
+							<input type="checkbox" value="LaboratoryTechnician" name="roles[]" class="editable protected" onkeyup="checkState.call(this)" disabled><br>
 						</div>
 					</div>
 					<div class="informationbox">
-						<input type="button" name="update" id="update" class="update"
-							value="Update" style="display: none;"> <input
-							type="button" name="create" class="create" id="create"
-							value="Create New User" style="display: none;"> <input
-							type="button" name="cancel" id="cancel" class="cancel"
-							value="Cancel" style="display: none;">
+						<input type="button" name="update" id="update" class="update"value="Update" style="display: none;">
+						<input type="button" name="create" class="create" id="create" value="Create New User" style="display: none;">
+						<input type="button" name="cancel" id="cancel" class="cancel" value="Cancel" style="display: none;">
+                        <input type="button" name="deactivate" id="deactivate" class="deactivate" value="Deactivate" style="display: none;">
+                        <input type="button" name="activate" id="activate" class="activate" value="Activate" style="display: none;">
 					</div>
 				</div>
 			</div>

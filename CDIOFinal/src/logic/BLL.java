@@ -118,5 +118,9 @@ public class BLL {
   public static ProductBatchCompDTO[] getProductBatchComponents(int id) throws DALException, SessionException {
     return ProductBatchDAO.getProductBatchComponents(id);
   }
+
+  public static boolean changeStatus(int id, boolean active) throws DALException {
+    return UserDAO.changeStatus(id, active);
+  }
   
 }

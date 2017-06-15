@@ -95,27 +95,7 @@ $(document).ready(function() {
 	});
 
 	$('#update').click(function() {
-		var form = $(this).closest('form[class="input"]');
-		var fields = form.find('input');
-		for (i = 0; i < fields.length; i++) {
-			fields[i].disabled = false;
-		};
-		var formData = $("#detailsForm").serializeObject();
-		$('#cancel').click();
-		$.ajax({
-		
-		
-			url : "rest/" + form[0].name +"/cpr=" + cpr,
-			data : JSON.stringify(formData),
-			contentType : "application/json",
-			method : "POST",
-			success : function(data){
-
-			},
-			error : function(jqXHR , text , error){
-				alert(jqXHR.status + text + error);
-			}
-		});
+		update($(this).closest('form[class="detailsForm"]'))
 	});
 
 	$('#cancel').click(function() {
@@ -124,17 +104,36 @@ $(document).ready(function() {
 
 	$('#create').click(function() {
 		var form = $(this).closest('form[class="detailsForm"]');
-		if(form.find('input[id="create"]')[0].tag == "active") {
-			form.find('input[id="create"]')[0].tag = "";
-			create(form[0].name, form);
-			form.find('input[id="edit"]')[0].style="display: initial";
-			form.find('input[id="new"]')[0].style="display: initial";
-			form.find('input[id="create"]')[0].style="display: none";
-			form.find('input[id="update"]')[0].style="display: none";
-			form.find('input[id="cancel"]')[0].style="display: none";
-		}
+		create(form[0].name, form)
+			.then(data => $("#id")[0].value = data)
+			.catch(error => console.log(error));
+		form.find('input[id="edit"]')[0].style="display: initial";
+		form.find('input[id="new"]')[0].style="display: initial";
+		form.find('input[id="create"]')[0].style="display: none";
+		form.find('input[id="update"]')[0].style="display: none";
+		form.find('input[id="cancel"]')[0].style="display: none";
 	});
 });
+
+function update(form) {
+	var fields = form.find('input');
+	for (i = 0; i < fields.length; i++) {
+		fields[i].disabled = false;
+	};
+	var formData = $("#detailsForm").serializeObject();
+	$.ajax({
+		url : "rest/" + form[0].name,
+		data : JSON.stringify(formData),
+		contentType : "application/json",
+		method : "PUT",
+		success : function(data){
+
+		},
+		error : function(jqXHR , text , error){
+			alert(jqXHR.status + text + error);
+		}
+	});
+}
 
 function setframe(url) {
 	document.all.frame.src=url;
@@ -290,37 +289,17 @@ function getById(path, id){
 	));
 }
 
-//function getByName(path, name){
-//return Promise.resolve($.ajax(
-//{
-//url : "rest/" + path + "/name/"+name,
-//dataType : 'json',
-//success : function(data){
-//populate(frm, data);
-//},
-//error : function(jqXHR, text, error){
-//console.log(jqXHR.status + text + error);
-//}
-//}
-//));
-//}
-
-
 function create(path, form) {
 	var formData = $("#detailsForm").serializeObject();
-	$('#cancel').click();
-	$.ajax({
+	return Promise.resolve( $.ajax({
 		url : "rest/" + path + "/",
 		data : JSON.stringify(formData),
 		contentType : "application/json",
 		method : "POST",
-		success : function(data){
-			alert(data);
-		},
 		error : function(jqXHR , text , error){
 			alert(jqXHR.status + text + error);
 		}
-	});	
+	}));	
 }
 
 function startNew(event) {
@@ -333,6 +312,7 @@ function startNew(event) {
 	form.find('input[id="cancel"]')[0].style="display: initial";
 	form.find('input[id="create"]')[0].style="display: initial";
 	form.find('input[id="create"]')[0].tag="active";
+	$("#id")[0].value = "";
 	var fields = form.find('input[class*="protected"]');
 	for (i = 0; i < fields.length; i++) {
 		var field = fields[i];

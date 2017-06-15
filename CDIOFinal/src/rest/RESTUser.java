@@ -36,9 +36,35 @@ public class RESTUser {
       UserDTO[] dto = BLL.getUser();
       return Response.status(Status.OK).entity(dto).build();
     } catch (DALException e) {
+      e.printStackTrace();
       return Response.status(Status.NOT_ACCEPTABLE).build();
     } catch (SessionException e) {
+      e.printStackTrace();
       return Response.status(Status.UNAUTHORIZED).build();  
+    }
+  }
+
+  @GET
+  @Path("/deactivate/id={id : \\d+}")
+  public Response deactivateUser(@PathParam("id") int id) {
+    try {
+      BLL.changeStatus(id, false);
+      return Response.status(Status.OK).build();
+    } catch (DALException e) {
+      e.printStackTrace();
+      return Response.status(Status.NOT_ACCEPTABLE).build();
+    }
+  }
+  
+  @GET
+  @Path("/activate/id={id : \\d+}")
+  public Response activateUser(@PathParam("id") int id) {
+    try {
+      BLL.changeStatus(id, true);
+      return Response.status(Status.OK).build();
+    } catch (DALException e) {
+      e.printStackTrace();
+      return Response.status(Status.NOT_ACCEPTABLE).build();
     }
   }
 
@@ -50,8 +76,10 @@ public class RESTUser {
       UserDTO dto = BLL.getUser(id);
       return Response.status(Status.OK).entity(dto).build();
     } catch (DALException e) {
+      e.printStackTrace();
       return Response.status(Status.NOT_ACCEPTABLE).build();
     } catch (SessionException e) {
+      e.printStackTrace();
       return Response.status(Status.UNAUTHORIZED).build();  
     }
   }
@@ -61,10 +89,12 @@ public class RESTUser {
 	public Response createDTO(UserDTO dto) {
 		try {
 			int id = BLL.createDTO(dto, "user");
-			return Response.status(Status.CREATED).entity("Id =" + id).build();
+			return Response.status(Status.CREATED).entity(id).build();
 		} catch (DALException | DTOException e) {
+      e.printStackTrace();
 			return Response.status(Status.NOT_ACCEPTABLE).build();
 		} catch (SessionException e) {
+      e.printStackTrace();
 			return Response.status(Status.UNAUTHORIZED).build();  
 		}
 	}
@@ -77,8 +107,10 @@ public class RESTUser {
 			boolean updated = BLL.updateUser(dto, old_cpr);
 			return Response.status(Status.CREATED).entity(updated).build();
 		} catch (DALException | DTOException e) {
+      e.printStackTrace();
 			return Response.status(Status.NOT_ACCEPTABLE).build();
 		} catch (SessionException e) {
+      e.printStackTrace();
 			return Response.status(Status.UNAUTHORIZED).build();  
 		}
 	}
