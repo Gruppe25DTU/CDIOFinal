@@ -217,11 +217,11 @@ public class UserDAO {
   public static boolean update(UserDTO dto, String old_cpr) throws DALException {
     Connector conn = new Connector();
     String updateUser = "CALL updateUser('%d','%s','%d','%s');";
-    String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
+    String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%d','%d');";
     String deleteExistingRoles = "CALL deleteUserRoles('%d');";
     updateUser = String.format(updateUser, dto.getId(), dto.getUserName(), dto.getStatus(), dto.getEmail());
-    updateUserInfo = String.format(updateUserInfo, dto.getFirstName(), dto.getLastName(), dto.getIni(), dto.getCpr(),
-        old_cpr);
+    updateUserInfo = String.format(updateUserInfo, dto.getFirstName(), dto.getLastName(), dto.getIni(), Long.valueOf(dto.getCpr()),
+        Long.valueOf(old_cpr));
     deleteExistingRoles = String.format(deleteExistingRoles, dto.getId());
 
     try {
