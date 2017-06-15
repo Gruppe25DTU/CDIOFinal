@@ -1,4 +1,3 @@
-@CHARSET "ISO-8859-1";
 
 #RInput {
   width: 30%;
@@ -20,7 +19,6 @@
 .RTable {
   border-collapse: collapse;
   width: 100%;
-  align: text-center;
   border: 1px solid #ddd;
   font-size: 18px;
   font-family: Candara;
@@ -30,6 +28,7 @@
 #RTable th, #RTable td, #RTable input[type=button] {
   text-align: center;
   padding: 12px;
+
 }
 
 #RTable tr {
@@ -74,7 +73,7 @@ font-family: Candara;
   font-family: Candara;
 }
 
-#RLTablecss {
+.RLTablecss {
   border-collapse: collapse;
   width: 100%;
   border: 1px solid #ddd;
@@ -109,3 +108,10 @@ color: #ff8000;
 background-color: #e7ebe8;
 color:black;
 }
+
+.tablediv {
+	width: 45%;
+	 float: left;
+	  overflow-x: scroll;
+	  padding: 5px;
+	}

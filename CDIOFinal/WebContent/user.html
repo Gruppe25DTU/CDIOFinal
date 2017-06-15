@@ -1,9 +1,6 @@
+<!DOCTYPE html>
 <html>
-<body>
 <head>
-<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
-<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
-<META HTTP-EQUIV="Expires" CONTENT="-1">
 <script src="script/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="script/jquery.serialize-object.js" type="text/javascript"></script>
 <script src="script/default.js" type="text/javascript"></script>
@@ -11,8 +8,10 @@
 <script src="script/searchfunctions.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="css/default.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<title>User Administration</title>
 
 </head>
+<body>
 <div class="informationboxsmall search">
 	<form class="searchForm" id="searchForm" name="searchForm">
 		Search for users by ID or name: <input type="text" name="search"
@@ -28,11 +27,11 @@
 					<i class="icon glyphicon glyphicon-user" style="font-size: 30px;"></i>
 					User Information</h2>
 			</section>
-			<section class="optionline">
+			<div class="optionline">
 			 <input type="button" class="Ulist" name="list" id="listbut" value="List all Users"> <input type="button" name="new" class="create"
 						id="new" value="Add New User"> <input
 						type="button" name="edit" id="edit" class="edit" value="Edit User">
-				</section>
+				</div>
 			<div id="inputfield" style="display: none;">
 				<div class="content">
 					<div class="informationboxsmall">
@@ -59,7 +58,7 @@
 							id="SurnameField" class="editable protected"
 							onkeyup="checkState.call(this)" disabled><br>
 						Initials:<br> <input type="text" id="initialsField" maxlength="4"
-							name="ini" maxlength="4" class="editable protected"
+							name="ini" class="editable protected"
 							onkeyup="checkState.call(this)" disabled><br>
 					</div>
 					<div class="informationbox">
@@ -67,7 +66,7 @@
 						<div class="rolebox">
 							Roles:<br>
 							Pharmacist:
-							<input type="checkbox" value="Pharmacist" name="roles[]"class="editable protected" onkeyup="checkState.call(this)" disabled>
+							<input type="checkbox" value="Pharmacist" name="roles[]" class="editable protected" onkeyup="checkState.call(this)" disabled>
 							Administrator:
 							<input type="checkbox" value="Administrator" name="roles[]" class="editable protected" onkeyup="checkState.call(this)" disabled><br>
 							Foreman:
@@ -77,7 +76,7 @@
 						</div>
 					</div>
 					<div class="informationbox">
-						<input type="button" name="update" id="update" class="update"value="Update" style="display: none;">
+						<input type="button" name="update" id="update" class="update" value="Update" style="display: none;">
 						<input type="button" name="create" class="create" id="create" value="Create New User" style="display: none;">
 						<input type="button" name="cancel" id="cancel" class="cancel" value="Cancel" style="display: none;">
                         <input type="button" name="deactivate" id="deactivate" class="deactivate" value="Deactivate" style="display: none;">
