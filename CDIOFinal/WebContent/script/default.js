@@ -246,6 +246,11 @@ function getById(path, id){
 }
 
 function create(path, form) {
+	form.find('input[id="edit"]')[0].style="display: initial";
+	form.find('input[id="new"]')[0].style="display: initial";
+	form.find('input[id="create"]')[0].style="display: none";
+	form.find('input[id="update"]')[0].style="display: none";
+	form.find('input[id="cancel"]')[0].style="display: none";
 	var formData = $("#detailsForm").serializeObject();
 	return Promise.resolve( $.ajax({
 		url : "rest/" + path + "/",
@@ -255,12 +260,7 @@ function create(path, form) {
 		error : function(jqXHR , text , error){
 			alert(jqXHR.status + text + error);
 		}
-	}));	
-	form.find('input[id="edit"]')[0].style="display: initial";
-	form.find('input[id="new"]')[0].style="display: initial";
-	form.find('input[id="create"]')[0].style="display: none";
-	form.find('input[id="update"]')[0].style="display: none";
-	form.find('input[id="cancel"]')[0].style="display: none";
+	}));
 }
 
 function startNew(event) {

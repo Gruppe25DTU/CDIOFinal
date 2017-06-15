@@ -14,12 +14,11 @@ $(document).ready(function() {
 				populateRecipelist(data);
 			},
 			error: function (error) {
-				alert(" Can't do because: " + error);
+				console.log(error);
 			}
 		});
 		$("#list").show();
 		$("#inputfield").hide();
-		return;
     }
     else {
 		$("#list").hide();
@@ -184,22 +183,29 @@ function startNew(event) {
 }
 
 function tableToJSON() {
-	var jsonString = "{recipeName:'" + $("#recipeName")[0].value + "',components:[";
-	var jsonEnd = "]}"
+	var recipe = new Object();
+	recipe.recipeName = $("#recipeName")[0].value;
+	recipe.components = [];
 	for (i = 0; i < $("#componentTable tr").length; i++) {
-		var id = $("#componentTable tr")[i].children[0].innerText;
-		var weight = $("#componentTable tr")[i].children[2].innerText;
-		var tolerance = $("#componentTable tr")[i].children[3].innerText;
-		if (i > 0) {
-			jsonString = jsonString + ",";
-		}
-		jsonString = jsonString + "{commodityID:" + id + ",nomNetWeight:" + weight + ",tolerance:" + tolerance + "}";
+		var component = new Object();
+		component.commodityID = $("#componentTable tr")[i].children[0].innerText;
+		component.nomNetWeight = $("#componentTable tr")[i].children[2].innerText;
+		component.tolerance = $("#componentTable tr")[i].children[3].innerText;
+		recipe.components.push(component);
 	}
-	jsonString = jsonString + jsonEnd;
+//	var jsonString = "{recipeName:'" + $("#recipeName")[0].value + "',components:[";
+//	var jsonEnd = "]}"
+//	for (i = 0; i < $("#componentTable tr").length; i++) {
+//		if (i > 0) {
+//			jsonString = jsonString + ",";
+//		}
+//		jsonString = jsonString + "{commodityID:" + id + ",nomNetWeight:" + weight + ",tolerance:" + tolerance + "}";
+//	}
+//	jsonString = jsonString + jsonEnd;
 	$.ajax(
 			{
 				url : 'rest/recipe',
-				data : JSON.stringify(jsonString),
+				data : JSON.stringify(recipe),
 				contentType : "application/json",
 				method : "POST",			
 			}
@@ -215,7 +221,7 @@ function create(path, form) {
 }
 
 function populateCommodityShoppingList(data) {
-	$("#CLTable tr").remove();
+	$("#commoditiesTable tr").remove();
 	for (i = 0; i < data.length; i++) {
 		var commodity = data[i];
 		
