@@ -13,7 +13,7 @@ $(document).ready(function() {
 		});
 		$("#list").show();
 		$("#inputfield").hide();
-		return;
+		$("#edit").hide();
     }
     else {
 		$("#list").hide();

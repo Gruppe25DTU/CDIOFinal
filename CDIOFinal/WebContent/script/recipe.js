@@ -19,6 +19,7 @@ $(document).ready(function() {
 		});
 		$("#list").show();
 		$("#inputfield").hide();
+		$("#edit").hide();
     }
     else {
 		$("#list").hide();
