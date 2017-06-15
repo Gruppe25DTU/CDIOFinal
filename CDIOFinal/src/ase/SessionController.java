@@ -363,6 +363,18 @@ public class SessionController {
 			else
 			{
 				//Progress to the next phase -- Put tare on the weight --
+				
+				String name = comm.getName().length() > 17 ? comm.getName().substring(0 , 17) : comm.getName();
+				String nom_netto = Double.toString(currentRecipeComp.getNomNetWeight()).replace(",", ".");
+				nom_netto = nom_netto.length() > 5 ? nom_netto.substring(0 , 5)+" kg" : nom_netto+ " kg";
+				conn.outputMsg("P111 \""+name+ " "+nom_netto+"\"");
+				try 
+				{
+					Thread.sleep(4000);
+				} 
+				catch (InterruptedException e) {
+					
+				}
 				phase = PhaseType.PUT_TARE;
 				conn.outputMsg("P111 \"Place tare on weight [->\"");
 			}
@@ -390,10 +402,7 @@ public class SessionController {
 			break;
 		case TARA_REPLY :
 			//Progress to the next phase --Weighing the commodity--
-			String name = comm.getName().length() > 17 ? comm.getName().substring(0 , 17) : comm.getName();
-			String nom_netto = Double.toString(currentRecipeComp.getNomNetWeight()).replace(",", ".");
-			nom_netto = nom_netto.length() > 5 ? nom_netto.substring(0 , 5)+" kg" : nom_netto+ " kg";
-			conn.outputMsg("P111 \""+name+ " "+nom_netto+" [->\"");
+			conn.outputMsg("P111 \"Put commodity in tare\"");
 			phase = PhaseType.WEIGH_COMMODITY;
 			break;
 		case WEIGHT_REPLY :
