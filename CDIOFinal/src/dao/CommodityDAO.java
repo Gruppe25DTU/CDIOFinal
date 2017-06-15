@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import logic.CDIOException.*;
 
 public class CommodityDAO {
 
-
 	/**
 	 * 
 	 * @param dto
@@ -19,11 +19,12 @@ public class CommodityDAO {
 	 * @throws DALException
 	 */
 	public static int create(CommodityDTO dto) throws DALException{
+	  Connector conn = new Connector();
 		String cmd = "CALL addCommodity('%s','%d');";
 		cmd = String.format(cmd,dto.getName(),dto.getSupplierID());
 		int ID;
 		try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
       if (!rs.next()) {
         throw new EmptyResultSetException();
       }
@@ -31,6 +32,12 @@ public class CommodityDAO {
 			return ID;
 		} catch (SQLException e) {
 			throw new DALException(e);
+		} finally {
+		  try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
 		}
 	}
 
@@ -40,12 +47,13 @@ public class CommodityDAO {
 	 */
 
 	public static CommodityDTO[] getList() throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL getCommodityList();";
 		List<CommodityDTO> list = new ArrayList<CommodityDTO>();
 
 		try
 		{
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			while (rs.next()) 
 			{
 				list.add(new CommodityDTO(rs.getInt("commodity_ID"), rs.getString("commodity_Name"), rs.getInt("supplier_ID")));
@@ -57,13 +65,12 @@ public class CommodityDAO {
 		}
 		catch (SQLException e) { 
 			throw new DALException(e);
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		} finally {
+		  try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
 		}
 	}
 
@@ -74,27 +81,24 @@ public class CommodityDAO {
 	 */
 
 	public static CommodityDTO get(Integer id) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL getCommodity('%d');";
 		cmd = String.format(cmd, id);
 
 		try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			if(!rs.next()) {
 			  throw new EmptyResultSetException();
 			}
 			return new CommodityDTO(rs.getInt("commodity_ID"), rs.getString("commodity_Name"), rs.getInt("supplier_ID"));
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
-
-
-	
 }

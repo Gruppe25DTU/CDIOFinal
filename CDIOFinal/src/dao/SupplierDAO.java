@@ -18,16 +18,23 @@ public class SupplierDAO {
 	 */
 	
 	public static int create(SupplierDTO dto) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL addSupplier('%s');";
 		cmd = String.format(cmd, dto.getName());
 
 		try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			rs.next();
 			return rs.getInt("ID");
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 
 	/**
@@ -39,11 +46,12 @@ public class SupplierDAO {
 	}
 	
 	public static SupplierDTO getSupplier(int ID) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL getSupplier('%d');";
 		cmd = String.format(cmd, ID);
 
 		try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			rs.next();
 
 			int supplier_ID = rs.getInt("supplier_ID");
@@ -52,15 +60,13 @@ public class SupplierDAO {
 			return new SupplierDTO(supplier_ID,supplier_Name);
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 
 
@@ -69,10 +75,11 @@ public class SupplierDAO {
 	 */
 	
 	public static SupplierDTO[] getList() throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL getSupplierList();";
 		List<SupplierDTO> list = new ArrayList<SupplierDTO>();
 		try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			while(rs.next()) {
 				int supplier_ID = rs.getInt("supplier_ID");
 				String supplier_Name = rs.getString("supplier_Name");
@@ -82,13 +89,12 @@ public class SupplierDAO {
 			return (SupplierDTO[]) list.toArray(new SupplierDTO[list.size()]);
 		} catch (SQLException e) {			
 			throw new DALException(e);
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 }

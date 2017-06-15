@@ -16,10 +16,11 @@ public class SessionDAO {
 	 */
 
 	public boolean login(String name, String pwd) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL confirmLogin('%s','%s');";
 		cmd = String.format(cmd, name,pwd);
 		try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			rs.next();
 
 			if(rs.getInt("result") == 1) {
@@ -29,15 +30,13 @@ public class SessionDAO {
 				return false;
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 
 

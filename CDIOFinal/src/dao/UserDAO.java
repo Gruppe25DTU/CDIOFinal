@@ -19,11 +19,12 @@ public class UserDAO {
    */
 
   public static UserDTO get(Integer ID) throws DALException {
+    Connector conn = new Connector();
     String cmd = "CALL getUser('%d');";
     cmd = String.format(cmd, ID);
     UserDTO dto = null;
     try {
-      ResultSet rs = Connector.doQuery(cmd);
+      ResultSet rs = conn.doQuery(cmd);
       while (rs.next()) {
         String cpr = rs.getString("cpr");
         int user_ID = rs.getInt("user_ID");
@@ -43,12 +44,11 @@ public class UserDAO {
       throw new DALException(e);
     } finally {
       try {
-        Connector.close();
+        conn.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        throw new DALException(e);
       }
     }
-
   }
 
   /**
@@ -58,13 +58,14 @@ public class UserDAO {
    * @return
    */
   private static String[] getRoles(int ID) throws DALException {
+    Connector conn = new Connector();
     List<String> roles = new ArrayList<String>();
 
     String cmd = "CALL getUserRoles('%d');";
     cmd = String.format(cmd, ID);
     ResultSet rs;
     try {
-      rs = Connector.doQuery(cmd);
+      rs = conn.doQuery(cmd);
       while (rs.next()) {
         String role = rs.getString("role_Name");
         if (role != null) {
@@ -79,12 +80,11 @@ public class UserDAO {
       throw new DALException(e);
     } finally {
       try {
-        Connector.close();
+        conn.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        throw new DALException(e);
       }
     }
-
   }
 
   /**
@@ -95,11 +95,12 @@ public class UserDAO {
    * @throws DALException
    */
   public UserDTO[] getUserWithRole(String roleName) throws DALException {
+    Connector conn = new Connector();
     String cmd = "CALL getUserWithRole('%s');";
     cmd = String.format(cmd, roleName);
     List<UserDTO> list = new ArrayList<UserDTO>();
     try {
-      ResultSet rs = Connector.doQuery(cmd);
+      ResultSet rs = conn.doQuery(cmd);
       while (rs.next()) {
         String cpr = rs.getString("cpr");
         int opr_ID = rs.getInt("user_ID");
@@ -121,12 +122,11 @@ public class UserDAO {
       throw new DALException(e);
     } finally {
       try {
-        Connector.close();
+        conn.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        throw new DALException(e);
       }
     }
-
   }
 
   /**
@@ -137,6 +137,7 @@ public class UserDAO {
 	 * @throws DALException
    */
 	public static void changeStatus(int ID, boolean active) throws DALException {
+    Connector conn = new Connector();
     String cmd = "CALL setActive('%d','%d');";
     int status;
     if (active) {
@@ -146,7 +147,7 @@ public class UserDAO {
     cmd = String.format(cmd, status, ID);
 
     try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			if(rs.getInt("result") == 0) {
 				throw new DALException("Deactivation not allowed");
 			}
@@ -154,12 +155,11 @@ public class UserDAO {
       throw new DALException(e);
     } finally {
       try {
-        Connector.close();
+        conn.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        throw new DALException(e);
       }
     }
-
   }
 
   /**
@@ -172,6 +172,7 @@ public class UserDAO {
    * 
    */
   public static int create(UserDTO dto, String password) throws DALException {
+    Connector conn = new Connector();
     String addUser = "CALL addUser('%s','%s','%s');";
     String addUserInfo = "CALL addUserInfo('%s','%s','%s','%s');";
     String[] roles = dto.getRoles();
@@ -179,8 +180,8 @@ public class UserDAO {
     addUserInfo = String.format(addUserInfo, dto.getFirstName(), dto.getLastName(), dto.getIni(), dto.getCpr());
 
     try {
-      Connector.doUpdate(addUserInfo);
-      ResultSet rs = Connector.doQuery(addUser);
+      conn.doUpdate(addUserInfo);
+      ResultSet rs = conn.doQuery(addUser);
       rs.next();
       int ID = rs.getInt("ID");
       for (int i = 0; i < roles.length; i++) {
@@ -188,7 +189,7 @@ public class UserDAO {
 
         addUserRoles = String.format(addUserRoles, roles[i], ID);
         try {
-          Connector.doUpdate(addUserRoles);
+          conn.doUpdate(addUserRoles);
         } catch (SQLException e) {
           throw new DALException(e);
         }
@@ -199,12 +200,11 @@ public class UserDAO {
       throw new DALException(e);
     } finally {
       try {
-        Connector.close();
+        conn.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        throw new DALException(e);
       }
     }
-
   }
 
   /**
@@ -215,6 +215,7 @@ public class UserDAO {
    */
 
   public static boolean update(UserDTO dto, String old_cpr) throws DALException {
+    Connector conn = new Connector();
     String updateUser = "CALL updateUser('%d','%s','%d','%s');";
     String updateUserInfo = "CALL updateUserInfo('%s','%s','%s','%s','%s');";
     String deleteExistingRoles = "CALL deleteUserRoles('%d');";
@@ -224,9 +225,9 @@ public class UserDAO {
     deleteExistingRoles = String.format(deleteExistingRoles, dto.getId());
 
     try {
-      Connector.doUpdate(updateUserInfo);
-      Connector.doUpdate(updateUser);
-      Connector.doUpdate(deleteExistingRoles);
+      conn.doUpdate(updateUserInfo);
+      conn.doUpdate(updateUser);
+      conn.doUpdate(deleteExistingRoles);
       String[] roles = dto.getRoles();
       int ID = dto.getId();
       for (int i = 0; i < roles.length; i++) {
@@ -234,7 +235,7 @@ public class UserDAO {
 
         addUserRoles = String.format(addUserRoles, roles[i], ID);
         try {
-          Connector.doUpdate(addUserRoles);
+          conn.doUpdate(addUserRoles);
         } catch (SQLException e) {
           throw new DALException(e);
         }
@@ -242,6 +243,12 @@ public class UserDAO {
       return true;
     } catch (SQLException e) {
       throw new DALException(e);
+    } finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
     }
   }
 
@@ -254,10 +261,11 @@ public class UserDAO {
    */
 
   public boolean userExists(String name) throws DALException {
+    Connector conn = new Connector();
     String cmd = "CALL userExists('%s');";
     cmd = String.format(cmd, name);
     try {
-      ResultSet rs = Connector.doQuery(cmd);
+      ResultSet rs = conn.doQuery(cmd);
       if (!rs.next()) {
         return false;
       }
@@ -270,12 +278,11 @@ public class UserDAO {
       throw new DALException(e);
     } finally {
       try {
-        Connector.close();
+        conn.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        throw new DALException(e);
       }
     }
-
   }
 
   /**
@@ -284,10 +291,11 @@ public class UserDAO {
    */
 
   public UserDTO[] getDeactiveUsers() throws DALException {
+    Connector conn = new Connector();
     String cmd = "CALL getDeactivatedUserList();";
     List<UserDTO> list = new ArrayList<UserDTO>();
     try {
-      ResultSet rs = Connector.doQuery(cmd);
+      ResultSet rs = conn.doQuery(cmd);
       while (rs.next()) {
         String cpr = rs.getString("cpr");
         int opr_ID = rs.getInt("user_ID");
@@ -310,12 +318,11 @@ public class UserDAO {
       throw new DALException(e);
     } finally {
       try {
-        Connector.close();
+        conn.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        throw new DALException(e);
       }
     }
-
   }
 
   /**
@@ -326,10 +333,11 @@ public class UserDAO {
    */
 
   public UserDTO[] getActivatedUsers() throws DALException {
+    Connector conn = new Connector();
     String cmd = "CALL getActivatedUserList();";
     List<UserDTO> list = new ArrayList<UserDTO>();
     try {
-      ResultSet rs = Connector.doQuery(cmd);
+      ResultSet rs = conn.doQuery(cmd);
       while (rs.next()) {
         String cpr = rs.getString("cpr");
         int opr_ID = rs.getInt("user_ID");
@@ -352,12 +360,11 @@ public class UserDAO {
       throw new DALException(e);
     } finally {
       try {
-        Connector.close();
+        conn.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        throw new DALException(e);
       }
     }
-
   }
 
   /**
@@ -368,10 +375,11 @@ public class UserDAO {
    */
 
   public static UserDTO[] getList() throws DALException {
+    Connector conn = new Connector();
     String cmd = "CALL getUserList();";
     List<UserDTO> list = new ArrayList<UserDTO>();
     try {
-      ResultSet rs = Connector.doQuery(cmd);
+      ResultSet rs = conn.doQuery(cmd);
       while (rs.next()) {
         String cpr = rs.getString("cpr");
         int opr_ID = rs.getInt("user_ID");
@@ -394,20 +402,20 @@ public class UserDAO {
       throw new DALException(e);
     } finally {
       try {
-        Connector.close();
+        conn.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        throw new DALException(e);
       }
     }
-
   }
 
   public static UserDTO getUserFromUserName(String uName) throws DALException {
+    Connector conn = new Connector();
     String cmd = "CALL getUserFromUserName('%s');";
     cmd = String.format(cmd, uName);
 
     try {
-      ResultSet rs = Connector.doQuery(cmd);
+      ResultSet rs = conn.doQuery(cmd);
       while (rs.next()) {
         String cpr = rs.getString("cpr");
         int opr_ID = rs.getInt("user_ID");
@@ -425,12 +433,11 @@ public class UserDAO {
       throw new DALException(e);
     } finally {
       try {
-        Connector.close();
+        conn.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        throw new DALException(e);
       }
     }
     throw new DALException("Unexpected Error");
   }
-
 }

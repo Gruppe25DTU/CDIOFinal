@@ -1,26 +1,64 @@
 $(document).ready(function() {
+	$("#commoditiesTableBox").hide();
+	$("#edit").click(function() {
+	    getCommodityList().then(data => populateCommodityShoppingList(data)).catch(error => console.log(error));
+		$("#commoditiesTableBox").show();
+	});
     var id = getParam("id");
     if(!id) {
-    	id = 2;
+		$.ajax({
+			url : 'rest/recipe/list',
+			dataType : 'json',
+			success : function(data) {
+				populateRecipelist(data);
+			},
+			error: function (error) {
+				alert(" Can't do because: " + error);
+			}
+		});
+		$("#list").show();
+		$("#inputfield").hide();
+		return;
     }
-    getById("recipe", id)
-    	.then(
-    		data => {
-    			console.log(data);
-    			populate("#details", data)}
-    		)
-    	.catch(error => console.log(error));
+    else {
+		$("#list").hide();
+		$("#inputfield").show();
+	    getById("recipe", id)
+	    	.then(
+	    		data => {
+	    			populate("#details", data)}
+	    		)
+	    	.catch(error => console.log(error));
+    }
+    $('#listbut').click(function() {
+    	window.location = location.pathname;
+    });
+	$(document.body).on('click', '.basketitem', function(){
+    	if (editing) {
+			removeCommodity($(this));
+			$(this).remove();
+    	}
+    });
+	$(document.body).on('click', '.shoppingitem', function(){
+		if (editing) {
+			addCommodity($(this));
+			$(this).remove();
+		}
+	});
 });
 
 function populate(frm, data) {   
     $.each(data, function(key, value) {  
     	if (key=="components") {
     		for (i = 0; i < value.length; i++) {
-    			$("#componentTable").append("<tr><td id='component" + i + "'>" +
-    					"</td><td>" + value[i].nomNetWeight + "</td><td>" + value[i].tolerance);
+    			$("#componentTable").append('<tr id="RLcommodity' + i + '" class="basketitem" data-id="' + value[i].commodityID + '"><td>' + value[i].commodityID + "</td><td id='commodity" + i + "'>" +
+    					"</td><td>" + value[i].nomNetWeight + "</td><td>" + value[i].tolerance + "</td><td id='supplier" + i + "'>");
     			$("#componentTable").append("</td></tr>");
-    			getCommodityName(value[i].commodityID, i).then(data => {
-    				$("#component" + data.componentOrder).append(data.name);
+    			getCommodityName(value[i].commodityID, $("#commodity" + i)).then(data => {
+    				data.dest.append(data.name);
+        			getSupplierName(data.supplierID, $("#"+data.dest[0].id.replace("commodity","supplier"))).then(data2 => {
+        				data2.dest.append(data2.name);
+        			}).catch(error => console.log(error));
     			}).catch(error => console.log(error));
     		}
     	}
@@ -38,16 +76,36 @@ function populate(frm, data) {
 	                ctrl.val(value); 
 	        }
     	}
-    });  
+    });
 }
 
-function getCommodityName(id, order) {
+function getCommodityList() {
 	return Promise.resolve($.ajax(
 			{
-				url : 'rest/test/commodity/id/' + id,
+				url : 'rest/commodity/list',
+				dataType : 'json',
+				error : function(error) { conosle.log(error); }
+			}
+		));
+}
+
+function getCommodity(id) {
+	return Promise.resolve($.ajax(
+			{
+				url : 'rest/commodity/id=' + id,
+				dataType : 'json',
+				error : function(error) { conosle.log(error); }
+			}
+		));
+}
+
+function getCommodityName(id, dest) {
+	return Promise.resolve($.ajax(
+			{
+				url : 'rest/commodity/id=' + id,
 				dataType : 'json',
 				success : function(data) {
-					data.componentOrder = order;
+					data.dest = dest;
 				},
 				error : function(jqXHR, text, error){
 					console.log(jqXHR.status + text + error);
@@ -55,4 +113,121 @@ function getCommodityName(id, order) {
 			}
 			
 	));	
+}
+
+function getSupplierName(id, dest) {
+	return Promise.resolve($.ajax(
+			{
+				url : 'rest/supplier/id=' + id,
+				dataType : 'json',
+				success : function(data) {
+					data.dest = dest;
+				},
+				error : function(jqXHR, text, error){
+					console.log(jqXHR.status + text + error);
+				}
+			}
+			
+	));	
+}
+
+function populateRecipelist(data) {
+	$("#RLTable tr").remove();
+	for (i = 0; i < data.length; i++) {
+		var recipe = data[i];
+		
+		$("#RLTable").append('<tr class="clickablefield" data-href="?id=' + recipe.id + '"><td id="RLTableid' + i + '"></td><td id="RLTablename' + i + '"></td><td id="RLTablecomponents' + i + '"></td></tr>');
+		$.each(recipe, function(key, value) {
+			if (key == "components"){
+				$("#RLTablecomponents" + i).append('<table>');
+				for (j = 0; j < value.length; j++) {
+					$("#RLTablecomponents" + i).append('<tr><td id="recipe' + i + 'component' + j + '"></td></tr>');
+	    			getCommodityName(value[j].commodityID, $("#recipe" + i + "component" + j)).then(data => {
+	    				data.dest.append(data.name);
+	    			}).catch(error => console.log(error));
+				}
+				$("#RLTablecomponents" + i).append('</table>');
+			}
+			else {
+				$("#RLTable" + key + i)[0].append(value);
+			}
+		});
+	}
+	$(".clickablefield").click(function() {
+		window.location = location.pathname + $(this).data("href");
+	});
+}
+
+function startNew(event) {
+	$("#list").hide();
+	$("#inputfield").show();
+	var form = event.closest('form[class="detailsForm"]');
+	form.find('input[id="edit"]')[0].style="display: none";
+	form.find('input[id="update"]')[0].style="display: none";
+	form.find('input[id="new"]')[0].style="display: none";
+	form.find('input[id="cancel"]')[0].style="display: initial";
+	form.find('input[id="create"]')[0].style="display: initial";
+	var fields = form.find('input[class*="protected"]');
+	for (i = 0; i < fields.length; i++) {
+		var field = fields[i];
+		switch (field.type) {
+		case "radio" : case "checkbox" :
+			field.checked = false;
+			break;
+		default: 
+			field.value = "";
+		}
+		if (!field.classList.contains("auto")) {
+			field.disabled = false;
+		}
+	}
+	$("#componentTable tr").remove();
+}
+
+
+
+function populateCommodityShoppingList(data) {
+	$("#CLTable tr").remove();
+	for (i = 0; i < data.length; i++) {
+		var commodity = data[i];
+		
+		var currentCommodities = $(".basketitem");
+		
+		var duplicate = false;
+		for (j = 0; j < currentCommodities.length; j++) {
+			if (currentCommodities[j].getAttribute("data-id") == commodity.id) {
+				duplicate = true;
+			}
+		}
+		
+		if (duplicate) {
+			continue;
+		}
+		
+		$("#commoditiesTable").append('<tr id="CLcommodity' + i + '" class="shoppingitem" data-id="' + commodity.id + '"><td name="CLid' + commodity.id + '">' + commodity.id + '</td><td id="CLname' + i + '"></td><td id="CLsupplier' + i + '"></td></tr>');
+		getCommodityName(commodity.id, $("#CLname" + i)).then(data => {
+			data.dest.append(data.name);
+		}).catch(error => console.log(error));
+		getSupplierName(commodity.supplierID, $("#CLsupplier" + i)).then(data => {
+			data.dest.append(data.name);
+		}).catch(error => console.log(error));
+	}
+}
+
+function addCommodity(commodity) {
+	var id = commodity.data("id");
+	$("#componentTable").append("<tr class='basketitem' data-id='" + id + "'><td>" + id + "</td><td id='commodity" + id + "'>" +
+			"</td><td>" + 0 + "</td><td>" + 0.1 + "</td><td id='supplier" + id + "'>");
+	$("#componentTable").append("</td></tr>");
+	getCommodityName(commodity.data("id"), $("#commodity" + id)).then(data => {
+		data.dest.append(data.name);
+		getSupplierName(data.supplierID, $("#"+data.dest[0].id.replace("commodity","supplier"))).then(data2 => {
+			data2.dest.append(data2.name);
+		}).catch(error => console.log(error));
+	}).catch(error => console.log(error));
+}
+
+function removeCommodity(commodity) {
+	var id = commodity[0].getAttribute("data-id");
+	$("#commoditiesTable").append('<tr id="CLcommodity' + id + '" class="shoppingitem" data-id="' + id + '"><td name="CLid' + id + '">' + id + '</td><td id="CLname' + i + '">' + commodity[0].children[1].innerText + '</td><td id="CLsupplier' + i + '">' + commodity[0].children[4].innerText + '</td></tr>');
 }

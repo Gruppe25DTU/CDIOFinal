@@ -1,47 +1,93 @@
 $(document).ready(function() {
-	var search = getParam("search")
     var id = getParam("id");
     if(!id) {
-    	id = 2;
+		$.ajax({
+			url : 'rest/commodity/list',
+			dataType : 'json',
+			success : function(data) {
+				populateCommoditylist(data);
+			},
+			error: function (error) {
+				alert(" Can't do because: " + error);
+			}
+		});
+		$("#list").show();
+		$("#inputfield").hide();
     }
-    getById("commodity", id).then(data => {
-    	populate("#details", data);
-    }).catch(error => console.log(error));	
+    else {
+		$("#list").hide();
+		$("#inputfield").show();
+	    getById("commodity", id)
+	    	.then(
+	    		data => {
+	    			populateCommodity("#details", data)}
+	    		)
+	    	.catch(error => console.log(error));
+    }
+    $('#listbut').click(function() {
+    	window.location = location.pathname;
+    });	
 });
 
-function populate(frm, data) {   
+function populateCommodity(frm, data) {   
     $.each(data, function(key, value) {  
     	if (key=="supplierID") {
 			getSupplierName(value).then(data => {
 				$("#supplier")[0].value = data.name;
 			}).catch(error => console.log(error));
     	}
-    	else {
-	        var ctrl = $('[name="'+key+'"]', frm);  
-	        switch(ctrl.prop("type")) { 
-	            case "radio": case "checkbox":
-	            	for(i = 0; i < value.length; i++) {
-		                ctrl.each(function() {
-		                    if($(this).attr('value') == value[i]) $(this).attr("checked","checked");
-		                });
-	            	}
-	                break;  
-	            default:
-	                ctrl.val(value); 
-	        }
-    	}
+        var ctrl = $('[name="'+key+'"]', frm);  
+        switch(ctrl.prop("type")) { 
+            case "radio": case "checkbox":
+            	for(i = 0; i < value.length; i++) {
+	                ctrl.each(function() {
+	                    if($(this).attr('value') == value[i]) $(this).attr("checked","checked");
+	                });
+            	}
+                break;  
+            default:
+                ctrl.val(value); 
+        }
     });  
 }
 
-function getSupplierName(id) {
+function getSupplierName(id, dest) {
 	return Promise.resolve($.ajax(
 			{
-				url : 'rest/supplier/' + id,
+				url : 'rest/supplier/id=' + id,
 				dataType : 'json',
+				success : function(data) {
+					data.dest = dest;
+				},
 				error : function(jqXHR, text, error){
 					console.log(jqXHR.status + text + error);
 				}
 			}
 			
 	));	
+}
+
+
+function populateCommoditylist(data) {
+		$("#CTable tr").remove();
+		for (i = 0; i < data.length; i++) {
+			var commodity = data[i];
+			
+			$("#CTable").append('<tr class="clickablefield" data-href="?id=' + commodity.id + '"><td id="CTableid' + i + '">' + commodity.id +
+					'</td><td id="CTable' + i + '">' + commodity.name + 
+					'</td><td id="CTablesupplierID' + i + '">' + commodity.supplierID + '</td>' +
+					'<td id="CTablesupplier' + i + '"></td></tr>');
+			getSupplierName(commodity.supplierID, $("#CTablesupplier" + i)).then(data => {
+				data.dest.append(data.name);
+			}).catch(error => console.log(error));
+		}
+	$(".clickablefield").click(function() {
+		window.location = location.pathname + $(this).data("href");
+	});
+}
+
+function reloadSupplierName() {
+	getSupplierName($("#supplierID")[0].value).then(data => {
+		$("#supplier")[0].value = data.name;
+	}).catch(error => console.log(error))	
 }

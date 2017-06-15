@@ -24,13 +24,14 @@ public class ProductBatchDAO {
 	 */
 
 	public static int create(ProductBatchDTO dto) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL addProductBatch('%d');";
 
 		cmd = String.format(cmd, dto.getRecipeID());
 
 		int id;
 		try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			rs.next();
 			id = rs.getInt("ID");
 			if(dto.getStartDate() != null) {
@@ -42,7 +43,13 @@ public class ProductBatchDAO {
 			return id;
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 
 	/**
@@ -52,14 +59,21 @@ public class ProductBatchDAO {
 	 */
 
 	public static void setStartdate(ProductBatchDTO dto) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL setProductBatchStartDate('%s','%d');";
 		cmd = String.format(cmd, dto.getStartDate().toString(),dto.getId());
 
 		try {
-			Connector.doUpdate(cmd);
+			conn.doUpdate(cmd);
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 	/**
 	 * Updates the stopdate of a productbatch. <br>
@@ -69,14 +83,21 @@ public class ProductBatchDAO {
 	 */
 
 	public static void setStopdate(ProductBatchDTO dto) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL setProductBatchStopDate('%s','%d');";
 		cmd = String.format(cmd, dto.getEndDate().toString(),dto.getId());
 
 		try {
-			Connector.doUpdate(cmd);
+			conn.doUpdate(cmd);
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 
 	/**
@@ -90,13 +111,20 @@ public class ProductBatchDAO {
 	 */
 
 	public void changeStatus(int id, int status) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL updateProductBatchStatus('%d','%d');";
 		cmd = String.format(cmd, status,id);
 		try {
-			Connector.doUpdate(cmd);
+			conn.doUpdate(cmd);
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 
 
@@ -108,12 +136,13 @@ public class ProductBatchDAO {
 	 */
 
 	public static ProductBatchDTO get(Integer id) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL getProductBatch('%d');";
 		cmd = String.format(cmd, id);
 
 		ResultSet rs;
 		try {
-			rs = Connector.doQuery(cmd);
+			rs = conn.doQuery(cmd);
 			if(!rs.next()) {
 			  throw new EmptyResultSetException();
 			}
@@ -129,16 +158,13 @@ public class ProductBatchDAO {
 			}
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 
 	/**
@@ -147,11 +173,12 @@ public class ProductBatchDAO {
 	 */
 
 	public static ProductBatchDTO[] getList() throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL getProductBatchList();";
 		List<ProductBatchDTO> list = new ArrayList<ProductBatchDTO>();
 
 		try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			while(rs.next()) {
 				int ID = rs.getInt("productBatch_ID");
 				int status = rs.getInt("status");
@@ -171,16 +198,13 @@ public class ProductBatchDAO {
 			return (ProductBatchDTO[]) list.toArray(new ProductBatchDTO[list.size()]);
 		} catch (SQLException e) {
 			throw new DALException(e);
-
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 
 	/**
@@ -191,6 +215,7 @@ public class ProductBatchDAO {
 	 */
 
 	public void addComponent(ProductBatchCompDTO component) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL addProductBatchComponent('%d','%d','%s','%s','%d');";
 		String tare = Double.toString(component.getTara());
 		String net = Double.toString(component.getNet());
@@ -198,19 +223,16 @@ public class ProductBatchDAO {
 
 		cmd = String.format(cmd, component.getProductBatchID(),component.getCommodityBatchID(),tare,net,component.getUserID());
 		try {
-			Connector.doUpdate(cmd);
+			conn.doUpdate(cmd);
 		} catch (SQLException e) {
 			throw new DALException(e);
-
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 
 	/**
@@ -220,11 +242,12 @@ public class ProductBatchDAO {
 	 */
 
 	public RecipeCompDTO getNonWeighedComp(int pbid) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL getProductBatchComponentNotWeighed('%d');";
 		cmd  = String.format(cmd, pbid);
 
 		try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			while(rs.next()) {
 				RecipeCompDTO recipeComp = new RecipeCompDTO(rs.getInt("recipe_ID"),rs.getInt("commodity_ID"),rs.getDouble("nom_net_weight"),rs.getDouble("tolerance"));
 				return recipeComp;
@@ -232,25 +255,24 @@ public class ProductBatchDAO {
 			throw new EmptyResultSetException();
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 
 
 	public static ProductBatchCompDTO[] getProductBatchComponents(Integer productBatchID) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL getProductBatchComponent('%d')";
 		cmd = String.format(cmd, productBatchID);
 		List<ProductBatchCompDTO> list = new ArrayList<>();
 
 		try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			while(rs.next()) {
 				int commodityBatchID = rs.getInt("commodityBatch_ID");
 				Double tare = rs.getDouble("tare");
@@ -262,13 +284,12 @@ public class ProductBatchDAO {
 			return (ProductBatchCompDTO[]) list.toArray(new ProductBatchCompDTO[list.size()]);
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 }

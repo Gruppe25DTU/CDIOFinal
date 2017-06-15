@@ -1,3 +1,8 @@
+var editing = false;
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 jQuery(function($){
 	$("form[name=searchForm]").submit(function(event) {
 		event.preventDefault();
@@ -19,8 +24,7 @@ jQuery(function($){
 
 $(document).ready(function(){
 	$("#new").click(function(){
-		$("#list").hide();
-		$("#inputfield").show();
+		startNew($(this));
 	});
 	$("#edit").click(function(){
 		$("#list").hide();
@@ -30,7 +34,6 @@ $(document).ready(function(){
 		$("#list").show();
 		//When show a new view, close the previous view
 		$("#inputfield").hide();
-
 	});
 });
 
@@ -41,6 +44,7 @@ $(document).ready(function() {
 		for (i = 0; i < fields.length; i++) {
 			fields[i].disabled = false;
 		};
+		editing = true;
 		form.find('input[id="edit"]')[0].style="display: none";
 		form.find('input[id="create"]')[0].style="display: none";
 		form.find('input[id="new"]')[0].style="display: none";
@@ -49,6 +53,7 @@ $(document).ready(function() {
 	});
 
 	$('#listbut').click(function() {
+		$('#cancel').click();
 		var form = $(this).closest('form[class="detailsForm"]');
 		if (form.find('input[id="create"]')[0].tag == "active") {
 			var fields = form.find('input[class*="protected"]');
@@ -75,33 +80,6 @@ $(document).ready(function() {
 		form.find('input[id="cancel"]')[0].style="display: none";
         var listname = document.getElementById('listbut').className;
 		
-		if(listname == 'Ulist'){
-			$.ajax({
-				url : 'rest/user/list',
-				dataType : 'json',
-				success : function(data) {
-					populateUserlist(data);
-				},
-				error: function (error) {
-					alert(" Can't do because: " + error);
-				}
-			});
-		}
-		
-		if(listname == 'Slist'){
-		$.ajax({
-
-			url : 'rest/supplier/list',
-			dataType : 'json',
-			success : function(data) {
-				populateSupplierlist(data);
-			},
-			error: function (error) {
-				alert(" Can't do because: " + error);
-			}
-		});
-		}
-		
 		if(listname == 'Plist'){
 		$.ajax({
 			url : 'rest/productbatch/list',
@@ -110,76 +88,10 @@ $(document).ready(function() {
 				populateProductBatchlist(data);
 			},
 			error: function (error) {
-				alert(" Can't do because: " + error);
+				console.log(error);
 			}
 		});
 		}
-		
-		if(listname == 'Clist'){
-		$.ajax({
-
-			url : 'rest/commodity/list',
-			dataType : 'json',
-			success : function(data) {
-				populateCommoditylist(data);
-			},
-			error: function (error) {
-				alert(" Can't do because: " + error);
-			}
-		});
-		}
-		
-		if(listname == 'CBlist'){
-		$.ajax({
-			url : 'rest/commoditybatch/list',
-			dataType : 'json',
-			success : function(data) {
-				populateCommodityBatchlist(data);
-			},
-			error: function (error) {
-				alert(" Can't do because: " + error);
-			}
-		});
-		}
-		
-		if(listname == 'Rlist'){
-		$.ajax({
-			url : 'rest/recipe/list',
-			dataType : 'json',
-			success : function(data) {
-				populateRecipelist(data);
-			},
-			error: function (error) {
-				alert(" Can't do because: " + error);
-			}
-		});
-		}
-	});
-
-	$('#new').click(function() {
-		var form = $(this).closest('form[class="detailsForm"]');
-		form.find('input[id="edit"]')[0].style="display: none";
-		form.find('input[id="update"]')[0].style="display: none";
-		form.find('input[id="new"]')[0].style="display: none";
-		form.find('input[id="cancel"]')[0].style="display: initial";
-		form.find('input[id="create"]')[0].style="display: initial";
-		form.find('input[id="create"]')[0].tag="active";
-		var fields = form.find('input[class*="protected"]');
-		for (i = 0; i < fields.length; i++) {
-			var field = fields[i];
-			if (field.classList.contains("auto")) {
-				continue;
-			}
-			switch (field.type) {
-			case "radio" : case "checkbox" :
-				field.checked = false;
-				break;
-			default: 
-				field.value = "";
-			}
-			field.disabled = false;
-		};
-		setAvailableID(form[0].name, form.find('input[id="id"]')[0]);
 	});
 
 	$('#update').click(function() {
@@ -207,30 +119,7 @@ $(document).ready(function() {
 	});
 
 	$('#cancel').click(function() {
-		var form = $(this).closest('form[class="detailsForm"]');
-		if (form.find('input[id="create"]')[0].tag == "active") {
-			var fields = form.find('input[class*="protected"]');
-			for (i = 0; i < fields.length; i++) {
-				var field = fields[i];
-				switch (field.type) {
-				case "radio" : case "checkbox" :
-					field.checked = false;
-					break;
-				default: 
-					field.value = "";
-				}
-				field.disabled = false;
-			};			
-		}
-		var fields = form.find('input[class*="protected"]');
-		for (i = 0; i < fields.length; i++) {
-			fields[i].disabled = true;
-		};
-		form.find('input[id="edit"]')[0].style="display: initial";
-		form.find('input[id="new"]')[0].style="display: initial";
-		form.find('input[id="create"]')[0].style="display: none";
-		form.find('input[id="update"]')[0].style="display: none";
-		form.find('input[id="cancel"]')[0].style="display: none";
+		location.reload();
 	});
 
 	$('#create').click(function() {
@@ -288,7 +177,7 @@ function populate(frm, data) {
 		case "radio": case "checkbox":
 			for(i = 0; i < value.length; i++) {
 				ctrl.each(function() {
-					if($(this).attr('value') == value[i]) $(this).attr("checked","checked");
+					if($(this).attr('value').toLowerCase() == value[i].toLowerCase()) $(this).attr("checked","checked");
 				});
 			}
 			break;  
@@ -302,8 +191,19 @@ function populateUserlist(data) {
 	$("#UTable tr").remove();
 	for (i = 0; i < data.length; i++) {
 		var user = data[i];
-		$("#UTable").append('<tr><td id="UTableid' + i + '"></td><td id="UTablelastName' + i + '"></td><td id="UTablefirstName' + i + '"></td><td id="UTableini' + i + '"></td><td id="UTableemail' + i + '"></td><td id="UTableroles' + i + '"></td><td id="UTablestatus' + i + '"></td></tr>');
+		$("#UTable").append('<tr class="clickablefield" data-href="?id=' + user.id + '">' + 
+				'<td id="UTableid' + i + '"></td><td id="UTablelastName' + i + '"></td>' + 
+				'<td id="UTablefirstName' + i + '"></td><td id="UTableini' + i + '">' + 
+				'</td><td id="UTableemail' + i + '"></td><td id="UTableroles' + i + '">' + 
+				'</td><td id="UTablestatus' + i + '"></td></tr>');
 		$.each(user, function(key, value) {
+			if (key == "status") {
+				if (value == 1) {
+					value = "Yes";
+				} else {
+					value = "No";
+				}
+			}
 			if ($("#UTable" + key + i)[0] != null) {
 				$("#UTable" + key + i)[0].append(value);
 			}
@@ -312,20 +212,27 @@ function populateUserlist(data) {
 			}
 		});
 	}
+	$(".clickablefield").click(function() {
+		window.location = location.pathname + $(this).data("href");
+	});
 }
 
 
 function populateSupplierlist(data) {
 	$("#STable tr").remove();
 	for (i = 0; i < data.length; i++) {
-		var user = data[i];
-		$("#STable").append('<tr><td id="STableid' + i + '"></td><td id="STablename' + i + '"></td></tr>');
-		$.each(user, function(key, value) {
+		var supplier = data[i];
+		$("#STable").append('<tr class="clickablefield" data-href="?id=' + supplier.id + '">' +	
+				'<td id="STableid' + i + '"></td><td id="STablename' + i + '"></td></tr>');
+		$.each(supplier, function(key, value) {
 			if ($("#STable" + key + i)[0] != null) {
 				$("#STable" + key + i)[0].append(value);
 			}
 		});
 	}
+	$(".clickablefield").click(function() {
+		window.location = location.pathname + $(this).data("href");
+	});
 }
 
 function populateCommoditylist(data) {
@@ -369,24 +276,6 @@ function populateProductBatchlist(data) {
 		});
 	}
 }
-
-function populateRecipelist(data) {
-	$("#RLTable tr").remove();
-	for (i = 0; i < data.length; i++) {
-		var user = data[i];
-		$("#RLTable").append('<tr><td id="RLTableid' + i + '"></td><td id="RLTablename' + i + '"></td><td id="RLTablecomponents' + i + '"></td></tr>');
-		$.each(user, function(key, value) {
-			if ($("#RLTable" + key + i)[0] != null) {
-				$("#RLTable" + key + i)[0].append(value);
-			}
-			if ($("#RLable" + key + i)[0] == components){
-				$.each("#RLable" + key + i)[0].append('<table><tr><td>'+value+'</td></tr></table>');
-			}
-		});
-	}
-}
-
-
 
 
 function getById(path, id){
@@ -432,4 +321,31 @@ function create(path, form) {
 			alert(jqXHR.status + text + error);
 		}
 	});	
+}
+
+function startNew(event) {
+	$("#list").hide();
+	$("#inputfield").show();
+	var form = event.closest('form[class="detailsForm"]');
+	form.find('input[id="edit"]')[0].style="display: none";
+	form.find('input[id="update"]')[0].style="display: none";
+	form.find('input[id="new"]')[0].style="display: none";
+	form.find('input[id="cancel"]')[0].style="display: initial";
+	form.find('input[id="create"]')[0].style="display: initial";
+	form.find('input[id="create"]')[0].tag="active";
+	var fields = form.find('input[class*="protected"]');
+	for (i = 0; i < fields.length; i++) {
+		var field = fields[i];
+		if (field.classList.contains("auto")) {
+			continue;
+		}
+		switch (field.type) {
+		case "radio" : case "checkbox" :
+			field.checked = false;
+			break;
+		default: 
+			field.value = "";
+		}
+		field.disabled = false;
+	};
 }

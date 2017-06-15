@@ -12,8 +12,8 @@ import java.sql.Statement;
 public class Connector {
 
 	private static boolean testMode = false;
-	private static Connection conn;
-	private static Statement stm;
+	private Connection conn;
+	private Statement stm;
 
 
 	/**
@@ -45,7 +45,6 @@ public class Connector {
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return null;
-
 			}
 		}
 		else {
@@ -85,7 +84,7 @@ public class Connector {
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public static ResultSet doQuery(String cmd) throws SQLException	{
+	public ResultSet doQuery(String cmd) throws SQLException	{
 		conn = connectToDatabase();
 		stm = conn.createStatement();
 		try { 
@@ -96,8 +95,9 @@ public class Connector {
 		{
 		  throw e;
 		}
-		
 	}
+	
+	
 	/**
 	 * Executes the given SQL statement, which may be an INSERT, UPDATE, or DELETE statement or an SQL statement that returns nothing, such as an SQL DDL statement. 
 	 * @param cmd
@@ -110,7 +110,7 @@ public class Connector {
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public static int doUpdate(String cmd) throws SQLException
+	public int doUpdate(String cmd) throws SQLException
 	{
 		conn = connectToDatabase();
 		stm = conn.createStatement();
@@ -119,17 +119,13 @@ public class Connector {
 			return result; 
 		}
 		catch (SQLException e) 
-		{return 0;
-		}
-		finally {
-			stm.close();
-			conn.close();
-			
-
+		{
+		  //TODO: Throw exception rather than return 0?
+		  return 0;
 		}
 	}
 	
-	public static void close() throws SQLException
+	public void close() throws SQLException
 	{
 		if(conn!= null && !conn.isClosed())
 			conn.close();

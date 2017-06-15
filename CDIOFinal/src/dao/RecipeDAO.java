@@ -20,11 +20,12 @@ public class RecipeDAO {
 	 */
 
 	public static int create(RecipeDTO dto) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL addRecipe('%s')";
 		cmd = String.format(cmd, dto.getName());
 		int ID;
 		try {
-			ResultSet rs  = Connector.doQuery(cmd);
+			ResultSet rs  = conn.doQuery(cmd);
 			if (!rs.next()) {
 			  throw new EmptyResultSetException();
 			}
@@ -38,9 +39,13 @@ public class RecipeDAO {
 			return ID;
 		} catch (SQLException e) {
 			throw new DALException(e);
-
-		}
-
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 
 	/**
@@ -48,6 +53,7 @@ public class RecipeDAO {
 	 */
 
 	public static void createRecipeComponent(RecipeCompDTO[] components) throws DALException{
+    Connector conn = new Connector();
 		for(RecipeCompDTO dto : components) {
 			String cmd = "CALL addRecipeComponent('%d','%d','%s','%s');";
 
@@ -58,19 +64,15 @@ public class RecipeDAO {
 
 			cmd = String.format(cmd, recipeID,commodityID,nom_net_weight,tolerance);
 			try {
-				Connector.doUpdate(cmd);
+				conn.doUpdate(cmd);
 			} catch (SQLException e) {
 				throw new DALException(e);
-			}		
-			finally {
-				try {
-					Connector.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 			}
-
-		}
+		} try {
+      conn.close();
+    } catch (SQLException e) {
+      throw new DALException(e);
+    }
 	}
 
 
@@ -85,11 +87,12 @@ public class RecipeDAO {
 	 */
 	
 	public static RecipeDTO getRecipe(int id) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL getRecipe('%d');";
 		cmd = String.format(cmd, id);
 
 		try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			if(!rs.next()) {
 			  throw new EmptyResultSetException();
 			}
@@ -99,15 +102,13 @@ public class RecipeDAO {
 			return new RecipeDTO(recipe_ID,recipe_Name,components);
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 
 	/**
@@ -115,12 +116,13 @@ public class RecipeDAO {
 	 */
 
 	public static RecipeCompDTO[] getRecipeComponent(Integer ID) throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL getRecipeComponent('%d');";
 		List<RecipeCompDTO> list = new ArrayList<>();
 		cmd = String.format(cmd, ID);
 
 		try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			if (rs == null) {
 			  return (RecipeCompDTO[]) list.toArray(new RecipeCompDTO[list.size()]);
 			}
@@ -133,15 +135,13 @@ public class RecipeDAO {
 			return (RecipeCompDTO[]) list.toArray(new RecipeCompDTO[list.size()]);
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 	
 	public static RecipeDTO[] getList() throws DALException {
@@ -153,10 +153,11 @@ public class RecipeDAO {
 	 */
 
 	public static RecipeDTO[] getRecipeList() throws DALException{
+    Connector conn = new Connector();
 		String cmd = "CALL getRecipeList();";
 		List<RecipeDTO> list = new ArrayList<RecipeDTO>();
 		try {
-			ResultSet rs = Connector.doQuery(cmd);
+			ResultSet rs = conn.doQuery(cmd);
 			while (rs.next()) {
 				int recipe_ID = rs.getInt("recipe_ID");
 				String recipe_Name = rs.getString("recipe_Name");
@@ -173,13 +174,12 @@ public class RecipeDAO {
 			return (RecipeDTO[]) list.toArray(new RecipeDTO[list.size()]);
 		} catch (SQLException e) {
 			throw new DALException(e);
-		}
-		finally {
-			try {
-				Connector.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		} finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        throw new DALException(e);
+      }
+    }
 	}
 }
