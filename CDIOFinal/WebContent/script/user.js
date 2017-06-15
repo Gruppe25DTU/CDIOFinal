@@ -16,6 +16,7 @@ $(document).ready(function() {
 		});
 		$("#list").show();
 		$("#inputfield").hide();
+		$("#edit").hide();
     }
     else {
 		$("#list").hide();
@@ -43,6 +44,7 @@ $(document).ready(function() {
 		createMode();
 	});
 	$('#deactivate').click(function(){
+		$("#status")[0].value = 0;
 		$.ajax({
 			url : "rest/user/deactivate/id=" + id,
 			method : "GET",
@@ -57,6 +59,7 @@ $(document).ready(function() {
 		});
 	});
 	$('#activate').click(function(){
+		$("#status")[0].value = 1;
 		$.ajax({
 			url : "rest/user/activate/id=" + id,
 			method : "GET",

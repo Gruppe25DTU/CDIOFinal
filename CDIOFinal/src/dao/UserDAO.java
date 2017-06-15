@@ -72,9 +72,6 @@ public class UserDAO {
           roles.add(role);
         }
       }
-      if (roles.isEmpty()) {
-        throw new EmptyResultSetException();
-      }
       return (String[]) roles.toArray(new String[roles.size()]);
     } catch (SQLException e) {
       throw new DALException(e);

@@ -58,13 +58,13 @@ public class ASEConnectionManager {
 	public String toString()
 	{
 		String result = "";
-		result += "#|__IP____________|__PortNr__|Broadcasting|\n";
+		result += "#|__IP____________|__PortNr__|Broadcasting|";
 		for( int i = 0 ; i < connections.length ; i++ )
 		{
 			
 			if(connections[i] != null)
 			{
-				String line = "";
+				String line = "\n";
 				int whitespace = 0;
 				line += i;
 				line += "|"+connections[i].getSocket().getInetAddress();
