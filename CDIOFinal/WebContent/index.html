@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="css/index.css">
 <script src="script/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="script/jquery.serialize-object.js" type="text/javascript"></script>
 <script src="script/default.js" type="text/javascript"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <title>Administrator page</title>
 
 </head>
@@ -16,41 +16,56 @@
 		<h1>
 			<b>Welcome (User by ID)</b>
 		</h1>
-</div>
 
-<section class="optionline">
-	<div class="dropdown" style="float: left;">
-		<button class="dropbtn glyphicon glyphicon-menu-hamburger"
-			style="font-size: 36px;"></button>
-				<div class="dropdown-content" style="left:0;">
-			  <a href="#" onclick="setframe('commodity.html');">Commodities</a>
-	           <a href="#" onclick="setframe('commoditybatch.html');">Commodity Batches</a>
-	           <a href="#" onclick="setframe('productbatch.html');">Product Batches</a>
-				<a href="#" onclick="setframe('recipe.html');">Recipes</a>
-	            <a href="#" onclick="setframe('supplier.html');">Suppliers</a>
-	            <a href="#" onClick="setframe('user.html');">Users</a>
+		<div style="position: fixed; right: 0px; width: 250px;">
+			<a href="http://validator.w3.org/check?uri=referer"
+				style="background-color: transparent"> <img
+				style="border-style: none" width="88" height="31"
+				src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01"></a>
+
+			<a href="http://jigsaw.w3.org/css-validator/check/referer"> <img
+				style="border: 0; width: 88px; height: 31px"
+				src="http://jigsaw.w3.org/css-validator/images/vcss"
+				alt="Valid CSS!">
+			</a>
+		</div>
+
+	</div>
+
+	<div class="optionline">
+		<div class="dropdown" style="float: left;">
+			<button class="dropbtn glyphicon glyphicon-menu-hamburger"
+				style="font-size: 36px;"></button>
+			<div class="dropdown-content" style="left: 0;">
+				<a href="#" onclick="setframe('commodity.html');">Commodities</a> <a
+					href="#" onclick="setframe('commoditybatch.html');">Commodity
+					Batches</a> <a href="#" onclick="setframe('productbatch.html');">Product
+					Batches</a> <a href="#" onclick="setframe('recipe.html');">Recipes</a>
+				<a href="#" onclick="setframe('supplier.html');">Suppliers</a> <a
+					href="#" onClick="setframe('user.html');">Users</a>
+			</div>
+		</div>
+
+		<form class="searchForm" id="searchForm" name="searchForm">
+			<input type="text" name="search" class="search" autofocus
+				placeholder="Search by ID... " disabled> <input
+				type="submit" value="Submit" />
+		</form>
+		<div class="dropdown" style="float: right;">
+			<button class="dropbtn glyphicon glyphicon-user"
+				style="font-size: 36px;"></button>
+			<div class="dropdown-content">
+				<a id="showPD">Personal Details</a> <a href="login.html">Logout</a>
+			</div>
 		</div>
 	</div>
 
-	<form class="searchForm" id="searchForm" name="searchForm">
-		<input type="text" name="search"
-			class="search" autofocus placeholder="Search by ID... " disabled> <input type="submit" value="Submit" />
-	</form>
-	<div class="dropdown" style="float: right;">
-		<button class="dropbtn glyphicon glyphicon-user"
-			style="font-size: 36px;"></button>
-		<div class="dropdown-content">
-			<a id="showPD">Personal Details</a>
-			<a href="login.html">Logout</a>
-		</div>
+	<div class="section">
+		<iframe id="frame" src="user.html"
+			style="width: 100%; height: 1000px;"></iframe>
+
+
+
 	</div>
-</section>
-
-<section class="section">
-<iframe  id="frame" src="user.html" width="100%" height="1000px"></iframe>
-
-
-
-</section>
 </body>
 </html>
