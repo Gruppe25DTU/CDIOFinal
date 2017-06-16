@@ -1,6 +1,5 @@
 package dao;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,7 +7,8 @@ import java.util.List;
 
 import dal.Connector;
 import dto.CommodityDTO;
-import logic.CDIOException.*;
+import logic.CDIOException.DALException;
+import logic.CDIOException.EmptyResultSetException;
 
 public class CommodityDAO {
   
