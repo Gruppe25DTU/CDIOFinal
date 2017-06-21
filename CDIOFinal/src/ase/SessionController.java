@@ -134,10 +134,8 @@ public class SessionController {
 
 					if(user != null)
 					{
-					  ArrayList<String> roles = (ArrayList<String>) Arrays.asList(user.getRoles());
-						if((roles.contains("LaboratoryTechnician") 
-								|| roles.contains("Pharmacist")
-								|| roles.contains("Foreman")) && user.getStatus()==1)
+						//ArrayList<String> userRoles = (ArrayList<String>) Arrays.asList(user.getRoles());
+						if(hasValidRoles(user.getRoles()) && user.getStatus()==1)
 						{
 							//Progress to next phase --Confirm the user name--
 							String name = user.getFirstName().charAt(0)+" "+user.getLastName();
@@ -226,6 +224,16 @@ public class SessionController {
 			}
 		}
 
+	}
+	
+	private boolean hasValidRoles(String[] roles)
+	{
+		for(int i = 0 ; i<roles.length ; i++)
+		{
+			if(roles[i].equals("Pharmacist") || roles[i].equals("LaboratoryTechnician") || roles[i].equals("Foreman"))
+				return true;
+		}
+		return false;
 	}
 
 	private void confirmNamePhase(SocketInMessage message) throws IOException
